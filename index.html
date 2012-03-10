@@ -1,0 +1,614 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Crypt Demo</title>
+    <link rel="stylesheet" href="css/custom-theme/ui.css" type="text/css"> <!-- We need this for some reason for the resizing to work -->
+
+    <link href='http://fonts.googleapis.com/css?family=Exo:100,200,300,400,500,600,700,800,900,900italic,800italic,700italic,400italic,500italic,600italic,100italic,200italic,300italic' rel='stylesheet' type='text/css'> 
+
+    <style>
+
+
+      /* Main Setup */
+
+      .clearfix:after, .window:after {
+        visibility:hidden;
+        display:block;
+        content:"";
+        clear:both;
+        height: 0;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        -webkit-box-sizing: border-box; 
+        box-sizing: border-box; 
+        font-family: Exo, sans-serif;
+      }
+
+      body {
+        background:url("carbon.gif");
+      }
+
+      /* Window General */
+
+      .window {
+        width: 480px;
+        min-height: 400px;
+        min-width: 480px;
+        position:absolute;
+        border-radius: 5px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        background: #1d1d1d;
+        overflow: hidden;
+      }
+
+
+        .handle {
+          height: 20px;
+          width: 100%;
+          border-radius: 5px 5px 0 0;
+          background: -webkit-gradient(linear, left top, left bottom, from(#535353), to(#454545));
+          box-shadow: 0 1px 5px -3px rgba(0,0,0,0.3);
+          z-index: 900000;
+          position: relative;
+        }
+
+          .window:hover .handle {
+            background: #5D5D5D;
+          }
+
+          .handle .title {
+            display: block;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 10px;
+            letter-spacing: 3px;
+            padding-top: 4px;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 0 #000;
+            opacity: 0.6;
+            z-index: 1;
+          }
+
+      button.close, button.minimize {
+        border-radius: 10px;
+        height: 10px;
+        width: 10px;
+        position: absolute;
+        top: 4px;
+        box-shadow: inset 0 1px 0.5px #000, 0 1px 0 rgba(255,255,255,0.3);
+        z-index: 500;
+      }
+
+      button.close { background: #ff7e00; right: 6px;}
+      button.minimize { background: #ffc600; right: 20px; }
+
+      button.close:hover { background: #fdb064; }
+      button.minimize:hover { background: #fbde78; }
+
+      .content {
+        overflow: hidden;
+      }
+
+        .contentinner {
+          padding: 5px;
+        }
+
+          .contentinner div { /* Styling inner modules */
+            background: #161616;
+            border-radius: 5px;
+          }
+
+
+    /* Dock General Styling (or should I say disgusting hacking) */
+
+      .dock {
+        width: 750px;
+        height : 100px;
+        left: 50%;
+        margin-left: -325px;
+        bottom: 20px;
+        position: fixed;
+        background: url("img/dock.png") repeat-x 0 60px;
+      }
+
+      .dock:before {
+        width: 15px;
+        height: 100px;
+        background: url("img/left.png") no-repeat 0 60px;
+        margin-left: -15px;
+        display: block;
+        content: "";
+      }
+
+      .dock:after { /* Not working - someone find a way to fix this */
+        width: 15px;
+        height: 100px;
+        background: url("img/right.png") no-repeat 0 60px;
+        background: red;
+        margin-right: -15px;
+        display: block;
+        content: "asd";
+        float: left;
+        top: -200px;
+      }
+
+      .dock ul { /* wrapper within wrappers, yo */
+        margin: 0 auto;
+        width: 700px;
+        margin-top: -25px;
+      }
+
+      .dock ul li {
+        margin-top:-70px;
+        list-style: none;
+        float:left;
+        display: block;
+        width: 70px;
+      }
+
+      .dock div.tooltip {
+        position:relative;
+        top: -8px;
+        background: #615f5f;
+        text-align:center;
+        padding: 5px;
+        border-radius: 5px;
+        text-transform:uppercase;
+        opacity: 0;
+        width: 160%;
+        font-size: 13px;
+        font-weight: 600;
+        color: #fff;
+        letter-spacing: 1px;
+        text-shadow: 0 1px 0 #000;
+        left: -30%;
+      }
+
+      .dock div.tooltip:after {
+        content:"\25B8";
+        display:block;
+        font-size:2em;
+        height:0;
+        color: #615f5f;
+        text-shadow: none;
+        bottom: -2px;
+        left: 48px;
+        line-height:0;
+        position:absolute;
+        -webkit-transform: rotate(90deg);
+      }
+
+      .dock li:hover div.tooltip {
+        opacity: 0.5;
+        -webkit-transition: all 0.6s linear;
+      }
+
+      .dock li.main:hover div.tooltip {
+        opacity: 0;
+      }
+
+      .dock li img {
+        -webkit-transform: scale(.8);
+        -webkit-transition: all 0.2s linear;
+      }
+
+      .dock li:hover img {
+        -webkit-transform: scale(1);
+      }
+
+
+    /* First window */
+
+      .window1 {
+        top:120px;
+        left:120px;
+        height: 130px;
+      }
+
+      /* Window Specific - Map */
+
+      .contentinner .map {
+        height: 150px;
+        margin-bottom: 5px;
+        background: url("img/mapbg.png") no-repeat top center, #161616;
+        background-size: contain;
+      }
+
+    /* Bounce Route */
+
+    .route { height:34px;
+      width: 385px;
+      overflow: hidden; 
+      font-size: 10px;
+      font-family: Helvetica;
+      float:left;
+      margin-right: 5px;
+    }
+ 
+
+      .bounces { 
+        width: 10000px; /* Arbitrarily long width for infinite bounces */
+      } 
+
+      div.arrow, div.server { float:left; }
+
+      div.arrow { 
+        color: #333333; 
+        font-size: 30px;
+        margin-top: -2px;
+      }
+
+      div.server { 
+        padding: 5px;
+        margin: 5px 5px 4px;
+        height: 23px;
+        border-radius: 5px;
+        background: #7C7C7C;
+      }
+
+      div.server.you {
+        background: white;
+      }
+
+      div.server.fav { background: #C49433; }
+
+    /* Buttons */
+
+      button.connect, button.disconnect {
+        border-radius: 5px;
+        float: left;
+        padding: 5px;
+        margin-top: 1px;
+        width: 100px;
+        font-weight: 600;
+        font-size: 12px;
+      }
+
+      button.connect {
+        background: #23BA43;
+        box-shadow: 0 5px 0 #1B9133, 0 10px 0 rgba(0,0,0,0.2);
+        /* -webkit-transition: all 0.3s linear; */
+      }
+
+        button.connect:hover {
+         /* -webkit-transition: all 0.3s linear; */
+          background: #2ce019;
+          box-shadow: 0 5px 0 #1eae0e, 0 10px 0 rgba(0,0,0,0.2);
+        }
+
+        button.connect:active {
+          background: #2ce019;
+          box-shadow: 0 1px 0 #399300, 0 2px 0 rgba(0,0,0,0.2);
+          margin-top: 6px;
+        }
+
+      button.disconnect {
+        background: #BF0011;
+        box-shadow: 0 5px 0 #95000A, 0 10px 0 rgba(0,0,0,0.2);
+        color: #fff;
+        text-shadow: 0 0 5px #000;
+        /* -webkit-transition: all 0.3s linear; */
+      }
+
+        button.disconnect:hover {
+         /* -webkit-transition: all 0.3s linear; */
+          background: #fe0000;
+          box-shadow: 0 5px 0 #cc0000, 0 10px 0 rgba(0,0,0,0.2);
+        }
+
+
+        button.disconnect:active {
+          box-shadow: 0 1px 0 #95000A, 0 2px 0 rgba(0,0,0,0.2);
+          margin-top: 6px;
+        }
+
+      /* Browser */
+
+      .browser { 
+        height: 150px; 
+        margin-top: 5px;
+        float: left;
+        width: 100%; 
+      }
+
+      .browser div.login {
+        text-align: center;
+        margin-top: 60px;
+      }
+      
+      .browser h3.servertitle {
+        color: #fff;
+        font-weight: 500;
+        margin-bottom: 25px;
+      }
+
+      .browser input {
+        border-radius: 5px;
+        width: 180px;
+        height: 30px;
+        margin-bottom: 10px;
+        box-shadow: inset 0 2px 0 -1px rgba(0,0,0,0.3);
+        font-size: 15px
+      }
+
+      .browser input.password {
+        background: #c7f3f5;
+      }
+
+      .browser button.login {
+        font-weight: 400;
+        font-size: 15px;
+        border-radius: 5px;
+        text-indent: 5px;
+        width: 180px;
+        height: 30px;
+        background: #DEDBDB;
+        text-transform: uppercase;
+        box-shadow: 0 5px 0 #ADABAB, 0 10px 0 rgba(0,0,0,0.2);
+      }
+
+        .browser button.login:active {
+          box-shadow: 0 1px 0 #ADABAB, 0 2px 0 rgba(0,0,0,0.2);
+          margin-top: 6px;
+        }
+
+    </style>
+    
+  </head>
+  <body>
+
+ <!-- <div class="window window1 disconnected" id="w4">
+      <div class="handle">
+        <button class="close"></button>
+        <button class="minimize"></button>
+        <span class="title">CONNECTOR</span>
+      </div>
+
+      <div class="content">
+        <div class="contentinner clearfix">
+          
+          <div class="map"></div>
+          
+          <div class="route clearix">
+            <div class="bounces">
+              <div class="server you">You</div>
+              <div class="arrow">&#x21e2;</div>
+              <div class="server fav">123.123.123.123</div>
+              <div class="arrow">&#x21e2;</div>
+              <div class="server">123.123.123.123</div>
+              <div class="arrow">&#x21e2;</div>
+              <div class="server fav">123.123.123.123</div>
+              <div class="arrow">&#x21e2;</div>
+              <div class="server destServer">123.123.123.123</div>
+            </div>
+          </div>
+          <button class="connect">CONNECT</button>
+
+          <div class="browser">
+            <div class="login">
+              <h3 class="servertitle">Server Title</h3>
+              <input type="text" title="USERNAME" class="username"><br />
+              <input type="password" title="PASSWORD" class="password"><br/>
+              <button class="login">Log In</button>
+            </div>
+          </div>
+
+        </div>
+       </div>
+  </div> -->
+  
+    <div class="dock clearfix">
+      <ul class="clearfix">
+        <li class="main">
+            <div class="tooltip">Main</div>
+          <img src="img/icon0.png" /></li>
+        <li>
+          <div class="tooltip">Connector</div>
+          <img class="connectoricon" src="img/icon1.png" /></li>
+        <li>
+          <div class="tooltip">Weed</div>
+          <img src="img/icon2.png" /></li>
+        <li>
+          <div class="tooltip">Flower</div>
+          <img src="img/icon3.png" /></li>
+        <li>
+          <div class="tooltip">Clover</div>
+          <img src="img/icon4.png" /></li>
+        <li>
+          <div class="tooltip">Hand</div>
+          <img src="img/icon5.png" /></li>
+        <li>
+          <div class="tooltip">Foot Clan</div>
+          <img src="img/icon6.png" /></li>
+        <li>
+          <div class="tooltip">Search</div>
+          <img src="img/icon7.png" /></li>
+        <li>
+          <div class="tooltip">Puzzle</div>
+          <img src="img/icon8.png" /></li>
+        <li>
+          <div class="tooltip">Umbrella</div>
+          <img src="img/icon9.png" /></li>
+      </ul>
+  </div>
+
+    <!-- jQuery, UI + box-shadow animations -->
+    <script src="js/jquery-1.7.1.min.js"></script>
+    <script src="js/jquery-ui-1.8.17.custom.min.js"></script>
+    <script src="js/jquery.animate-shadow-min.js"></script>
+
+    <script>
+     
+$(document).ready(function(){
+
+        
+        // Automatically sets proper height for the window.
+        //setWindowHeight($('.window'));
+
+        $( ".window" ).draggable({ stack: ".window",
+                          handle: ".handle", containment: 'body' })
+                      .resizable({handles: "all", snap: true, minHeight: 400, 
+                          minWidth: 300, stack: "window", resize: function() {
+                          setWindowHeight(this); } // Refreshes window height
+                      });
+
+        // Close button functionality
+        $( "button.close" ).on("click", function() {
+          $(this).closest(".window").hide();
+        })
+      
+
+        // Dynamically refresh a window's height
+        function setWindowHeight(elem) {
+            $this = $(elem);
+            content = $this.find('.contentinner'); // Content wrapper
+            windowHeight = $this.height();
+            contentHeight = windowHeight - 20; // Height - handle bar
+            bounceWidth = content.width() - 105; // Width of bounce route (minus connect button)
+
+            content.css("height", contentHeight); // Set content height
+            content.find('.route').css('width', bounceWidth); // Set bounceroute width
+
+
+            // Handles window/module resizing based on the state of the window.
+            mapHeight = contentHeight - 34 - 15;
+
+            if ($this.hasClass("disconnected")) {
+              content.find('.map').css('height', mapHeight).siblings('.browser').css('height', mapHeight);
+            } else {             
+              content.find('.browser').css('height', mapHeight);
+            }
+         }
+
+        // Connect button clicks
+        $('button.connect').on("click", function() {
+            var $this = $(this);
+
+            openWindow = $(this).closest(".window");
+
+            /***** CONNECT BUTTON ******/
+            if (openWindow.hasClass("disconnected")) { 
+
+                var route = openWindow.find('.bounces');
+                var bounces = route.children();
+                var bounceArray = [];
+                currentBounceIndex = 0;
+
+
+                /* Queue connection animations for bounce route */
+
+                bounces.each(function() {
+                  bounceArray.push(this); 
+                });
+
+                connectNext();
+
+                function connectNext() { 
+                  var currentBounce = bounceArray[currentBounceIndex];
+
+                  onConnect(currentBounce);
+
+                  currentBounceIndex++;
+                  if (currentBounceIndex < bounceArray.length) {
+                    setTimeout(connectNext, 400);
+                  } else {
+
+                    setTimeout(moveRouteUp, 800);
+                  }
+                };
+
+                
+
+                function moveRouteUp() {
+                  setTimeout(changeButton, 300);
+                  contentWindow = $this.closest(".contentinner");
+
+                  $this.closest(".window").switchClass("disconnected", "connected", 2000).find('.title').text("BROWSER");
+
+                  // move route up
+                  contentWindow.animate({
+                  marginTop: "-=" + (contentWindow.find('.map').height() + 5) }, 1000, "easeInOutExpo");
+
+                  contentWindow.find('.destServer').animate({boxShadow: "0 0 2px #fff"});
+                }
+
+                function changeButton() {
+                  $this.switchClass("connect", "disconnect").text("DISCONNECT");
+                  $this.animate({boxShadow: "0 5px 0 #95000A"}, {queue: false, duration: 100});
+                }
+
+            /***** DISCONNECT BUTTON ******/
+            } else {
+              openWindow.fadeOut();
+            }
+      
+        });
+
+
+        /* DOCK functionality */
+
+        $('.connectoricon').on("click", function() {
+          //$('.window').fadeIn();
+          loadWindow("connector");
+        });
+
+
+        function onConnect(elem) {
+          $this = $(elem);
+          if ($this.hasClass("arrow")) {
+              $this.css("color", "#3fd92f");
+            } else if ($this.hasClass("you")) {
+              $this.css("background", "#C4F1B4");
+            } else {
+                $this.css("background", "#3fd92f");
+                if (!$this.hasClass("destServer")) {
+                  $this.animate({width: "23px", textIndent: "-9999px"});
+                } else { 
+                  $this.animate({boxShadow: "0 0 60px #3fd92f"}, 1200);
+                }
+            }
+        }
+        
+
+
+        function loadWindow(window) {
+           var newWindow = $("<div>").addClass("window").addClass("disconnected").hide().appendTo('body');
+           var handle = $("<div class='handle'>").appendTo(newWindow);
+           handle.append("<button class='close'>").append("<button class='minimize'>");
+           $("<span class='title'>").text(window).appendTo(handle);
+           var contentInner = $("<div class='contentinner clearfix'>").appendTo($("<div class='content'>").appendTo(newWindow));
+
+           $.ajax({
+              url: window + ".html",
+              success: function (data) { contentInner.append(data); },
+              dataType: 'html'
+          });
+
+          newWindow.draggable({ stack: ".window",
+                          handle: ".handle", containment: 'body' })
+                      .resizable({handles: "all", snap: true, minHeight: 400, 
+                          minWidth: 300, stack: "window", resize: function() {
+                          setWindowHeight(this); } // Refreshes window height
+                      });
+          
+          setWindowHeight(newWindow);
+
+          newWindow.fadeIn();
+
+
+          
+        }
+});
+
+    
+      
+
+    </script>
+  </body>
+</html>
