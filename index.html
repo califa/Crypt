@@ -363,7 +363,7 @@
   </head>
   <body>
 
- <!-- <div class="window window1 disconnected" id="w4">
+  <div class="window window1 disconnected" id="w4">
       <div class="handle">
         <button class="close"></button>
         <button class="minimize"></button>
@@ -401,7 +401,7 @@
 
         </div>
        </div>
-  </div> -->
+  </div> 
   
     <div class="dock clearfix">
       <ul class="clearfix">
@@ -449,7 +449,7 @@ $(document).ready(function(){
 
         
         // Automatically sets proper height for the window.
-        //setWindowHeight($('.window'));
+        setWindowHeight($('.window'));
 
         $( ".window" ).draggable({ stack: ".window",
                           handle: ".handle", containment: 'body' })
@@ -554,8 +554,8 @@ $(document).ready(function(){
         /* DOCK functionality */
 
         $('.connectoricon').on("click", function() {
-          //$('.window').fadeIn();
-          loadWindow("connector");
+          $('.window').fadeIn();
+          //loadWindow("connector");
         });
 
 
@@ -600,9 +600,7 @@ $(document).ready(function(){
           setWindowHeight(newWindow);
 
           newWindow.fadeIn();
-
-
-          
+         
         }
 });
 
