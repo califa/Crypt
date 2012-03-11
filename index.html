@@ -447,7 +447,18 @@
      
 $(document).ready(function(){
 
-        
+        function Screen(windowName) {
+            var windowTemplate = '<div class="window"><div class="handle"><button class="close"></button><button class="minimize"></button><span class="title">{{title}}</span></div><div class="content"><div class="contentinner clearfix">{{content}}</div></div></div>'.replace(/{{title}}/, windowName );
+              $.ajax({
+                url: "windows/" + windowName + ".html",
+                success: function (data) { var newTemplate = windowTemplate.replace(/{{content}}/, data); },
+                dataType: 'html'
+              });
+              $(newTemplate).appendTo('body');
+        }
+
+        //var something = new Screen("connector");
+
         // Automatically sets proper height for the window.
         setWindowHeight($('.window'));
 
@@ -493,40 +504,70 @@ $(document).ready(function(){
             openWindow = $(this).closest(".window");
 
             /***** CONNECT BUTTON ******/
-            if (openWindow.hasClass("disconnected")) { 
+            
 
-                var route = openWindow.find('.bounces');
-                var bounces = route.children();
-                var bounceArray = [];
-                currentBounceIndex = 0;
+            var route = openWindow.find('.bounces');
+            var bounces = route.children();
+            var bounceArray = [];
+            var currentBounceIndex = 0;
 
 
-                /* Queue connection animations for bounce route */
+            /* Queue connection animations for bounce route */
 
-                bounces.each(function() {
-                  bounceArray.push(this); 
-                });
+            bounces.each(function() {
+              bounceArray.push(this); 
+            });
 
-                connectNext();
-
-                function connectNext() { 
+                function connectBounce() { 
                   var currentBounce = bounceArray[currentBounceIndex];
 
                   onConnect(currentBounce);
 
                   currentBounceIndex++;
                   if (currentBounceIndex < bounceArray.length) {
-                    setTimeout(connectNext, 400);
+                    setTimeout(connectBounce, 400);
                   } else {
 
                     setTimeout(moveRouteUp, 800);
                   }
                 };
 
-                
+                function disconnectBounce(start) {
+                  if (start) {
+                    currentBounceIndex = bounceArray.length-1;
+                  }
+                  var currentBounce = $(bounceArray[currentBounceIndex]);
+                  
+
+                  if (!currentBounce.hasClass("you")) {
+                    currentBounce.fadeOut();
+                  } else { currentBounce.css("background", "white"); }
+                  
+
+                  currentBounceIndex--;
+                  console.log(currentBounceIndex);
+                  if (currentBounceIndex > 0) {
+                    setTimeout(disconnectBounce, 100);
+                  } else {
+                    setTimeout(moveRouteDown, 100);
+                  }
+                }
+
+                function moveRouteDown() {
+                  setTimeout(toggleButton, 300);
+                  contentWindow = $this.closest(".contentinner");
+
+                  $this.closest(".window").switchClass("connected", "disconnected", 2000).find('.title').text("CONNECTOR");
+
+                  // move route up
+                  contentWindow.animate({
+                  marginTop: "+=" + (contentWindow.find('.map').height() + 5) }, 1000, "easeOutExpo");
+
+                  contentWindow.find('.destServer').animate({boxShadow: "0 0 2px #fff"});
+                }
 
                 function moveRouteUp() {
-                  setTimeout(changeButton, 300);
+                  setTimeout(toggleButton, 300);
                   contentWindow = $this.closest(".contentinner");
 
                   $this.closest(".window").switchClass("disconnected", "connected", 2000).find('.title').text("BROWSER");
@@ -538,14 +579,23 @@ $(document).ready(function(){
                   contentWindow.find('.destServer').animate({boxShadow: "0 0 2px #fff"});
                 }
 
-                function changeButton() {
-                  $this.switchClass("connect", "disconnect").text("DISCONNECT");
-                  $this.animate({boxShadow: "0 5px 0 #95000A"}, {queue: false, duration: 100});
+                function toggleButton() {
+                  if ($this.hasClass("connect")) {
+                    $this.switchClass("connect", "disconnect").text("DISCONNECT");
+                    $this.animate({boxShadow: "0 5px 0 #95000A"}, {queue: false, duration: 100});
+                  } else {
+                    $this.switchClass("disconnect", "connect").text("CONNECT");
+                    $this.animate({boxShadow: "0 5px 0 #1B9133"}, {queue: false, duration: 100});
+                  }
+                  
+                  
                 }
-
+            if (openWindow.hasClass("disconnected")) { 
+              connectBounce();
             /***** DISCONNECT BUTTON ******/
             } else {
-              openWindow.fadeOut();
+              //openWindow.fadeOut();
+              disconnectBounce(true);
             }
       
         });
@@ -557,7 +607,6 @@ $(document).ready(function(){
           $('.window').fadeIn();
           //loadWindow("connector");
         });
-
 
         function onConnect(elem) {
           $this = $(elem);
