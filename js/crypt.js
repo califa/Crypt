@@ -204,7 +204,18 @@ $(document).ready(function(){
           newWindow.fadeIn();
          
         }
-});
+        
+        /* Messages window tabbing functionality -Robert */
+        
+        $(".r_messages .r_tabs li").click(function(){
+        	var id = $(this).attr('id');
+        	$(this).removeClass('r_inactive').siblings().addClass('r_inactive');
+        
+        	$("."+id+"-tab").removeClass('r_inactive-window').siblings('div').addClass('r_inactive-window');		
+        });
+        
+        
+}); //end of the document.ready
 
     
       

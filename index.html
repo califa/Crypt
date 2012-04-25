@@ -51,20 +51,62 @@
         </div>
        </div>
   </div> 
-
-  <div class="window hello disconnected" id="hello">
+  
+  
+	<!--Messages Window -Robert -->
+	
+  <div class="window r_messages disconnected" id="r_messages">
       <div class="handle">
         <button class="close"></button>
         <button class="minimize"></button>
-        <span class="title">HELLO</span>
+        <span class="title">Messages</span>
       </div>
 
       <div class="content">
         <div class="contentinner clearfix">
-          <!--inside stuff -->
-        </div>
-       </div>
-  </div> 
+          <ul class="r_tabs clearfix">
+          	<li class="" id="r_freelance">Freelance</li>
+          	<li class="r_inactive" id="r_bounties">Bounties</li>
+          	<li class="r_inactive" id="r_ongoing">Ongoing</li>
+          </ul>
+          
+          <!--freelance-->
+          <div class="r_freelance-tab" id="r_freelance-tab">
+          	<ul>
+          		<li class="r_freelance-mission-item">
+          			<div class="clearfix">
+          				<h1><span class="r_mission-level">Level 4</span> Infiltrate A Server and Destroy Key Files</h1>
+          				<button class="r_action-button">Accept</button>
+          			</div>
+          		</li>
+          		<li class="r_freelance-mission-item">
+          			<div class="clearfix">
+          				<h1><span class="r_mission-level">Level 8</span> Infiltrate A Server and Destroy Key Files</h1>
+          				<button class="r_action-button">Accept</button>
+          			</div>
+          		</li>
+          		<li class="r_freelance-mission-item r_level-too-high">
+          			<div class="clearfix">
+          				<h1><span class="r_mission-level">Level 18</span> Change A User's Information In A Database</h1>
+          				<button class="r_action-button">Accept</button>
+          			</div>
+          		</li>
+          	</ul>  	
+          </div> <!-- end freelance tab -->
+          
+          <div class="r_bounties-tab r_inactive-window" id="r_bounties-tab">
+          	<h1>Nothing here yet.</h1>
+          </div> <!-- end of bounties tab -->
+          
+          <div class="r_ongoing-tab r_inactive-window" id="r_ongoing-tab">
+          	<div class="r_ongoing-sidebar">
+          		
+          	</div> <!-- end sidebar -->
+          </div> <!-- end ongoing tab -->
+          
+        </div><!-- end contentinner -->
+       </div> <!-- end content -->
+  </div> <!-- end window -->
   
     <div class="dock clearfix">
       <ul class="clearfix">
