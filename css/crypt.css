@@ -1,0 +1,349 @@
+
+      /* Main Setup */
+
+      .clearfix:after, .window:after {
+        visibility:hidden;
+        display:block;
+        content:"";
+        clear:both;
+        height: 0;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        -webkit-box-sizing: border-box; 
+        box-sizing: border-box; 
+        font-family: Exo, sans-serif;
+      }
+
+      body {
+        background:url("../carbon.gif");
+      }
+
+      /* Window General */
+
+      .window {
+        width: 480px;
+        min-height: 400px;
+        min-width: 480px;
+        position:absolute;
+        border-radius: 5px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        background: #1d1d1d;
+        overflow: hidden;
+      }
+
+
+        .handle {
+          height: 20px;
+          width: 100%;
+          border-radius: 5px 5px 0 0;
+          background: -webkit-gradient(linear, left top, left bottom, from(#535353), to(#454545));
+          box-shadow: 0 1px 5px -3px rgba(0,0,0,0.3);
+          z-index: 900000;
+          position: relative;
+        }
+
+          .window:hover .handle {
+            background: #5D5D5D;
+          }
+
+          .handle .title {
+            display: block;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 10px;
+            letter-spacing: 3px;
+            padding-top: 4px;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 0 #000;
+            opacity: 0.6;
+            z-index: 1;
+          }
+
+      button.close, button.minimize {
+        border-radius: 10px;
+        height: 10px;
+        width: 10px;
+        position: absolute;
+        top: 4px;
+        box-shadow: inset 0 1px 0.5px #000, 0 1px 0 rgba(255,255,255,0.3);
+        z-index: 500;
+      }
+
+      button.close { background: #ff7e00; right: 6px;}
+      button.minimize { background: #ffc600; right: 20px; }
+
+      button.close:hover { background: #fdb064; }
+      button.minimize:hover { background: #fbde78; }
+
+      .content {
+        overflow: hidden;
+      }
+
+        .contentinner {
+          padding: 5px;
+        }
+
+          .contentinner div { /* Styling inner modules */
+            background: #161616;
+            border-radius: 5px;
+          }
+
+
+    /* Dock General Styling (or should I say disgusting hacking) */
+
+      .dock {
+        width: 750px;
+        height : 100px;
+        left: 50%;
+        margin-left: -325px;
+        bottom: 20px;
+        position: fixed;
+        background: url("../img/dock.png") repeat-x 0 60px;
+      }
+
+      .dock:before {
+        width: 15px;
+        height: 100px;
+        background: url("../img/left.png") no-repeat 0 60px;
+        margin-left: -15px;
+        display: block;
+        content: "";
+      }
+
+      .dock:after { /* Not working - someone find a way to fix this */
+        width: 15px;
+        height: 100px;
+        background: url("../img/right.png") no-repeat 0 60px;
+        background: red;
+        margin-right: -15px;
+        display: block;
+        content: "asd";
+        float: left;
+        top: -200px;
+      }
+
+      .dock ul { /* wrapper within wrappers, yo */
+        margin: 0 auto;
+        width: 700px;
+        margin-top: -25px;
+      }
+
+      .dock ul li {
+        margin-top:-70px;
+        list-style: none;
+        float:left;
+        display: block;
+        width: 70px;
+      }
+
+      .dock div.tooltip {
+        position:relative;
+        top: -8px;
+        background: #615f5f;
+        text-align:center;
+        padding: 5px;
+        border-radius: 5px;
+        text-transform:uppercase;
+        opacity: 0;
+        width: 160%;
+        font-size: 13px;
+        font-weight: 600;
+        color: #fff;
+        letter-spacing: 1px;
+        text-shadow: 0 1px 0 #000;
+        left: -30%;
+      }
+
+      .dock div.tooltip:after {
+        content:"\25B8";
+        display:block;
+        font-size:2em;
+        height:0;
+        color: #615f5f;
+        text-shadow: none;
+        bottom: -2px;
+        left: 48px;
+        line-height:0;
+        position:absolute;
+        -webkit-transform: rotate(90deg);
+      }
+
+      .dock li:hover div.tooltip {
+        opacity: 0.5;
+        -webkit-transition: all 0.6s linear;
+      }
+
+      .dock li.main:hover div.tooltip {
+        opacity: 0;
+      }
+
+      .dock li img {
+        -webkit-transform: scale(.8);
+        -webkit-transition: all 0.2s linear;
+      }
+
+      .dock li:hover img {
+        -webkit-transform: scale(1);
+      }
+
+
+    /* First window */
+
+      .connector {
+        top:120px;
+        left:120px;
+        height: 130px;
+      }
+
+      /* Window Specific - Map */
+
+      .contentinner .map {
+        height: 150px;
+        margin-bottom: 5px;
+        background: url("../img/mapbg.png") no-repeat top center, #161616;
+        background-size: contain;
+      }
+
+    /* Bounce Route */
+
+    .route { height:34px;
+      width: 385px;
+      overflow: hidden; 
+      font-size: 10px;
+      font-family: Helvetica;
+      float:left;
+      margin-right: 5px;
+    }
+ 
+
+      .bounces { 
+        width: 10000px; /* Arbitrarily long width for infinite bounces */
+      } 
+
+      div.arrow, div.server { float:left; }
+
+      div.arrow { 
+        color: #333333; 
+        font-size: 30px;
+        margin-top: -2px;
+      }
+
+      div.server { 
+        padding: 5px;
+        margin: 5px 5px 4px;
+        height: 23px;
+        border-radius: 5px;
+        background: #7C7C7C;
+      }
+
+      div.server.you {
+        background: white;
+      }
+
+      div.server.fav { background: #C49433; }
+
+    /* Buttons */
+
+      button.connect, button.disconnect {
+        border-radius: 5px;
+        float: left;
+        padding: 5px;
+        margin-top: 1px;
+        width: 100px;
+        font-weight: 600;
+        font-size: 12px;
+      }
+
+      button.connect {
+        background: #23BA43;
+        box-shadow: 0 5px 0 #1B9133, 0 10px 0 rgba(0,0,0,0.2);
+        /* -webkit-transition: all 0.3s linear; */
+      }
+
+        button.connect:hover {
+         /* -webkit-transition: all 0.3s linear; */
+          background: #2ce019;
+          box-shadow: 0 5px 0 #1eae0e, 0 10px 0 rgba(0,0,0,0.2);
+        }
+
+        button.connect:active {
+          background: #2ce019;
+          box-shadow: 0 1px 0 #399300, 0 2px 0 rgba(0,0,0,0.2);
+          margin-top: 6px;
+        }
+
+      button.disconnect {
+        background: #BF0011;
+        box-shadow: 0 5px 0 #95000A, 0 10px 0 rgba(0,0,0,0.2);
+        color: #fff;
+        text-shadow: 0 0 5px #000;
+        /* -webkit-transition: all 0.3s linear; */
+      }
+
+        button.disconnect:hover {
+         /* -webkit-transition: all 0.3s linear; */
+          background: #fe0000;
+          box-shadow: 0 5px 0 #cc0000, 0 10px 0 rgba(0,0,0,0.2);
+        }
+
+
+        button.disconnect:active {
+          box-shadow: 0 1px 0 #95000A, 0 2px 0 rgba(0,0,0,0.2);
+          margin-top: 6px;
+        }
+
+      /* Browser */
+
+      .browser { 
+        height: 150px; 
+        margin-top: 5px;
+        float: left;
+        width: 100%; 
+      }
+
+      .browser div.login {
+        text-align: center;
+        margin-top: 60px;
+      }
+      
+      .browser h3.servertitle {
+        color: #fff;
+        font-weight: 500;
+        margin-bottom: 25px;
+      }
+
+      .browser input {
+        border-radius: 5px;
+        width: 180px;
+        height: 30px;
+        margin-bottom: 10px;
+        box-shadow: inset 0 2px 0 -1px rgba(0,0,0,0.3);
+        font-size: 15px
+      }
+
+      .browser input.password {
+        background: #c7f3f5;
+      }
+
+      .browser button.login {
+        font-weight: 400;
+        font-size: 15px;
+        border-radius: 5px;
+        text-indent: 5px;
+        width: 180px;
+        height: 30px;
+        background: #DEDBDB;
+        text-transform: uppercase;
+        box-shadow: 0 5px 0 #ADABAB, 0 10px 0 rgba(0,0,0,0.2);
+      }
+
+        .browser button.login:active {
+          box-shadow: 0 1px 0 #ADABAB, 0 2px 0 rgba(0,0,0,0.2);
+          margin-top: 6px;
+        }
+

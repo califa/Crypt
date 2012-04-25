@@ -2,7 +2,7 @@ var http = require('http');
 var
   util = require('util'),
   couchdb = require('felix-couchdb'),
-  client = couchdb.createClient(5986, 'localhost'),
+  client = couchdb.createClient(5984, 'localhost'),
   db = client.db('my-db');
   
 	db.saveDoc('my-doc', {awesome: 'couch fun'}, function(er, ok) {
