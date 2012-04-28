@@ -178,6 +178,7 @@ $(document).ready(function(){
                   } else {
                     $this.switchClass("disconnect", "connect").text("CONNECT");
                     $this.animate({boxShadow: "0 5px 0 #1B9133"}, {queue: false, duration: 100});
+                    servers.data("onPath", false);
                   }
                   
                   

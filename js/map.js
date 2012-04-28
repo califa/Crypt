@@ -117,24 +117,32 @@ $(function(){
   server1 = mapCanvas.circle('30%','30%',4).attr({fill: "#fff", stroke: "#000", "stroke-width": "2", "stroke-opacity": "0.4"}),
   servers.push(
     server2 = mapCanvas.circle('75%','20%',4).data("ip","12.14.62.32"),
-    server3 = mapCanvas.circle('25%','20%',4).data("ip","12.14.62.32"),
-    server4 = mapCanvas.circle('30%','80%',4).data("ip","12.14.62.32"),
-    server2 = mapCanvas.circle('49%','27.5%',4).data("ip","12.14.62.32"),
-    server2 = mapCanvas.circle('35%','63%',4).data("ip","12.14.62.32"),
-    server2 = mapCanvas.circle('55%','70%',4).data("ip","12.14.62.32"),
-    server2 = mapCanvas.circle('70%','40%',4).data("ip","12.14.62.32"),
-    server2 = mapCanvas.circle('86%','73%',4).data("ip","12.14.62.32")
+    server3 = mapCanvas.circle('25%','20%',4).data("ip","142.201.44.63"),
+    server4 = mapCanvas.circle('30%','80%',4).data("ip","54.87.103.22"),
+    server5 = mapCanvas.circle('49%','27.5%',4).data("ip","58.125.11.2"),
+    server6 = mapCanvas.circle('35%','63%',4).data("ip","8.33.166.201"),
+    server7 = mapCanvas.circle('55%','70%',4).data("ip","78.221.30.11"),
+    server8 = mapCanvas.circle('70%','40%',4).data("ip","158.110.32.188"),
+    server9 = mapCanvas.circle('86%','73%',4).data("ip","41.176.111.11")
     //star = mapCanvas.path("M14.615,4.928c0.487-0.986,1.284-0.986,1.771,0l2.249,4.554c0.486,0.986,1.775,1.923,2.864,2.081l5.024,0.73c1.089,0.158,1.335,0.916,0.547,1.684l-3.636,3.544c-0.788,0.769-1.28,2.283-1.095,3.368l0.859,5.004c0.186,1.085-0.459,1.553-1.433,1.041l-4.495-2.363c-0.974-0.512-2.567-0.512-3.541,0l-4.495,2.363c-0.974,0.512-1.618,0.044-1.432-1.041l0.858-5.004c0.186-1.085-0.307-2.6-1.094-3.368L3.93,13.977c-0.788-0.768-0.542-1.525,0.547-1.684l5.026-0.73c1.088-0.158,2.377-1.095,2.864-2.081L14.615,4.928z").attr({fill: "#000", stroke: "none"}).scale(0.5,0.5).translate(10,10)
     //, line = mapCanvas.path('M10,10L50,50').attr({stroke: "red","stroke-width":2, "stroke-dasharray":".",stroke:"#7C7C7C","stroke-linejoin":"round"})
 
     );
   line = mapCanvas.path('M10,10').attr({stroke: "#7C7C7C", "stroke-dasharray": ". ", "stroke-width": 2, "stroke-linejoin": "round"});
-  line.animate({path:"M10 10L200 200"}, 1000);
+  line2 = mapCanvas.path('M200,200').attr({stroke: "#7C7C7C", "stroke-dasharray": ". ", "stroke-width": 2, "stroke-linejoin": "round"});
+  line.animate({path:"M10 10L200 200"}, 1000, function() {
+    line2.animate({path:"M200 200L280 50"}, 1000);
+  });
 
 
   servers.attr({fill: "#7C7C7C", stroke: "#000", "stroke-width": "2", "stroke-opacity": "0.4"});
 
   servers.click(function() {
-    alert(this.data("ip"));
+    //alert(this.data("ip"));
+    if (!this.data("onPath")) {
+      $('.destServer').removeClass('destServer');
+      var servernode = $("<div class='arrow'>&#x21e2;</div><div class='server destServer'>" + this.data("ip") + "</div>").appendTo(".bounces");
+      this.data("onPath", true);
+    }
   })
 });
