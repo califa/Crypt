@@ -26,8 +26,8 @@
 
       .window {
         width: 480px;
-        min-height: 400px;
-        min-width: 480px;
+        min-height: 320px;
+        min-width: 468px;
         position:absolute;
         border-radius: 5px;
         box-shadow: 0 0 20px rgba(0,0,0,0.5);
@@ -204,9 +204,15 @@
 
       .contentinner .map {
         height: 150px;
+       /* background: url("../img/mapbg.png") no-repeat top center, #161616;
+        background-size: contain;*/
+        width: 100%;
         margin-bottom: 5px;
-        background: url("../img/mapbg.png") no-repeat top center, #161616;
-        background-size: contain;
+      }
+
+      #worldmap {
+        margin: 0 auto;
+        display: block;
       }
 
     /* Bounce Route */

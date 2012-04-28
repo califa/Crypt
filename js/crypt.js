@@ -1,4 +1,18 @@
+
+
 $(document).ready(function(){
+
+
+        //Set initial windows and fix click              
+        $('.window').css('zIndex', '1');
+        $('.window').click(function() {
+          //$(this).css('zIndex', '2').siblings('.window').css('zIndex', '1');
+          $(this).trigger("drag", event);
+        });
+
+
+       
+
 
         function Screen(windowName) {
             var windowTemplate = '<div class="window"><div class="handle"><button class="close"></button><button class="minimize"></button><span class="title">{{title}}</span></div><div class="content"><div class="contentinner clearfix">{{content}}</div></div></div>'.replace(/{{title}}/, windowName );
@@ -17,10 +31,13 @@ $(document).ready(function(){
 
         $( ".window" ).draggable({ stack: ".window",
                           handle: ".handle", containment: 'body' })
-                      .resizable({handles: "all", snap: true, minHeight: 400, 
+                      .resizable({handles: "all", snap: true, minHeight: 320, 
                           minWidth: 300, stack: "window", resize: function() {
                           setWindowHeight(this); } // Refreshes window height
                       });
+
+       
+
 
         // Close button functionality
         $( "button.close" ).on("click", function() {
@@ -30,24 +47,46 @@ $(document).ready(function(){
 
         // Dynamically refresh a window's height
         function setWindowHeight(elem) {
-            $this = $(elem);
-            content = $this.find('.contentinner'); // Content wrapper
-            windowHeight = $this.height();
-            contentHeight = windowHeight - 20; // Height - handle bar
-            bounceWidth = content.width() - 105; // Width of bounce route (minus connect button)
+            var $this = $(elem);
+            var content = $this.find('.contentinner'); // Content wrapper
+            var windowHeight = $this.height();
+            var windowWidth = $this.width();
+            var contentHeight = windowHeight - 20; // Height - handle bar
+            var bounceWidth = content.width() - 105; // Width of bounce route (minus connect button)
 
             content.css("height", contentHeight); // Set content height
             content.find('.route').css('width', bounceWidth); // Set bounceroute width
 
 
             // Handles window/module resizing based on the state of the window.
-            mapHeight = contentHeight - 34 - 15;
+            
+            var mapHeight = contentHeight - 34 - 15;
+
+            //mapCanvas.scaleAll(Math.min((windowWidth-10) / 468, mapHeight / 239));
+
+            var scalar = (Math.min((windowWidth-10) / 468, mapHeight / 239));
+
+            mapCanvas.setSize(468*scalar, 239*scalar);
+
+            continents.transform('');
+            continents.scale(0.016963*scalar, -0.016963*scalar, 0,0).translate(0,-15000);
+            /*europe.scale(scalar, scalar, 0,0).translate(0,-15000);
+            australia.scale(scalar, scalar, 0,0).translate(0,-15000);
+            north_america.scale(scalar, scalar, 0,0).translate(0,-15000);
+            south_america.scale(scalar, scalar, 0,0).translate(0,-15000);
+            asia.scale(scalar, scalar, 0,0).translate(0,-15000);
+*/
+
 
             if ($this.hasClass("disconnected")) {
+              
               content.find('.map').css('height', mapHeight).siblings('.browser').css('height', mapHeight);
             } else {             
               content.find('.browser').css('height', mapHeight);
             }
+
+            
+
          }
 
         // Connect button clicks
@@ -194,7 +233,7 @@ $(document).ready(function(){
 
           newWindow.draggable({ stack: ".window",
                           handle: ".handle", containment: 'body' })
-                      .resizable({handles: "all", snap: true, minHeight: 400, 
+                      .resizable({handles: "all", snap: true, minHeight: 320, 
                           minWidth: 300, stack: "window", resize: function() {
                           setWindowHeight(this); } // Refreshes window height
                       });
@@ -206,6 +245,23 @@ $(document).ready(function(){
         }
 });
 
-    
+(function ($) {
+    var _create =  $.ui.draggable.prototype._create;
+
+    $.ui.draggable.prototype._create = function () {
+        var self = this;
+
+        self.element.mousedown(function (e) {
+            self._mouseStart(e);
+            self._trigger('start', e);
+            self._clear();
+        });
+
+        _create.call(self);
+    };
+})(jQuery);
+
+
+ 
       
 
