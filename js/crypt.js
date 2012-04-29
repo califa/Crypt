@@ -42,8 +42,8 @@ $(document).ready(function(){
         // Close button functionality
         $( "button.close" ).on("click", function() {
           $(this).closest(".window").hide();
-        })
-      
+          $('.j_opened').removeClass('j_opened');
+        });
 
         // Dynamically refresh a window's height
         function setWindowHeight(elem) {
@@ -182,7 +182,7 @@ $(document).ready(function(){
                   setTimeout(toggleButton, 300);
                   contentWindow = $this.closest(".contentinner");
 
-                  $this.closest(".window").switchClass("disconnected", "connected", 2000).find('.title').text("BROWSER");
+                  $this.closest(".window").switchClass("disconnected", "connected", 2000).find('.title').text("BROWSER (" + bounceArray[bounceArray.length-1].data("ip") + "}");
 
                   // move route up
                   contentWindow.animate({
@@ -223,8 +223,9 @@ $(document).ready(function(){
 
         /* DOCK functionality */
 
-        $('.connectoricon').on("click", function() {
-          $('.window').fadeIn();
+        $('.j_connect').on("click", function() {
+          $('.window').fadeToggle();
+          $(this).parent('li').toggleClass('j_opened');
           //loadWindow("connector");
         });
 
