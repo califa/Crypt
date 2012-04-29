@@ -2,6 +2,7 @@
 
 $(document).ready(function(){
 
+        var j_connecting = false;
 
         //Set initial windows and fix click              
         $('.window').css('zIndex', '1');
@@ -105,119 +106,127 @@ $(document).ready(function(){
 
         // Connect button clicks
         $('button.connect').on("click", function() {
-            var $this = $(this);
+          if (!j_connecting) {
+              var $this = $(this);
+              openWindow = $this.closest(".window");
 
-            openWindow = $(this).closest(".window");
+              /***** CONNECT BUTTON ******/
+              
 
-            /***** CONNECT BUTTON ******/
-            
+              var route = openWindow.find('.bounces');
+              var bounces = route.children();
+              var bounceList = [];
+              var currentBounceIndex = 0;
 
-            var route = openWindow.find('.bounces');
-            var bounces = route.children();
-            var bounceList = [];
-            var currentBounceIndex = 0;
+              //Flag
+              j_connecting = true;
 
+              /* Queue connection animations for bounce route */
 
-            /* Queue connection animations for bounce route */
+              bounces.each(function() {
+                bounceList.push(this); 
+              });
 
-            bounces.each(function() {
-              bounceList.push(this); 
-            });
+              function connectBounce() { 
+                var currentBounce = bounceList[currentBounceIndex];
 
-                function connectBounce() { 
-                  var currentBounce = bounceList[currentBounceIndex];
+                onConnect(currentBounce, currentBounceIndex);
 
-                  onConnect(currentBounce, currentBounceIndex);
-
-                  currentBounceIndex++;
-                  if (currentBounceIndex < bounceList.length) {
-                    setTimeout(connectBounce, 400);
-                  } else {
-
-                    setTimeout(moveRouteUp, 800);
-                  }
-                };
-
-                function disconnectBounce(start) {
-                  if (start) {
-                    currentBounceIndex = bounceList.length-1;
-                  }
-                  var currentBounce = $(bounceList[currentBounceIndex]);
-                  
-
-                  if (!currentBounce.hasClass("you")) {
-                    currentBounce.fadeOut("fast",function() {
-                      currentBounce.remove();
-                    });
-                  } else { currentBounce.css("background", "white"); }
-                  
-
-                  currentBounceIndex--;
-                  
-                  if (currentBounceIndex > 0) {
-                    setTimeout(disconnectBounce, 100);
-                  } else {
-                    clearBounces();
-                    server1.attr("fill", "#fff");
-                    servers.attr("fill", "#7C7C7C");
-                    $(".you").css("background", "#fff");
-                    setTimeout(moveRouteDown, 100);
-                  }
+                currentBounceIndex++;
+                if (currentBounceIndex < bounceList.length) {
+                  setTimeout(connectBounce, 400);
+                } else {
+                  setTimeout(moveRouteUp, 800);
                 }
+              };
 
-                function moveRouteDown() {
-                  setTimeout(toggleButton, 300);
-                  contentWindow = $this.closest(".contentinner");
-
-                  $this.closest(".window").switchClass("connected", "disconnected", 2000).find('.title').text("CONNECTOR");
-
-                  // move route up
-                  contentWindow.animate({
-                  marginTop: "+=" + (contentWindow.find('.map').height() + 5) }, 1000, "easeOutExpo");
-
-                  contentWindow.find('.destServer').animate({boxShadow: "0 0 2px #fff"});
+              function disconnectBounce(start) {
+                if (start) {
+                  currentBounceIndex = bounceList.length-1;
                 }
+                var currentBounce = $(bounceList[currentBounceIndex]);
+                
 
-                function moveRouteUp() {
-                  setTimeout(toggleButton, 300);
-                  contentWindow = $this.closest(".contentinner");
+                if (!currentBounce.hasClass("you")) {
+                  currentBounce.fadeOut("fast",function() {
+                    currentBounce.remove();
+                  });
+                } else { currentBounce.css("background", "white"); }
+                
 
-                  $this.closest(".window").switchClass("disconnected", "connected", 2000).find('.title').text("BROWSER (" + bounceArray[bounceArray.length-1].data("ip") + "}");
-
-                  // move route up
-                  contentWindow.animate({
-                  marginTop: "-=" + (contentWindow.find('.map').height() + 5) }, 1000, "easeInOutExpo");
-
-                  contentWindow.find('.destServer').animate({boxShadow: "0 0 2px #fff"});
+                currentBounceIndex--;
+                
+                if (currentBounceIndex > 0) {
+                  setTimeout(disconnectBounce, 100);
+                } else {
+                  clearBounces();
+                  server1.attr("fill", "#fff");
+                  servers.attr("fill", "#7C7C7C");
+                  $(".you").css("background", "#fff");
+                  setTimeout(moveRouteDown, 100);
                 }
+              }
 
-                function toggleButton() {
-                  if ($this.hasClass("connect")) {
-                    $this.switchClass("connect", "disconnect").text("DISCONNECT");
-                    $this.animate({boxShadow: "0 5px 0 #95000A"}, {queue: false, duration: 100});
-                  } else {
-                    $this.switchClass("disconnect", "connect").text("CONNECT");
-                    $this.animate({boxShadow: "0 5px 0 #1B9133"}, {queue: false, duration: 100});
-                    servers.data("onPath", false);
-                  }
+              function moveRouteDown() {
+                setTimeout(toggleButton, 300);
+                contentWindow = $this.closest(".contentinner");
+
+                $this.closest(".window").switchClass("connected", "disconnected", 2000).find('.title').text("CONNECTOR");
+
+                // move route up
+                contentWindow.animate({
+                marginTop: "+=" + (contentWindow.find('.map').height() + 5) }, 1000, "easeOutExpo");
+
+                contentWindow.find('.destServer').animate({boxShadow: "0 0 2px #fff"});
+
+                setTimeout(j_flagChange, 1000);
+              }
+
+              function moveRouteUp() {
+                setTimeout(toggleButton, 300);
+                contentWindow = $this.closest(".contentinner");
+
+                $this.closest(".window").switchClass("disconnected", "connected", 2000).find('.title').text("BROWSER (" + bounceArray[bounceArray.length-1].data("ip") + "}");
+
+                // move route up
+                contentWindow.animate({
+                marginTop: "-=" + (contentWindow.find('.map').height() + 5) }, 1000, "easeInOutExpo");
+
+                contentWindow.find('.destServer').animate({boxShadow: "0 0 2px #fff"});
+                setTimeout(j_flagChange, 1000);
+              }
+
+              function toggleButton() {
+                if ($this.hasClass("connect")) {
+                  $this.switchClass("connect", "disconnect").text("DISCONNECT");
+                  $this.animate({boxShadow: "0 5px 0 #95000A"}, {queue: false, duration: 100});
+                } else {
+                  $this.switchClass("disconnect", "connect").text("CONNECT");
+                  $this.animate({boxShadow: "0 5px 0 #1B9133"}, {queue: false, duration: 100});
+                  servers.data("onPath", false);
                 }
+              }
 
-                function clearBounces() {
-                    $.each(lineArray, function(idx, line) {
-                      line.remove();
-                    });
-                    lineArray = [];
-                    bounceArray = [server1];
-                  }
+              function j_flagChange() {
+                j_connecting = false;
+              }
 
-            if (openWindow.hasClass("disconnected")) { 
-              connectBounce();
-            /***** DISCONNECT BUTTON ******/
-            } else {
-              //openWindow.fadeOut();
-              disconnectBounce(true);
-            }
-      
+              function clearBounces() {
+                  $.each(lineArray, function(idx, line) {
+                    line.remove();
+                  });
+                  lineArray = [];
+                  bounceArray = [server1];
+              }
+
+              if (openWindow.hasClass("disconnected")) { 
+                connectBounce();
+              /***** DISCONNECT BUTTON ******/
+              } else {
+                //openWindow.fadeOut();
+                disconnectBounce(true);
+              }
+          }
         });
 
 
