@@ -70,12 +70,25 @@ $(document).ready(function(){
 
             continents.transform('');
             continents.scale(0.016963*scalar, -0.016963*scalar, 0,0).translate(0,-15000);
-            /*europe.scale(scalar, scalar, 0,0).translate(0,-15000);
-            australia.scale(scalar, scalar, 0,0).translate(0,-15000);
-            north_america.scale(scalar, scalar, 0,0).translate(0,-15000);
-            south_america.scale(scalar, scalar, 0,0).translate(0,-15000);
-            asia.scale(scalar, scalar, 0,0).translate(0,-15000);
-*/
+            
+            var canvasX = $('#worldmap svg').width() / 100;
+            var canvasY = $('#worldmap svg').height() / 100;
+           /* if (line) line.remove();
+            if (line2) line2.remove();
+            line = mapCanvas.path("M" + Math.floor(parseFloat(server1.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(server1.attr("cy")) * canvasY) + "L" + Math.floor(parseFloat(server2.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(server2.attr("cy")) * canvasY)).attr({stroke: "#7C7C7C", "stroke-dasharray": ". ", "stroke-width": 2, "stroke-linejoin": "round"});
+            line2 = mapCanvas.path("M" + Math.floor(parseFloat(server2.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(server2.attr("cy")) * canvasY) + "L" + Math.floor(parseFloat(server3.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(server3.attr("cy")) * canvasY)).attr({stroke: "#7C7C7C", "stroke-dasharray": ". ", "stroke-width": 2, "stroke-linejoin": "round"});
+            line.toBack();
+            line2.toBack();
+            continents.toBack(); */
+
+            $.each(lineArray, function(index, line) {
+            
+              var from = line.data("from");
+              var to = line.data("to");
+              line.remove();
+              lineArray[index] = mapCanvas.path("M" + Math.floor(parseFloat(from.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(from.attr("cy")) * canvasY) + "L" + Math.floor(parseFloat(to.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(to.attr("cy")) * canvasY)).attr({stroke: "#7C7C7C", "stroke-dasharray": ". ", "stroke-width": 2, "stroke-linejoin": "round"})
+                 .data("from",from).data("to", to);
+            });
 
 
             if ($this.hasClass("disconnected")) {
@@ -85,9 +98,10 @@ $(document).ready(function(){
               content.find('.browser').css('height', mapHeight);
             }
 
-            
-
+            servers.toFront();
+            server1.toFront();
          }
+
 
         // Connect button clicks
         $('button.connect').on("click", function() {
@@ -100,23 +114,23 @@ $(document).ready(function(){
 
             var route = openWindow.find('.bounces');
             var bounces = route.children();
-            var bounceArray = [];
+            var bounceList = [];
             var currentBounceIndex = 0;
 
 
             /* Queue connection animations for bounce route */
 
             bounces.each(function() {
-              bounceArray.push(this); 
+              bounceList.push(this); 
             });
 
                 function connectBounce() { 
-                  var currentBounce = bounceArray[currentBounceIndex];
+                  var currentBounce = bounceList[currentBounceIndex];
 
-                  onConnect(currentBounce);
+                  onConnect(currentBounce, currentBounceIndex);
 
                   currentBounceIndex++;
-                  if (currentBounceIndex < bounceArray.length) {
+                  if (currentBounceIndex < bounceList.length) {
                     setTimeout(connectBounce, 400);
                   } else {
 
@@ -126,21 +140,27 @@ $(document).ready(function(){
 
                 function disconnectBounce(start) {
                   if (start) {
-                    currentBounceIndex = bounceArray.length-1;
+                    currentBounceIndex = bounceList.length-1;
                   }
-                  var currentBounce = $(bounceArray[currentBounceIndex]);
+                  var currentBounce = $(bounceList[currentBounceIndex]);
                   
 
                   if (!currentBounce.hasClass("you")) {
-                    currentBounce.fadeOut();
+                    currentBounce.fadeOut("fast",function() {
+                      currentBounce.remove();
+                    });
                   } else { currentBounce.css("background", "white"); }
                   
 
                   currentBounceIndex--;
-                  console.log(currentBounceIndex);
+                  
                   if (currentBounceIndex > 0) {
                     setTimeout(disconnectBounce, 100);
                   } else {
+                    clearBounces();
+                    server1.attr("fill", "#fff");
+                    servers.attr("fill", "#7C7C7C");
+                    $(".you").css("background", "#fff");
                     setTimeout(moveRouteDown, 100);
                   }
                 }
@@ -180,9 +200,16 @@ $(document).ready(function(){
                     $this.animate({boxShadow: "0 5px 0 #1B9133"}, {queue: false, duration: 100});
                     servers.data("onPath", false);
                   }
-                  
-                  
                 }
+
+                function clearBounces() {
+                    $.each(lineArray, function(idx, line) {
+                      line.remove();
+                    });
+                    lineArray = [];
+                    bounceArray = [server1];
+                  }
+
             if (openWindow.hasClass("disconnected")) { 
               connectBounce();
             /***** DISCONNECT BUTTON ******/
@@ -201,20 +228,24 @@ $(document).ready(function(){
           //loadWindow("connector");
         });
 
-        function onConnect(elem) {
+        function onConnect(elem, index) {
           $this = $(elem);
           if ($this.hasClass("arrow")) {
               $this.css("color", "#3fd92f");
-            } else if ($this.hasClass("you")) {
-              $this.css("background", "#C4F1B4");
-            } else {
-                $this.css("background", "#3fd92f");
-                if (!$this.hasClass("destServer")) {
-                  $this.animate({width: "23px", textIndent: "-9999px"});
-                } else { 
-                  $this.animate({boxShadow: "0 0 60px #3fd92f"}, 1200);
-                }
-            }
+              lineArray[(index - 1) / 2].attr("stroke", "#3fd92f");
+          } else if ($this.hasClass("you")) {
+            $this.css("background", "#C4F1B4");
+            server1.attr("fill", "#C4F1B4")
+          } else {
+              $this.css("background", "#3fd92f");
+              if (!$this.hasClass("destServer")) {
+                $this.animate({width: "23px", textIndent: "-9999px"});
+                bounceArray[(index) / 2].attr("fill", "#3fd92f")
+              } else { 
+                $this.animate({boxShadow: "0 0 60px #3fd92f"}, 1200);
+                bounceArray[bounceArray.length - 1].attr("fill", "#3fd92f");
+              }
+          }
         }
         
 
