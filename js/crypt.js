@@ -1,5 +1,8 @@
 $(document).ready(function(){
 
+		var r_unreadMessages = 0,
+			r_totalMessages = 3;
+
         function Screen(windowName) {
             var windowTemplate = '<div class="window"><div class="handle"><button class="close"></button><button class="minimize"></button><span class="title">{{title}}</span></div><div class="content"><div class="contentinner clearfix">{{content}}</div></div></div>'.replace(/{{title}}/, windowName );
               $.ajax({
@@ -211,8 +214,86 @@ $(document).ready(function(){
         	var id = $(this).attr('id');
         	$(this).removeClass('r_inactive').siblings().addClass('r_inactive');
         
-        	$("."+id+"-tab").removeClass('r_inactive-window').siblings('div').addClass('r_inactive-window');		
+        	$("."+id+"-tab").removeClass('r_inactive-window').siblings('div').addClass('r_inactive-window');	
         });
+        
+        $(".r_ongoing-sidebar").on("click", ".r_mission-message", function(){
+        	var id = $(this).attr('id');
+        	
+        	if($(this).hasClass('r_unread')) {
+        		$(this).removeClass('r_unread');
+        		r_unreadMessages--;
+        		updateUnreadMessagesCount();
+        	}
+        	
+        	$(this).removeClass('r_inactive').siblings().addClass('r_inactive');
+        	$("#"+id+"-tab").removeClass('r_inactive-message').siblings('.r_ongoing-main').addClass('r_inactive-message');
+        });
+        
+        /* Messages window Accepting Missions functionality -Robert */
+        
+       $('.r_freelance-mission-item .r_action-button').click(function(){
+       		var li = $(this).closest('li.r_freelance-mission-item');
+       		
+       		li.slideUp(200, function(){
+       			addNewOngoingMission($(this).find('h1').text());
+       			$(this).remove();
+       			updateUnreadMessagesCount();
+       		});
+       });
+       
+       var updateUnreadMessagesCount = function() {
+       		var title = "Ongoing";
+       		
+       		if(r_unreadMessages > 0) {
+       			title += "(" + r_unreadMessages + ")";
+       		}
+       		
+       		$('#r_ongoing').text(title);
+       }
+       
+       var addNewOngoingMission = function(missionTitle) {
+ 			r_totalMessages++;
+       		r_unreadMessages++;
+
+      		var mainWindow = generateMission(r_totalMessages),
+       			sidebar = generateMissionSidebar(missionTitle, r_totalMessages);
+
+       		$('.r_ongoing-sidebar ul').prepend(sidebar);
+       		$('.r_ongoing-tab').append(mainWindow);	
+       }
+       
+       var generateMission = function(id) {
+       		var baseDiv = $('<div class="r_ongoing-main clearfix r_inactive-message" id="r_message'+id+'-tab"></div>'),
+       			innerDiv = $('<div class="r_ongoing-main-inside"></div>'),
+       			to = $('<p class="r_to">To: User 221-34</p>'),
+       			subject = $('<p class="r_subject">Subject: Steal Key Files</p>'),
+       			messageIntro = $('<p class="message">Hack into the EA user base and retrieve the following records:</p>'),
+       			messageClose = $('<p class="message"> Reply to this message upon completion. In return a compensation of $12,000 US will be transferred to your account.</p>'),
+       			fileNames = $('<span class="r_important-info">AFS::239rBA238</span>'),
+          		submitArea = $('<div class="r_file-drop-area">Drag file here</div>'),
+          		submitButton = $('<button class="r_action-button">Complete</button>');
+          		
+       		innerDiv.append(to)
+       				.append(subject)
+       				.append(messageIntro)
+       				.append(fileNames)
+       				.append(messageClose)
+       				.append(submitArea)
+       				.append(submitButton)
+       				.appendTo(baseDiv);
+
+       		return baseDiv;
+       }
+       
+       var generateMissionSidebar = function(missionTitle, id){
+       		var baseLi = $('<li class="r_mission-message r_unread" id="r_message'+id+'"></li>'),
+       			title = $('<p>RE:'+missionTitle+'</p>');
+       		
+       		baseLi.append(title);
+       		
+       		return baseLi;
+       } 
         
         
 }); //end of the document.ready
