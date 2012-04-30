@@ -556,5 +556,52 @@
 		border: 1px dashed #666;
 		margin: 10px 0px;
 	}
+	
+	/*  Logs! */
+	
+	
+	#logs {
+		color:white;
+		font-size: 0.8em;
+	}
+	
+	#logs table {
+		width: 100%;
+		text-align: center;
+		border-spacing: 0;
+	}
+	
+	#logs tbody tr {
+		background-color: #999;
+	}
+	
+		#logs tbody tr:nth-child(1) {
+			background-color: #c8897e;
+		}
+		#logs tbody tr:nth-child(2) {
+			background-color: #bf9088;
+		}
+		#logs tbody tr:nth-child(3) {
+			background-color: #b69691;
+		}	
+		#logs tbody tr:nth-child(4) {
+			background-color: #a99;
+		}
+
+	#logs td {
+		padding: 5px;
+	}
+	
+	
+	#logs tbody tr:hover {
+		color:black;
+	}
+	
+	#logs th {
+		font-weight: bold;
+		font-size: 1em;
+		color: #aaa;
+		padding: 10px 5px;
+	}
 			
 
