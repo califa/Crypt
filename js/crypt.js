@@ -92,10 +92,10 @@ $(document).ready(function(){
                 console.log("k");
               }
 
-              if ($this.hasClass("disconnected")) {
-                content.find('.map').css('height', mapHeight).siblings('.browser').css('height', mapHeight);
-              } else {             
-                content.find('.browser').css('height', mapHeight);
+              connectorContent = $('#connector .contentinner');
+              connectorContent.find('.map').css('height', mapHeight).siblings('.browser').css('height', mapHeight);
+              if (!$this.hasClass("disconnected")) { 
+                connectorContent.css({marginTop: -mapHeight -5});
               }
 
               servers.toFront();
@@ -209,6 +209,7 @@ $(document).ready(function(){
                 contentWindow.find('.destServer').animate({boxShadow: "0 0 2px #fff"});
 
                 setTimeout(j_flagChange, 1000);
+                setBrowserPos("login", true);
               }
 
               function moveRouteUp() {
