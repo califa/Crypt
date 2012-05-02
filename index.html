@@ -24,7 +24,7 @@
   </head>
   <body>
 
-<!--<div class="window connector disconnected" id="connector">
+<div class="window connector disconnected" id="connector">
       <div class="handle">
         <button class="close"></button>
         <button class="minimize"></button>
@@ -34,11 +34,13 @@
       <div class="content">
         <div class="contentinner clearfix">
           
-          <div class="map"></div>
+          <div class="map">
+            <div id="worldmap"></div>
+          </div>
           
           <div class="route clearix">
             <div class="bounces">
-              <div class="server you">You</div>
+              <div class="server you">You</div><!--
               <div class="arrow">&#x21e2;</div>
               <div class="server fav">123.123.123.123</div>
               <div class="arrow">&#x21e2;</div>
@@ -47,36 +49,201 @@
               <div class="server fav">123.123.123.123</div>
               <div class="arrow">&#x21e2;</div>
               <div class="server destServer">123.123.123.123</div>
-            </div>
+            --></div>
           </div>
           <button class="connect">CONNECT</button>
-
+          
           <div class="browser">
-            <div class="login">
-              <h3 class="servertitle">Server Title</h3>
-              <input type="text" title="USERNAME" class="username"><br />
-              <input type="password" title="PASSWORD" class="password"><br/>
-              <button class="login">Log In</button>
-            </div>
-          </div>
+	          <div id="logs">
+	          	<table class='r_log-table'>
+	          		<thead>
+	          			<tr>
+	          				<th>FROM</th>
+	          				<th>TO</th>
+	          				<th>TIME</th>
+	          			</tr>
+	          		</thead>
+	          		<tbody>
+	          			<tr class="r_log">
+	          				<td class="r_log-from">255.255.255.255</td>
+	          				<td class="r_log-to">293.41.44.2</td>
+	          				<td clsas="r_log-time">11:09 AM</td>
+	          			</tr>
+	          			<tr class="r_log">
+	          				<td class="r_log-from">32.213.111.1</td>
+	          				<td class="r_log-to">4.234.125.122</td>
+	          				<td clsas="r_log-time">12:17 AM</td>
+	          			</tr>
+	          			<tr class="r_log">
+	          				<td class="r_log-from">200.107.3.13</td>
+	          				<td class="r_log-to">38.23.1.1</td>
+	          				<td clsas="r_log-time">4:17 PM</td>
+	          			</tr>
+	          			<tr class="r_log">
+	          				<td class="r_log-from">78.42.129.12</td>
+	          				<td class="r_log-to">189.201.206.1</td>
+	          				<td clsas="r_log-time">3:32 PM</td>
+	          			</tr>
+	          			<tr class="r_log">
+	          				<td class="r_log-from">78.42.129.12</td>
+	          				<td class="r_log-to">189.201.206.1</td>
+	          				<td clsas="r_log-time">3:32 PM</td>
+	          			</tr>
+	          			<tr class="r_log">
+	          				<td class="r_log-from">78.42.129.12</td>
+	          				<td class="r_log-to">189.201.206.1</td>
+	          				<td clsas="r_log-time">3:32 PM</td>
+	          			</tr>
+	          			<tr class="r_log">
+	          				<td class="r_log-from">78.42.129.12</td>
+	          				<td class="r_log-to">189.201.206.1</td>
+	          				<td clsas="r_log-time">3:32 PM</td>
+	          			</tr>
+	          			<tr class="r_log">
+	          				<td class="r_log-from">78.42.129.12</td>
+	          				<td class="r_log-to">189.201.206.1</td>
+	          				<td clsas="r_log-time">3:32 PM</td>
+	          			</tr>
+	          			<tr class="r_log">
+	          				<td class="r_log-from">78.42.129.12</td>
+	          				<td class="r_log-to">189.201.206.1</td>
+	          				<td clsas="r_log-time">3:32 PM</td>
+	          			</tr>
 
+	          		</tbody>
+	          	</table>
+	          </div> <!--end of logs -->
+		  </div>
+			
         </div>
        </div>
-  </div>--> 
+  </div>
 
  <!-- <div class="window hello disconnected" id="hello">
+=======
+  </div> 
+  
+	<!--Messages Window -Robert -->
+	
+  <div class="window r_messages disconnected" id="r_messages">
+
       <div class="handle">
         <button class="close"></button>
         <button class="minimize"></button>
-        <span class="title">HELLO</span>
+        <span class="title">Missions</span>
       </div>
 
       <div class="content">
         <div class="contentinner clearfix">
-          <!--inside stuff ->
-        </div>
-       </div>
-  </div> -->
+                    <ul class="r_tabs clearfix">
+            <li class="" id="r_freelance">Freelance</li>
+            <li class="r_inactive" id="r_bounties">Bounties</li>
+            <li class="r_inactive" id="r_ongoing">Ongoing</li>
+          </ul>
+          
+          <!--freelance-->
+          <div class="r_freelance-tab" id="r_freelance-tab">
+            <ul>
+              <li class="r_freelance-mission-item">
+                <div class="clearfix">
+                  <h1><span class="r_mission-level">Level 4</span> Infiltrate A Server and Destroy Key Files</h1>
+                  <button class="r_action-button">Accept</button>
+                </div>
+              </li>
+              <li class="r_freelance-mission-item">
+                <div class="clearfix">
+                  <h1><span class="r_mission-level">Level 8</span> Infiltrate A Server and Destroy Key Files</h1>
+                  <button class="r_action-button">Accept</button>
+                </div>
+              </li>
+              <li class="r_freelance-mission-item r_level-too-high">
+                <div class="clearfix">
+                  <h1><span class="r_mission-level">Level 18</span> Change A User's Information In A Database</h1>
+                  <button class="r_action-button">Accept</button>
+                </div>
+              </li>
+            </ul>   
+          </div> <!-- end freelance tab -->
+          
+          <!--bounties -->
+          <div class="r_bounties-tab r_inactive-window" id="r_bounties-tab">
+            <h1>Nothing here yet.</h1>
+          </div> <!-- end of bounties tab -->
+          
+          
+          <!--ongoing -->
+          <div class="r_ongoing-tab  r_inactive-window clearfix" id="r_ongoing-tab">
+            <div class="r_ongoing-sidebar clearfix">
+              <ul>
+                <li class="r_mission-message" id="r_message1">
+                  <p>RE: Infiltrate A Server and Destroy Key Files</p>
+                </li>
+                <li class="r_mission-message r_inactive" id="r_message2">
+                  <p>RE: Infiltrate A Server and Destroy Key Files</p>
+                </li>
+                <li class="r_mission-message r_inactive" id="r_message3">
+                  <p>RE: Infiltrate A Server and Destroy Key Files</p>
+                </li>
+              </ul>
+            </div> <!-- end sidebar -->
+            
+            <!--message 1-->
+            <div class="r_ongoing-main clearfix" id="r_message1-tab">
+            <div class="r_ongoing-main-inside">
+              <p class="r_to">To: User 221-34</p>
+              <p class="r_subject">Subject: Steal Key Files</p>
+              <p class="message">
+                Hack into the Nintendo user base and retrieve the following records:
+                <span class="r_important-info">-AFS::198492490 <br> -AFS::2348BR4389S </span>
+                Reply to this message upon completion. In return a compensation of $12,000 US will be transferred to your account.
+              </p>
+              <div class="r_file-drop-area">
+                Drag file here
+              </div>
+              <button class="r_action-button">Complete</button>
+            </div>
+            </div> <!-- end message 1 -->
+            
+            <!--message 2-->
+            <div class="r_ongoing-main clearfix r_inactive-message" id="r_message2-tab">
+            <div class="r_ongoing-main-inside">
+              <p class="r_to">To: User 221-34</p>
+              <p class="r_subject">Subject: Steal Key Files</p>
+              <p class="message">
+                Hack into the Sony user base and retrieve the following records:
+                <span class="r_important-info">-AFS::3423BAS323<br> -AFS::482423ASD32 </span>
+                Reply to this message upon completion. In return a compensation of $74,000 US will be transferred to your account.
+              </p>
+              <div class="r_file-drop-area">
+                Drag file here
+              </div>
+              <button class="r_action-button">Complete</button>
+            </div>
+            </div> <!-- end message 2 -->
+            
+            <!--message 3-->
+            <div class="r_ongoing-main clearfix r_inactive-message" id="r_message3-tab">
+            <div class="r_ongoing-main-inside">
+              <p class="r_to">To: User 221-34</p>
+              <p class="r_subject">Subject: Steal Key Files</p>
+              <p class="message">
+                Hack into the Microsoft user base and retrieve the following records:
+                <span class="r_important-info">-AFS::a23892BBFF<br> -AFS::a0283509234BFF </span>
+                Reply to this message upon completion. In return a compensation of $11,900 US will be transferred to your account.
+              </p>
+              <div class="r_file-drop-area">
+                Drag file here
+              </div>
+              <button class="r_action-button">Complete</button>
+            </div>
+            </div> <!-- end message 3 -->
+            
+          </div> <!-- end ongoing tab -->
+          
+        </div><!-- end contentinner -->
+       </div> <!-- end content -->
+  </div> <!-- end window -->
+
   <div class="window disconnected" id="file_browser">
       <div class="handle">
         <button class="close"></button>
@@ -141,41 +308,26 @@
        </div>
   </div>
   <div id="dropBox"></div>
+
+  
   
   
     <div class="dock clearfix">
       <ul class="clearfix">
         <li class="main">
-            <div class="tooltip">Main</div>
-          <img src="img/icon0.png" /></li>
-        <li>
+          <div class="tooltip">File System</div>
+          <img class="j_filesystem" src="img/icon0.png" /></li>
+        <li class="j_opened">
           <div class="tooltip">Connector</div>
-          <img class="connectoricon" src="img/icon1.png" /></li>
+          <img class="j_connect" src="img/icon1.png" /></li>
         <li>
-          <div class="tooltip">Weed</div>
-          <img src="img/icon2.png" /></li>
+          <div class="tooltip">Missions</div>
+          <img class="j_missions" src="img/icon_missions.png" /></li>
         <li>
-          <div class="tooltip">Flower</div>
-          <img src="img/icon3.png" /></li>
-        <li>
-          <div class="tooltip">Clover</div>
-          <img src="img/icon4.png" /></li>
-        <li>
-          <div class="tooltip">Hand</div>
-          <img src="img/icon5.png" /></li>
-        <li>
-          <div class="tooltip">Foot Clan</div>
-          <img src="img/icon6.png" /></li>
-        <li>
-          <div class="tooltip">Search</div>
-          <img src="img/icon7.png" /></li>
-        <li>
-          <div class="tooltip">Puzzle</div>
-          <img src="img/icon8.png" /></li>
-        <li>
-          <div class="tooltip">Umbrella</div>
-          <img src="img/icon9.png" /></li>
+          <div class="tooltip">Cracker</div>
+          <img class="j_cracker" src="img/icon_Cracker.png" /></li>
       </ul>
+      <div class="closedock"></div>
   </div>
 
     <!-- jQuery, UI + box-shadow animations -->
@@ -282,5 +434,9 @@
 
 
     </script>
+    <script type=text/javascript src="js/raphael.js"></script>
+    <script type=text/javascript src="js/scale.raphael.js"></script>
+    <script type=text/javascript src="js/map.js"></script>
+    <script type=text/javascript src="js/crypt.js"></script>
   </body>
 </html>
