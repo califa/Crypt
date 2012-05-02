@@ -86,17 +86,17 @@
 
       <div class="content">
         <div class="contentinner clearfix">
-          <ul id="file_list">
-            <li draggable="true" class="file">data3428234_1_1.txt</li>
-            <li draggable="true" class="file">data3428234_1_2.txt</li>
-            <li draggable="true" class="file">data3428234_1_3.txt</li>
-            <li draggable="true" class="file">data3428234_1_4.txt</li>
-            <li draggable="true" class="file">data3428234_1_5.txt</li>
-            <li draggable="true" class="file">data3428234_1_6.txt</li>
-            <li draggable="true" class="file">data3428234_1_7.txt</li>
-            <li draggable="true" class="file">data3428234_1_8.txt</li>
-            <li draggable="true" class="file">data3428234_1_9.txt</li>
-            <li draggable="true" class="file">data3428234_1_0.txt</li>
+          <ul id="file_list" class="connectedSortable">
+            <li class="file">data3428234_1_1.txt</li>
+            <li class="file">data3428234_1_2.txt</li>
+            <li class="file">data3428234_1_3.txt</li>
+            <li class="file">data3428234_1_4.txt</li>
+            <li class="file">data3428234_1_5.txt</li>
+            <li class="file">data3428234_1_6.txt</li>
+            <li class="file">data3428234_1_7.txt</li>
+            <li class="file">data3428234_1_8.txt</li>
+            <li class="file">data3428234_1_9.txt</li>
+            <li class="file">data3428234_1_0.txt</li>
           </ul>
           <!--inside stuff -->
         </div>
@@ -112,13 +112,13 @@
 
       <div class="content">
         <div class="contentinner clearfix">
-          <ul id="file_list2">
-            <li draggable="true" class="file">data3428234_2_1.txt</li>
-            <li draggable="true" class="file">data3428234_2_2.txt</li>
-            <li draggable="true" class="file">data3428234_2_3.txt</li>
-            <li draggable="true" class="file">data3428234_2_4.txt</li>
-            <li draggable="true" class="file">data3428234_2_5.txt</li>
-            <li draggable="true" class="file">data3428234_2_6.txt</li>
+          <ul id="file_list2" class="connectedSortable">
+            <li class="file">data3428234_2_1.txt</li>
+            <li class="file">data3428234_2_2.txt</li>
+            <li class="file">data3428234_2_3.txt</li>
+            <li class="file">data3428234_2_4.txt</li>
+            <li class="file">data3428234_2_5.txt</li>
+            <li class="file">data3428234_2_6.txt</li>
 
           </ul>
           <!--inside stuff -->
@@ -188,66 +188,12 @@
         
        //************* Peter's SHIT ********************//
 
-        var dragSrcEl = null;
-        var dragIcon = document.createElement('img');
-        dragIcon.src = 'img/file.png';
         var lockIcon = document.createElement('img');
         lockIcon.src = 'img/lock.png'
-        function handleDragStart(e) {
-          this.style.opacity = '0.4'; 
 
-          dragSrcEl = this;
-
-          e.dataTransfer.effecAllowed = "move";
-          e.dataTransfer.setData('text/html', this.innerHTML);
-
-         // e.dataTransfer.setDragImage(dragIcon, 7, 10);
-        }
-        function handleDragOver(e) {
-          if (e.preventDefault) {
-            e.preventDefault(); 
-          }
-
-          e.dataTransfer.dropEffect = 'move'; 
-          console.log('drag over');
-          return false;
-        }
-
-        function handleDragEnter(e) {
-          this.style.opacity = '0.4';
-          this.classList.add('over');
-          console.log('drag enter');
-        }
-
-        function handleDragLeave(e) {
-          this.style.opacity = '1';
-          this.classList.remove('over'); 
-          console.log('drag leave');
-        }
-        function handleDrop(e) {
-          this.style.opacity = '1';
-
-          if(dragSrcEl != this) {
-            dragSrcEl.innerHTML = this.innerHTML;
-            this.innerHTML = e.dataTransfer.getData('text/html');
-          }
-
-          if (e.stopPropagation) {
-            e.stopPropagation(); 
-          }
-          console.log('drag drop');
-
-          return false;
-        }
-
-        function handleDragEnd(e) {
-          this.style.opacity = '1';  
-
-          console.log('drag end');
-        }
 
         function lockDragStart(e) {
-          this.style.opacity = '0.4';
+          this.style.opacity = '0';
           e.dataTransfer.setDragImage(lockIcon, 10, 10);
         }
         function lockDragOver(e) {
@@ -277,6 +223,11 @@
 
         function lockDragEnd(e) {
           this.style.opacity = '1';
+          var parent = $(this).parents('.contentinner');
+          console.log();
+          //$(this).parents('.contentinner').children('p').text('Hacking!!!');
+          $(this).siblings('p').remove().end().remove();
+          parent.append($('<p>Hacking!!</p>'));
         }
 
       $(function() {
@@ -284,14 +235,20 @@
         $("#file_list").children('li:even').css('background-color','#232d26');
         $("#file_list2").children('li:odd').css('background-color','#2a362e');
         $("#file_list2").children('li:even').css('background-color','#232d26');
-        /*$('#file_list').sortable({
+        $('#file_list, #file_list2').sortable({
           update:function(event,ui){
             $("#file_list").children('li:odd').css('background-color','#2a362e');
             $("#file_list").children('li:even').css('background-color','#232d26');
-          }
-        });*/
+            $("#file_list2").children('li:odd').css('background-color','#2a362e');
+            $("#file_list2").children('li:even').css('background-color','#232d26');
+          },
+          helper: 'clone',
+          appendTo:'body',
+          zIndex: 10000,
+          connectWith: ".connectedSortable"
+        }).disableSelection();
 
-        var files = document.querySelectorAll('#file_list .file');
+        /*var files = document.querySelectorAll('#file_list .file');
         [].forEach.call(files, function(file) {
           file.addEventListener('dragstart', handleDragStart, false);
           file.addEventListener('dragenter', handleDragEnter, false);
@@ -309,7 +266,7 @@
           file.addEventListener('dragleave', handleDragLeave, false);
           file.addEventListener('drop', handleDrop, false);
           file.addEventListener('dragend', handleDragEnd, false);
-        });
+        });*/
 
         var lock = document.querySelector('#lock');
         var dropBox = document.querySelector('#dropBox');

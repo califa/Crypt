@@ -218,24 +218,24 @@
       #file_list {
         margin: 3px;
         border-radius:5px;
-        list-style-image: url('../img/file.png');
         height:98.5%;
         background-color:#161616;
 
       }
-      #file_list li{
+      .file{
         color: white;
         font-size: 12px;
         padding:2px 20px;
+        list-style: none;
         cursor: pointer;
         background-image: url('../img/file.png');
         background-repeat: no-repeat;
         background-position: 5px;
       }
-      #file_list li:first-child {
+      .file:first-child {
         border-radius: 4px  4px 0 0 ;
       }
-      #file_list li:last-child {
+      .file:last-child {
         border-radius: 0 0 4px 4px;
       }
 
