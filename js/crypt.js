@@ -11,6 +11,7 @@ $(document).ready(function(){
           $(this).trigger("drag", event);
         });
 
+        $('#r_messages').hide();
 
 		var r_unreadMessages = 0,
 			r_totalMessages = 3;
@@ -266,20 +267,25 @@ $(document).ready(function(){
         /* DOCK functionality */
 
         $('.j_connect').on("click", function() {
-          openWindow.apply(this,[$('#connector')]);
+          console.log(this);
+          j_openWindow.apply(this,[$('#connector')]);
         });
 
         $('.j_missions').on("click", function() {
-          openWindow.apply(this,[$('#r_messages')]);
+          j_openWindow.apply(this,[$('#r_messages')]);
         });
 
-        function openWindow($window) {
-          $window.fadeToggle();
-          console.log(($window.is(':visible')));
-          if ($window.is(':visible')) {
-            $(this).parent('li').addClass('j_opened');
-          } else {
+        function j_openWindow($window) {
+          if ($window.hasClass('j_visible')) {
+            $window.fadeOut();
+            $window.removeClass('j_visible');
             $(this).parent('li').removeClass('j_opened');
+            console.log("hidden");
+          } else {
+            $window.fadeIn();            
+            $window.addClass("j_visible");
+            $(this).parent('li').addClass('j_opened');
+            console.log("shown");
           }
         }
 
