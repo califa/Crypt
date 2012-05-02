@@ -179,11 +179,16 @@
 
       .dock li img {
         -webkit-transform: scale(.8);
-        -webkit-transition: all 0.2s linear;
+        -webkit-transition: scale 0.2s linear;
       }
 
       .dock li:hover img {
         -webkit-transform: scale(1);
+      }
+      .dock li:active img {
+        -webkit-transform: scale(1);
+        margin-top: 2px;
+
       }
 
       .dock li.main {
