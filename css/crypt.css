@@ -7,6 +7,7 @@
 
       /* Main Setup */
 
+
       .clearfix:after, .window:after {
         visibility:hidden;
         display:block;
@@ -359,25 +360,39 @@
 
       /* Browser */
 
-      .browser { 
-        height: 150px; 
-        margin-top: 5px;
+      div.browser { 
+        height: 150px;
+        width: 230%; 
         float: left;
-        width: 100%; 
+        margin-top: 5px;
+        background: #1C1C1C;
       }
 
-      .browser div.login {
+      .browser > div {
+        background: #161616;
+        border-radius: 5px;
+      }
+
+      .screen {
+        width: 320px;
+        height: 100%;
+        float: left;
+        margin-right: 5px;
+      }
+
+
+      .screen div.login {
         text-align: center;
         margin-top: 60px;
       }
       
-      .browser h3.servertitle {
+      .screen h3.servertitle {
         color: #fff;
         font-weight: 500;
         margin-bottom: 25px;
       }
 
-      .browser input {
+      .screen input {
         border-radius: 5px;
         width: 180px;
         height: 30px;
@@ -386,11 +401,11 @@
         font-size: 15px
       }
 
-      .browser input.password {
+      .screen input.password {
         background: #c7f3f5;
       }
 
-      .browser button.login {
+      .screen button.login {
         font-weight: 400;
         font-size: 15px;
         border-radius: 5px;
@@ -402,7 +417,7 @@
         box-shadow: 0 5px 0 #ADABAB, 0 10px 0 rgba(0,0,0,0.2);
       }
 
-        .browser button.login:active {
+        .screen button.login:active {
           box-shadow: 0 1px 0 #ADABAB, 0 2px 0 rgba(0,0,0,0.2);
           margin-top: 6px;
         }

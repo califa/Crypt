@@ -1,7 +1,7 @@
 
 
 $(document).ready(function(){
-
+      
         var j_connecting = false;
 
         //Set initial windows and fix click              
@@ -26,9 +26,9 @@ $(document).ready(function(){
         }
 
         //var something = new Screen("connector");
-
+        */
         // Automatically sets proper height for the window.
-        setWindowHeight($('.window'));*/
+        setWindowHeight($('.window'));
 
         $( ".window" ).draggable({ stack: ".window",
                           handle: ".handle", containment: 'body' })
@@ -54,6 +54,7 @@ $(document).ready(function(){
               var windowHeight = $this.height();
               var windowWidth = $this.width();
               var contentHeight = windowHeight - 20; // Height - handle bar
+              var contentWidth = windowWidth - 10;
               var bounceWidth = content.width() - 105; // Width of bounce route (minus connect button)
 
               content.css("height", contentHeight); // Set content height
@@ -81,6 +82,15 @@ $(document).ready(function(){
                    .data("from",from).data("to", to);
               });
 
+              $browser = $('div.browser');
+              $('.screen').css("width", contentWidth);
+              
+              if ($browser.hasClass("logs")) {
+                setBrowserPos("logs", false);
+              } else {
+                setBrowserPos("login", false);
+                console.log("k");
+              }
 
               if ($this.hasClass("disconnected")) {
                 content.find('.map').css('height', mapHeight).siblings('.browser').css('height', mapHeight);
@@ -90,6 +100,35 @@ $(document).ready(function(){
 
               servers.toFront();
               server1.toFront();
+            }
+         }
+
+         function setBrowserPos(pos, animate) {
+            $content = $('#connector .contentinner');
+            $browser = $content.find('.browser');
+            contentWidth = $content.width();
+            if (animate) {
+              if (pos == "login") {
+                $browser.animate({marginLeft: -(contentWidth + 5)}, 1000, "easeInOutExpo");
+                $browser.removeClass("files").removeClass("logs").addClass("login");
+              } else if (pos == "logs") {
+                $browser.animate({marginLeft: 0}, 1000, "easeInOutExpo");
+                $browser.removeClass("login").removeClass("files").addClass("logs");
+              } else if (pos == "files") {
+                $browser.animate({marginLeft: -(contentWidth * 2 + 10) }, 1000, "easeInOutExpo");
+                $browser.removeClass("login").removeClass("logs").addClass("files");
+              }
+            } else {
+              if (pos == "login") {
+                $browser.removeClass("files").removeClass("logs").addClass("login");
+                $browser.css({marginLeft: -(contentWidth + 5)});
+              } else if (pos == "logs") {
+                $browser.css("marginLeft", 0);
+                $browser.removeClass("login").removeClass("files").addClass("logs");
+              } else if (pos == "files") {
+                $browser.css("marginLeft", -(contentWidth * 2 + 10));
+                $browser.removeClass("login").removeClass("logs").addClass("files");
+              }
             }
          }
 
@@ -219,14 +258,29 @@ $(document).ready(function(){
           }
         });
 
+        $('button.login').on("click", function() {
+          setBrowserPos("logs", true);
+        });
 
         /* DOCK functionality */
 
         $('.j_connect').on("click", function() {
-          $('.window').fadeToggle();
-          $(this).parent('li').toggleClass('j_opened');
-          //loadWindow("connector");
+          openWindow.apply(this,[$('#connector')]);
         });
+
+        $('.j_missions').on("click", function() {
+          openWindow.apply(this,[$('#r_messages')]);
+        });
+
+        function openWindow($window) {
+          $window.fadeToggle();
+          console.log(($window.is(':visible')));
+          if ($window.is(':visible')) {
+            $(this).parent('li').addClass('j_opened');
+          } else {
+            $(this).parent('li').removeClass('j_opened');
+          }
+        }
 
         function onConnect(elem, index) {
           $this = $(elem);
