@@ -1,3 +1,9 @@
+		
+		
+		*::selection {
+			background-color: transparent;
+		}
+
 
       /* Main Setup */
 
@@ -88,7 +94,7 @@
           padding: 5px;
         }
 
-          .contentinner div { /* Styling inner modules */
+          .contentinner > div { /* Styling inner modules */
             background: #161616;
             border-radius: 5px;
           }
@@ -215,9 +221,15 @@
     /* First window */
 
       .connector {
-        top:120px;
-        left:120px;
+        top:50px;
+        left:50px;
         height: 130px;
+      }
+      
+      .r_messages {
+      	top: 120px;
+      	left: 350px;
+      	height: 130px;
       }
 
       /* Window Specific - Map */
@@ -274,6 +286,28 @@
       div.server.fav { background: #C49433; }
 
     /* Buttons */
+    
+   		/*general for all green buttons*/
+    	
+	    .r_action-button {
+	    	border-radius: 5px;
+	        padding: 5px;
+	        margin-top: 1px;
+	        width: 100px;
+	        font-weight: 600;
+	        font-size: 12px;
+			background: #23BA43;
+	        box-shadow: 0 5px 0 #1B9133, 0 7px 0 rgba(0,0,0,0.4);
+	    }
+	    
+	    .r_action-button:active {
+	      background: #2ce019;
+          box-shadow: 0 1px 0 #399300, 0 2px 0 rgba(0,0,0,0.2);
+          position:relative;
+          top: 6px;
+		}
+		
+		/*back to original stuff*/
 
       button.connect, button.disconnect {
         border-radius: 5px;
@@ -372,4 +406,228 @@
           box-shadow: 0 1px 0 #ADABAB, 0 2px 0 rgba(0,0,0,0.2);
           margin-top: 6px;
         }
+        
+     /* Messages -Robert */
+     
+     .r_messages {
+     	color:white;
+     }
+     
+	     .r_messages .r_tabs {
+	     	width: 100%;
+	     	text-decoration: none;	
+	     	list-style: none;
+	     }
+     
+		     .r_tabs li {
+		     	width: 155px;
+		     	float:left;
+		     	text-align:center;
+		     	padding: 5px 0px;
+		     	background: #888;
+		     }
+		     
+		     .r_tabs li:hover {
+		     	cursor: pointer;
+		     }
+		     
+		     .r_tabs li:last-child {
+		     	float:right;
+		     }
+		     
+		     .r_tabs li.r_inactive {
+		     	background: #555;
+		     	color: #888;
+		     }
+		     
+	.r_messages h1 {
+		font-size: 0.9em;
+		font-weight: normal;
+		color: black;
+		display:inline;
+		background-color: transparent;
+	}
+	
+	.r_messages .r_inactive-window {
+		display:none;
+	}
+	
+		/* freelance tab */
+	
+		.r_messages .r_freelance-tab {
+			background-color: #888;
+		}
+	
+		.r_messages ul {
+			list-style: none;
+		}
+		
+			.r_freelance-mission-item {
+				background: #888;
+				padding: 10px;
+				width: 100%;
+				border-bottom: 1px solid #666;
+			}
+			
+			.r_freelance-mission-item:hover {
+				background-color: #999;
+			}
+						
+			.r_freelance-mission-item .r_action-button {
+				padding: 3px inherit;				
+				visibility: hidden;
+				float:right;
+				margin-top: -2px;
+				margin-bottom: 4px;
+			}
+			
+				.r_freelance-mission-item.r_level-too-high h1{
+					color:#555;
+				}
+				
+				.r_freelance-mission-item.r_level-too-high:hover {
+					background-color: #888;
+				}
+				
+				.r_freelance-mission-item.r_level-too-high span {
+					font-weight: normal;
+					color:#555;
+				}
+				
+				.r_freelance-mission-item.r_level-too-high .r_action-button {
+					display:none;
+				}
+			
+			.r_freelance-mission-item:hover .r_action-button {
+				visibility:visible;
+			}
+			
+			.r_freelance-mission-item .r_mission-level {
+				color: #ccc;
+				font-weight: bold;
+			}
+			
+			
+		/* Ongoing Tab */
+		
+		.r_ongoing-tab {
+			font-size: 0.8em;
+			position:relative;
+		}
+		
+		.r_ongoing-sidebar {
+			float: left;
+			width: 120px;
+			padding: 2px 0px;
+		}
+			.r_ongoing-sidebar ul {
+				background-color: #666;
+			}
+		
+		.r_ongoing-main {
+			width: 100%;
+			height: 100%;
+		}
+		
+		.r_inactive-message {
+			display:none;
+		}
+		
+		.r_ongoing-main-inside {
+			margin-left: 125px;
+			padding: 10px;
+			height: 100%;
+			position:relative;
+		}
+		
+			.r_ongoing-main-inside span {
+				display:block;
+				margin: 10px 0px;
+			}
+			
+			.r_ongoing-main-inside .r_subject {
+				margin-bottom: 10px;
+			}
+			
+			.r_ongoing-main-inside .r_action-button {
+				margin-top: 10px;
+			}
+			
+		.r_mission-message {
+			padding: 10px;
+			white-space: nowrap;
+			text-overflow: ellipsis; /* buggy in Chrome apparently. =( */
+			overflow:hidden;
+			background-color: #668;
+		}
+		
+		.r_mission-message:hover {
+			cursor: pointer;
+		}
+		
+		.r_mission-message.r_inactive {
+			background-color: #556;
+		}
+		
+		.r_mission-message.r_unread {
+			background-color: white;
+			color: #334;
+		}
+		
+	.r_file-drop-area {
+		background: #444;
+		padding: 10px;
+		text-align: center;
+		border-radius: 5px;
+		border: 1px dashed #666;
+		margin: 10px 0px;
+	}
+	
+	/*  Logs! */
+	
+	
+	#logs {
+		color:white;
+		font-size: 0.8em;
+	}
+	
+	#logs table {
+		width: 100%;
+		text-align: center;
+		border-spacing: 0;
+	}
+	
+	#logs tbody tr {
+		background-color: #999;
+	}
+	
+		#logs tbody tr:nth-child(1) {
+			background-color: #c8897e;
+		}
+		#logs tbody tr:nth-child(2) {
+			background-color: #bf9088;
+		}
+		#logs tbody tr:nth-child(3) {
+			background-color: #b69691;
+		}	
+		#logs tbody tr:nth-child(4) {
+			background-color: #a99;
+		}
+
+	#logs td {
+		padding: 5px;
+	}
+	
+	
+	#logs tbody tr:hover {
+		color:black;
+	}
+	
+	#logs th {
+		font-weight: bold;
+		font-size: 1em;
+		color: #aaa;
+		padding: 10px 5px;
+	}
+			
 
