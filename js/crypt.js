@@ -15,7 +15,7 @@ $(document).ready(function(){
 		var r_unreadMessages = 0,
 			r_totalMessages = 3;
 
-        function Screen(windowName) {
+        /*function Screen(windowName) {
             var windowTemplate = '<div class="window"><div class="handle"><button class="close"></button><button class="minimize"></button><span class="title">{{title}}</span></div><div class="content"><div class="contentinner clearfix">{{content}}</div></div></div>'.replace(/{{title}}/, windowName );
               $.ajax({
                 url: "windows/" + windowName + ".html",
@@ -28,7 +28,7 @@ $(document).ready(function(){
         //var something = new Screen("connector");
 
         // Automatically sets proper height for the window.
-        setWindowHeight($('.window'));
+        setWindowHeight($('.window'));*/
 
         $( ".window" ).draggable({ stack: ".window",
                           handle: ".handle", containment: 'body' })
@@ -49,58 +49,48 @@ $(document).ready(function(){
         // Dynamically refresh a window's height
         function setWindowHeight(elem) {
             var $this = $(elem);
-            var content = $this.find('.contentinner'); // Content wrapper
-            var windowHeight = $this.height();
-            var windowWidth = $this.width();
-            var contentHeight = windowHeight - 20; // Height - handle bar
-            var bounceWidth = content.width() - 105; // Width of bounce route (minus connect button)
+            if ($this.attr("id") == "connector") {
+              var content = $this.find('.contentinner'); // Content wrapper
+              var windowHeight = $this.height();
+              var windowWidth = $this.width();
+              var contentHeight = windowHeight - 20; // Height - handle bar
+              var bounceWidth = content.width() - 105; // Width of bounce route (minus connect button)
 
-            content.css("height", contentHeight); // Set content height
-            content.find('.route').css('width', bounceWidth); // Set bounceroute width
-
-
-            // Handles window/module resizing based on the state of the window.
-            
-            var mapHeight = contentHeight - 34 - 15;
-
-            //mapCanvas.scaleAll(Math.min((windowWidth-10) / 468, mapHeight / 239));
-
-            var scalar = (Math.min((windowWidth-10) / 468, mapHeight / 239));
-
-            mapCanvas.setSize(468*scalar, 239*scalar);
-
-            continents.transform('');
-            continents.scale(0.016963*scalar, -0.016963*scalar, 0,0).translate(0,-15000);
-            
-            var canvasX = $('#worldmap svg').width() / 100;
-            var canvasY = $('#worldmap svg').height() / 100;
-           /* if (line) line.remove();
-            if (line2) line2.remove();
-            line = mapCanvas.path("M" + Math.floor(parseFloat(server1.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(server1.attr("cy")) * canvasY) + "L" + Math.floor(parseFloat(server2.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(server2.attr("cy")) * canvasY)).attr({stroke: "#7C7C7C", "stroke-dasharray": ". ", "stroke-width": 2, "stroke-linejoin": "round"});
-            line2 = mapCanvas.path("M" + Math.floor(parseFloat(server2.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(server2.attr("cy")) * canvasY) + "L" + Math.floor(parseFloat(server3.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(server3.attr("cy")) * canvasY)).attr({stroke: "#7C7C7C", "stroke-dasharray": ". ", "stroke-width": 2, "stroke-linejoin": "round"});
-            line.toBack();
-            line2.toBack();
-            continents.toBack(); */
-
-            $.each(lineArray, function(index, line) {
-            
-              var from = line.data("from");
-              var to = line.data("to");
-              line.remove();
-              lineArray[index] = mapCanvas.path("M" + Math.floor(parseFloat(from.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(from.attr("cy")) * canvasY) + "L" + Math.floor(parseFloat(to.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(to.attr("cy")) * canvasY)).attr({stroke: "#7C7C7C", "stroke-dasharray": ". ", "stroke-width": 2, "stroke-linejoin": "round"})
-                 .data("from",from).data("to", to);
-            });
+              content.css("height", contentHeight); // Set content height
+              content.find('.route').css('width', bounceWidth); // Set bounceroute width
 
 
-            if ($this.hasClass("disconnected")) {
+              // Handles window/module resizing based on the state of the window.
               
-              content.find('.map').css('height', mapHeight).siblings('.browser').css('height', mapHeight);
-            } else {             
-              content.find('.browser').css('height', mapHeight);
-            }
+              var mapHeight = contentHeight - 34 - 15;
+              var scalar = (Math.min((windowWidth-10) / 468, mapHeight / 239));
 
-            servers.toFront();
-            server1.toFront();
+              mapCanvas.setSize(468*scalar, 239*scalar);
+
+              continents.transform('');
+              continents.scale(0.016963*scalar, -0.016963*scalar, 0,0).translate(0,-15000);
+              
+              var canvasX = $('#worldmap svg').width() / 100;
+              var canvasY = $('#worldmap svg').height() / 100;
+
+              $.each(lineArray, function(index, line) {
+                var from = line.data("from");
+                var to = line.data("to");
+                line.remove();
+                lineArray[index] = mapCanvas.path("M" + Math.floor(parseFloat(from.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(from.attr("cy")) * canvasY) + "L" + Math.floor(parseFloat(to.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(to.attr("cy")) * canvasY)).attr({stroke: "#7C7C7C", "stroke-dasharray": ". ", "stroke-width": 2, "stroke-linejoin": "round"})
+                   .data("from",from).data("to", to);
+              });
+
+
+              if ($this.hasClass("disconnected")) {
+                content.find('.map').css('height', mapHeight).siblings('.browser').css('height', mapHeight);
+              } else {             
+                content.find('.browser').css('height', mapHeight);
+              }
+
+              servers.toFront();
+              server1.toFront();
+            }
          }
 
 
