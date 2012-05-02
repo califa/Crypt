@@ -26,8 +26,8 @@
 
       .window {
         width: 480px;
-        min-height: 400px;
-        min-width: 480px;
+        min-height: 320px;
+        min-width: 468px;
         position:absolute;
         border-radius: 5px;
         box-shadow: 0 0 20px rgba(0,0,0,0.5);
@@ -97,10 +97,10 @@
     /* Dock General Styling (or should I say disgusting hacking) */
 
       .dock {
-        width: 750px;
+        width: 300px;
         height : 100px;
         left: 50%;
-        margin-left: -325px;
+        margin-left: -150px;
         bottom: 20px;
         position: fixed;
         background: url("../img/dock.png") repeat-x 0 60px;
@@ -115,16 +115,14 @@
         content: "";
       }
 
-      .dock:after { /* Not working - someone find a way to fix this */
+      .dock .closedock { /* Not working - someone find a way to fix this */
         width: 15px;
         height: 100px;
         background: url("../img/right.png") no-repeat 0 60px;
-        background: red;
         margin-right: -15px;
-        display: block;
+        float:right;
+        margin-top:-107px;
         content: "asd";
-        float: left;
-        top: -200px;
       }
 
       .dock ul { /* wrapper within wrappers, yo */
@@ -178,17 +176,39 @@
         -webkit-transition: all 0.6s linear;
       }
 
-      .dock li.main:hover div.tooltip {
-        opacity: 0;
-      }
 
       .dock li img {
         -webkit-transform: scale(.8);
-        -webkit-transition: all 0.2s linear;
+        -webkit-transition: scale 0.2s linear;
       }
 
       .dock li:hover img {
         -webkit-transform: scale(1);
+      }
+      .dock li:active img {
+        -webkit-transform: scale(1);
+        margin-top: 2px;
+
+      }
+
+      .dock li.main {
+        margin-right: -5px;
+        margin-left: 10px;
+      }
+
+      .dock li.j_opened:after {
+        width: 36px;
+        height: 36px;
+        background: rgba(0,0,0,0.3);
+        display: block;
+        margin-top: -40px;
+        margin-left: 17px;
+        z-index: -1;
+        content: ".";
+        position: absolute;
+        text-indent: -9999px;
+        border-radius: 50px;
+        box-shadow: 0 0 2px rgba(0,0,0,0.3);
       }
 
 
@@ -204,9 +224,15 @@
 
       .contentinner .map {
         height: 150px;
+       /* background: url("../img/mapbg.png") no-repeat top center, #161616;
+        background-size: contain;*/
+        width: 100%;
         margin-bottom: 5px;
-        background: url("../img/mapbg.png") no-repeat top center, #161616;
-        background-size: contain;
+      }
+
+      #worldmap {
+        margin: 0 auto;
+        display: block;
       }
 
     /* Bounce Route */
