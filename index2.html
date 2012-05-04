@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Crypt Demo</title>
+    <link rel="stylesheet" href="css/custom-theme/ui.css" type="text/css"> <!-- We need this for some reason for the resizing to work -->
+
+    <link href='http://fonts.googleapis.com/css?family=Exo:100,200,300,400,500,600,700,800,900,900italic,800italic,700italic,400italic,500italic,600italic,100italic,200italic,300italic' rel='stylesheet' type='text/css'> 
+
+    <link href="css/crypt.css" rel="stylesheet" type="text/css">
+    
+  </head>
+  <body>
+
+<div class="window connector disconnected" id="connector">
+      <div class="handle">
+        <button class="close"></button>
+        <button class="minimize"></button>
+        <span class="title">CONNECTOR</span>
+      </div>
+
+      <div class="content">
+        <div class="contentinner clearfix">
+          
+          <div class="map">
+            <div id="worldmap"></div>
+          </div>
+          
+          <div class="route clearix">
+            <div class="bounces">
+              <div class="server you">You</div><!--
+              <div class="arrow">&#x21e2;</div>
+              <div class="server fav">123.123.123.123</div>
+              <div class="arrow">&#x21e2;</div>
+              <div class="server">123.123.123.123</div>
+              <div class="arrow">&#x21e2;</div>
+              <div class="server fav">123.123.123.123</div>
+              <div class="arrow">&#x21e2;</div>
+              <div class="server destServer">123.123.123.123</div>
+            --></div>
+          </div>
+          <button class="connect">CONNECT</button>
+
+          <div class="browser">
+            <div class="login">
+              <h3 class="servertitle">Server Title</h3>
+              <input type="text" title="USERNAME" class="username"><br />
+              <input type="password" title="PASSWORD" class="password"><br/>
+              <button class="login">Log In</button>
+            </div>
+          </div>
+
+        </div>
+       </div>
+  </div> 
+<!--
+
+    <div class="window hello disconnected" id="hello">
+      <div class="handle">
+        <button class="close"></button>
+        <button class="minimize"></button>
+        <span class="title">HELLO</span>
+      </div>
+
+      <div class="content">
+        <div class="contentinner clearfix">
+          <!--inside stuff --> <!--
+        </div>
+       </div>
+  </div>
+  -->
+    <div class="dock clearfix">
+      <ul class="clearfix">
+        <li class="main">
+          <div class="tooltip">File System</div>
+          <img class="j_filesystem" src="img/icon0.png" /></li>
+        <li class="j_opened">
+          <div class="tooltip">Connector</div>
+          <img class="j_connect" src="img/icon1.png" /></li>
+        <li>
+          <div class="tooltip">Missions</div>
+          <img class="j_missions" src="img/icon_missions.png" /></li>
+        <li>
+          <div class="tooltip">Cracker</div>
+          <img class="j_cracker" src="img/icon_Cracker.png" /></li>
+      </ul>
+      <div class="closedock"></div>
+  </div>
+
+    <!-- jQuery, UI + box-shadow animations -->
+    <script src="js/jquery-1.7.1.min.js"></script>
+    <script src="js/jquery-ui-1.8.17.custom.min.js"></script>
+    <script src="js/jquery.animate-shadow-min.js"></script>
+    <script type=text/javascript src="js/raphael.js"></script>
+    <script type=text/javascript src="js/scale.raphael.js"></script>
+    <script type=text/javascript src="js/map.js"></script>
+    <script type=text/javascript src="js/crypt.js"></script>
+  </body>
+</html>

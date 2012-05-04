@@ -9,7 +9,7 @@
 
     <link href="css/crypt.css" rel="stylesheet" type="text/css">
     <style>
-      #dropBox {
+      #p_dropBox {
         position:absolute;
         top: 400px;
         left:1000px;
@@ -244,7 +244,7 @@
        </div> <!-- end content -->
   </div> <!-- end window -->
 
-  <div class="window disconnected" id="file_browser">
+  <div class="window disconnected" id="p_file_browser">
       <div class="handle">
         <button class="close"></button>
         <button class="minimize"></button>
@@ -253,7 +253,7 @@
 
       <div class="content">
         <div class="contentinner clearfix">
-          <ul id="file_list" class="connectedSortable">
+          <ul id="p_file_list" class="connectedSortable">
             <li class="file">data3428234_1_1.txt</li>
             <li class="file">data3428234_1_2.txt</li>
             <li class="file">data3428234_1_3.txt</li>
@@ -265,12 +265,11 @@
             <li class="file">data3428234_1_9.txt</li>
             <li class="file">data3428234_1_0.txt</li>
           </ul>
-          <!--inside stuff -->
         </div>
        </div>
   </div> 
 
-    <div class="window disconnected" id="file_browser2">
+    <div class="window disconnected" id="p_file_browser2">
       <div class="handle">
         <button class="close"></button>
         <button class="minimize"></button>
@@ -279,7 +278,7 @@
 
       <div class="content">
         <div class="contentinner clearfix">
-          <ul id="file_list2" class="connectedSortable">
+          <ul id="p_file_list2" class="connectedSortable">
             <li class="file">data3428234_2_1.txt</li>
             <li class="file">data3428234_2_2.txt</li>
             <li class="file">data3428234_2_3.txt</li>
@@ -288,11 +287,10 @@
             <li class="file">data3428234_2_6.txt</li>
 
           </ul>
-          <!--inside stuff -->
         </div>
        </div>
   </div> 
-  <div class="window disconnected" id="cracker">
+  <div class="window disconnected" id="p_cracker">
       <div class="handle">
         <button class="close"></button>
         <button class="minimize"></button>
@@ -307,7 +305,7 @@
         </div>
        </div>
   </div>
-  <div id="dropBox"></div>
+  <div id="p_dropBox"></div>
 
   
   
@@ -335,7 +333,6 @@
     <script src="js/jquery-ui-1.8.17.custom.min.js"></script>
     <script src="js/jquery.animate-shadow-min.js"></script>
 
-    <script type=text/javascript src="js/crypt.js"></script>
     <script>
         
        //************* Peter's SHIT ********************//
@@ -383,16 +380,18 @@
         }
 
       $(function() {
-        $("#file_list").children('li:odd').css('background-color','#2a362e');
-        $("#file_list").children('li:even').css('background-color','#232d26');
-        $("#file_list2").children('li:odd').css('background-color','#2a362e');
-        $("#file_list2").children('li:even').css('background-color','#232d26');
-        $('#file_list, #file_list2').sortable({
+        var file_list = $('p_file_list');
+        var file_list2 = $('p_file_list2');
+        file_list.children('li:odd').css('background-color','#2a362e');
+        file_list.children('li:even').css('background-color','#232d26');
+        file_list2.children('li:odd').css('background-color','#2a362e');
+        file_list2.children('li:even').css('background-color','#232d26');
+        $('#p_file_list, #p_file_list2').sortable({
           update:function(event,ui){
-            $("#file_list").children('li:odd').css('background-color','#2a362e');
-            $("#file_list").children('li:even').css('background-color','#232d26');
-            $("#file_list2").children('li:odd').css('background-color','#2a362e');
-            $("#file_list2").children('li:even').css('background-color','#232d26');
+            file_list.children('li:odd').css('background-color','#2a362e');
+            file_list.children('li:even').css('background-color','#232d26');
+            file_list2.children('li:odd').css('background-color','#2a362e');
+            file_list2.children('li:even').css('background-color','#232d26');
           },
           helper: 'clone',
           appendTo:'body',
@@ -400,28 +399,10 @@
           connectWith: ".connectedSortable"
         }).disableSelection();
 
-        /*var files = document.querySelectorAll('#file_list .file');
-        [].forEach.call(files, function(file) {
-          file.addEventListener('dragstart', handleDragStart, false);
-          file.addEventListener('dragenter', handleDragEnter, false);
-          file.addEventListener('dragover', handleDragOver, false);
-          file.addEventListener('dragleave', handleDragLeave, false);
-          file.addEventListener('drop', handleDrop, false);
-          file.addEventListener('dragend', handleDragEnd, false);
-        });
 
-        var files2 = document.querySelectorAll('#file_list2 .file');
-        [].forEach.call(files2, function(file) {
-          file.addEventListener('dragstart', handleDragStart, false);
-          file.addEventListener('dragenter', handleDragEnter, false);
-          file.addEventListener('dragover', handleDragOver, false);
-          file.addEventListener('dragleave', handleDragLeave, false);
-          file.addEventListener('drop', handleDrop, false);
-          file.addEventListener('dragend', handleDragEnd, false);
-        });*/
 
-        var lock = document.querySelector('#lock');
-        var dropBox = document.querySelector('#dropBox');
+        var lock = document.querySelector('#p_lock');
+        var dropBox = document.querySelector('#p_dropBox');
         lock.addEventListener('dragstart', lockDragStart, false);
         lock.addEventListener('dragend', lockDragEnd, false);
         dropBox.addEventListener('dragover', lockDragOver, false);
@@ -430,8 +411,6 @@
 
       });
        //************* Peter's SHIT ********************//
-
-
 
     </script>
     <script type=text/javascript src="js/raphael.js"></script>
