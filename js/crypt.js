@@ -12,6 +12,8 @@ $(document).ready(function(){
         });
 
         $('#r_messages').hide();
+        $('#p_file_browser').hide();
+        $('#p_cracker').hide();
 
 		var r_unreadMessages = 0,
 			r_totalMessages = 3;
@@ -275,6 +277,16 @@ $(document).ready(function(){
           j_openWindow.apply(this,[$('#r_messages')]);
         });
 
+        $('.j_filesystem').on("click", function() {
+          console.log(this);
+          j_openWindow.apply(this,[$('#p_file_browser')]);
+        });
+
+        $('.j_cracker').on("click", function() {
+          console.log(this);
+          j_openWindow.apply(this,[$('#p_cracker')]);
+        });
+
         function j_openWindow($window) {
           if ($window.hasClass('j_visible')) {
             $window.fadeOut();
@@ -424,6 +436,80 @@ $(document).ready(function(){
        		return baseLi;
        } 
         
+
+
+
+         var lockIcon = document.createElement('img');
+        lockIcon.src = 'img/lock.png'
+
+
+        function lockDragStart(e) {
+          this.style.opacity = '0';
+          e.dataTransfer.setDragImage(lockIcon, 10, 10);
+        }
+        function lockDragOver(e) {
+          if (e.preventDefault) {
+            e.preventDefault(); 
+          } 
+          console.log('dragging over');
+          return false;
+        }
+        function lockDragEnter(e) {
+          console.log('dragEntered');
+        }
+        function lockDragLeave(e) {
+
+        }
+
+        function lockDrop(e) {
+          this.style.opacity = '1';
+
+          console.log('dropped');
+          this.innerHTML = '<p>Cracked</p>';
+          if (e.stopPropagation) {
+            e.stopPropagation(); 
+          }
+          return false;
+        }
+
+        function lockDragEnd(e) {
+          this.style.opacity = '1';
+          var parent = $(this).parents('.contentinner');
+          console.log();
+          //$(this).parents('.contentinner').children('p').text('Hacking!!!');
+          $(this).siblings('p').remove().end().remove();
+          parent.append($('<p>Hacking!!</p>'));
+        }
+
+        var file_list = $('#p_file_list');
+        var file_list2 = $('#p_file_list2');
+        file_list.children('li:odd').css('background-color','#2a362e');
+        file_list.children('li:even').css('background-color','#232d26');
+        file_list2.children('li:odd').css('background-color','#2a362e');
+        file_list2.children('li:even').css('background-color','#232d26');
+        $('#p_file_list, #p_file_list2').sortable({
+          update:function(event,ui){
+            file_list.children('li:odd').css('background-color','#2a362e');
+            file_list.children('li:even').css('background-color','#232d26');
+            file_list2.children('li:odd').css('background-color','#2a362e');
+            file_list2.children('li:even').css('background-color','#232d26');
+          },
+          helper: 'clone',
+          appendTo:'body',
+          zIndex: 10000,
+          connectWith: ".connectedSortable"
+        }).disableSelection();
+
+
+
+        var lock = document.querySelector('#p_lock');
+        var dropBox = document.querySelector('#p_dropBox');
+        lock.addEventListener('dragstart', lockDragStart, false);
+        lock.addEventListener('dragend', lockDragEnd, false);
+        dropBox.addEventListener('dragover', lockDragOver, false);
+        dropBox.addEventListener('dragenter', lockDragEnter,false);
+        dropBox.addEventListener('drop', lockDrop, false);
+
         
 }); //end of the document.ready
 

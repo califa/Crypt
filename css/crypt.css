@@ -646,3 +646,100 @@
 	}
 			
 
+
+    /* File Browser Window */
+      #p_file_browser {
+        width: 280px;
+        min-width: 280px;
+        top: 120px;
+        left: 650px;
+      } 
+      #p_file_list {
+        margin: 3px;
+        border-radius:5px;
+        height:98.5%;
+        background-color:#161616;
+
+      }
+      .file{
+        color: white;
+        font-size: 12px;
+        padding:2px 20px;
+        list-style: none;
+        cursor: pointer;
+        background-image: url('../img/file.png');
+        background-repeat: no-repeat;
+        background-position: 5px;
+      }
+      .file:first-child {
+        border-radius: 4px  4px 0 0 ;
+      }
+      .file:last-child {
+        border-radius: 0 0 4px 4px;
+      }
+
+    /* File Browser2 Window */
+      #p_file_browser2{
+        width: 280px;
+        min-width: 280px;
+        top: 120px;
+        left: 184px;
+      } 
+      #p_file_list2{
+        margin: 3px;
+        border-radius:5px;
+        list-style-image: url('../img/file.png');
+        height:98.5%;
+        background-color:#161616;
+
+      }
+      #p_file_list2 li{
+        color: white;
+        font-size: 12px;
+        padding:2px 20px;
+        cursor: pointer;
+        background-image: url('../img/file.png');
+        background-repeat: no-repeat;
+        background-position: 5px;
+      }
+      #p_file_list2 li:first-child {
+        border-radius: 4px  4px 0 0 ;
+      }
+      #p_file_list2 li:last-child {
+        border-radius: 0 0 4px 4px;
+      }  
+
+    /* Password Cracker */
+      #p_cracker {
+        width: 280px;
+        min-width:280px;
+        height: 110px;
+        min-height:110px;
+        top:240px;
+        left:1000px;
+
+      }
+      #p_cracker p{
+        color: white;
+        font-size: 12px;
+        text-align: center;
+        padding:12px 0;
+      }
+      #p_cracker #p_lock {
+        position: relative;
+        left:45%;
+        cursor:pointer;
+      }
+
+           #p_dropBox {
+        position:absolute;
+        top: 400px;
+        left:1000px;
+        width: 100px;
+        height: 100px;
+        background-color: black;
+        color: white;
+        text-align: center;
+        padding: 30px 0;
+      }
+
