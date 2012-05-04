@@ -1,7 +1,7 @@
 
 
 $(document).ready(function(){
-
+      
         var j_connecting = false;
 
         //Set initial windows and fix click              
@@ -11,11 +11,14 @@ $(document).ready(function(){
           $(this).trigger("drag", event);
         });
 
+        $('#r_messages').hide();
+        $('#p_file_browser').hide();
+        $('#p_cracker').hide();
 
 		var r_unreadMessages = 0,
 			r_totalMessages = 3;
 
-        function Screen(windowName) {
+        /*function Screen(windowName) {
             var windowTemplate = '<div class="window"><div class="handle"><button class="close"></button><button class="minimize"></button><span class="title">{{title}}</span></div><div class="content"><div class="contentinner clearfix">{{content}}</div></div></div>'.replace(/{{title}}/, windowName );
               $.ajax({
                 url: "windows/" + windowName + ".html",
@@ -26,7 +29,7 @@ $(document).ready(function(){
         }
 
         //var something = new Screen("connector");
-
+        */
         // Automatically sets proper height for the window.
         setWindowHeight($('.window'));
 
@@ -49,58 +52,87 @@ $(document).ready(function(){
         // Dynamically refresh a window's height
         function setWindowHeight(elem) {
             var $this = $(elem);
-            var content = $this.find('.contentinner'); // Content wrapper
-            var windowHeight = $this.height();
-            var windowWidth = $this.width();
-            var contentHeight = windowHeight - 20; // Height - handle bar
-            var bounceWidth = content.width() - 105; // Width of bounce route (minus connect button)
+            if ($this.attr("id") == "connector") {
+              var content = $this.find('.contentinner'); // Content wrapper
+              var windowHeight = $this.height();
+              var windowWidth = $this.width();
+              var contentHeight = windowHeight - 20; // Height - handle bar
+              var contentWidth = windowWidth - 10;
+              var bounceWidth = content.width() - 105; // Width of bounce route (minus connect button)
 
-            content.css("height", contentHeight); // Set content height
-            content.find('.route').css('width', bounceWidth); // Set bounceroute width
-
-
-            // Handles window/module resizing based on the state of the window.
-            
-            var mapHeight = contentHeight - 34 - 15;
-
-            //mapCanvas.scaleAll(Math.min((windowWidth-10) / 468, mapHeight / 239));
-
-            var scalar = (Math.min((windowWidth-10) / 468, mapHeight / 239));
-
-            mapCanvas.setSize(468*scalar, 239*scalar);
-
-            continents.transform('');
-            continents.scale(0.016963*scalar, -0.016963*scalar, 0,0).translate(0,-15000);
-            
-            var canvasX = $('#worldmap svg').width() / 100;
-            var canvasY = $('#worldmap svg').height() / 100;
-           /* if (line) line.remove();
-            if (line2) line2.remove();
-            line = mapCanvas.path("M" + Math.floor(parseFloat(server1.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(server1.attr("cy")) * canvasY) + "L" + Math.floor(parseFloat(server2.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(server2.attr("cy")) * canvasY)).attr({stroke: "#7C7C7C", "stroke-dasharray": ". ", "stroke-width": 2, "stroke-linejoin": "round"});
-            line2 = mapCanvas.path("M" + Math.floor(parseFloat(server2.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(server2.attr("cy")) * canvasY) + "L" + Math.floor(parseFloat(server3.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(server3.attr("cy")) * canvasY)).attr({stroke: "#7C7C7C", "stroke-dasharray": ". ", "stroke-width": 2, "stroke-linejoin": "round"});
-            line.toBack();
-            line2.toBack();
-            continents.toBack(); */
-
-            $.each(lineArray, function(index, line) {
-            
-              var from = line.data("from");
-              var to = line.data("to");
-              line.remove();
-              lineArray[index] = mapCanvas.path("M" + Math.floor(parseFloat(from.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(from.attr("cy")) * canvasY) + "L" + Math.floor(parseFloat(to.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(to.attr("cy")) * canvasY)).attr({stroke: "#7C7C7C", "stroke-dasharray": ". ", "stroke-width": 2, "stroke-linejoin": "round"})
-                 .data("from",from).data("to", to);
-            });
+              content.css("height", contentHeight); // Set content height
+              content.find('.route').css('width', bounceWidth); // Set bounceroute width
 
 
-            if ($this.hasClass("disconnected")) {
+              // Handles window/module resizing based on the state of the window.
               
-              content.find('.map').css('height', mapHeight).siblings('.browser').css('height', mapHeight);
-            } else {             
-              content.find('.browser').css('height', mapHeight);
-            }
+              var mapHeight = contentHeight - 34 - 15;
+              var scalar = (Math.min((windowWidth-10) / 468, mapHeight / 239));
 
-            servers.toFront();
-            server1.toFront();
+              mapCanvas.setSize(468*scalar, 239*scalar);
+
+              continents.transform('');
+              continents.scale(0.016963*scalar, -0.016963*scalar, 0,0).translate(0,-15000);
+              
+              var canvasX = $('#worldmap svg').width() / 100;
+              var canvasY = $('#worldmap svg').height() / 100;
+
+              $.each(lineArray, function(index, line) {
+                var from = line.data("from");
+                var to = line.data("to");
+                line.remove();
+                lineArray[index] = mapCanvas.path("M" + Math.floor(parseFloat(from.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(from.attr("cy")) * canvasY) + "L" + Math.floor(parseFloat(to.attr("cx")) * canvasX) + " " + Math.floor(parseFloat(to.attr("cy")) * canvasY)).attr({stroke: "#7C7C7C", "stroke-dasharray": ". ", "stroke-width": 2, "stroke-linejoin": "round"})
+                   .data("from",from).data("to", to);
+              });
+
+              $browser = $('div.browser');
+              $('.screen').css("width", contentWidth);
+              
+              if ($browser.hasClass("logs")) {
+                setBrowserPos("logs", false);
+              } else {
+                setBrowserPos("login", false);
+                console.log("k");
+              }
+
+              connectorContent = $('#connector .contentinner');
+              connectorContent.find('.map').css('height', mapHeight).siblings('.browser').css('height', mapHeight);
+              if (!$this.hasClass("disconnected")) { 
+                connectorContent.css({marginTop: -mapHeight -5});
+              }
+
+              servers.toFront();
+              server1.toFront();
+            }
+         }
+
+         function setBrowserPos(pos, animate) {
+            $content = $('#connector .contentinner');
+            $browser = $content.find('.browser');
+            contentWidth = $content.width();
+            if (animate) {
+              if (pos == "login") {
+                $browser.animate({marginLeft: -(contentWidth + 5)}, 1000, "easeInOutExpo");
+                $browser.removeClass("files").removeClass("logs").addClass("login");
+              } else if (pos == "logs") {
+                $browser.animate({marginLeft: 0}, 1000, "easeInOutExpo");
+                $browser.removeClass("login").removeClass("files").addClass("logs");
+              } else if (pos == "files") {
+                $browser.animate({marginLeft: -(contentWidth * 2 + 10) }, 1000, "easeInOutExpo");
+                $browser.removeClass("login").removeClass("logs").addClass("files");
+              }
+            } else {
+              if (pos == "login") {
+                $browser.removeClass("files").removeClass("logs").addClass("login");
+                $browser.css({marginLeft: -(contentWidth + 5)});
+              } else if (pos == "logs") {
+                $browser.css("marginLeft", 0);
+                $browser.removeClass("login").removeClass("files").addClass("logs");
+              } else if (pos == "files") {
+                $browser.css("marginLeft", -(contentWidth * 2 + 10));
+                $browser.removeClass("login").removeClass("logs").addClass("files");
+              }
+            }
          }
 
 
@@ -180,6 +212,7 @@ $(document).ready(function(){
                 contentWindow.find('.destServer').animate({boxShadow: "0 0 2px #fff"});
 
                 setTimeout(j_flagChange, 1000);
+                setBrowserPos("login", true);
               }
 
               function moveRouteUp() {
@@ -229,14 +262,44 @@ $(document).ready(function(){
           }
         });
 
+        $('button.login').on("click", function() {
+          setBrowserPos("logs", true);
+        });
 
         /* DOCK functionality */
 
         $('.j_connect').on("click", function() {
-          $('.window').fadeToggle();
-          $(this).parent('li').toggleClass('j_opened');
-          //loadWindow("connector");
+          console.log(this);
+          j_openWindow.apply(this,[$('#connector')]);
         });
+
+        $('.j_missions').on("click", function() {
+          j_openWindow.apply(this,[$('#r_messages')]);
+        });
+
+        $('.j_filesystem').on("click", function() {
+          console.log(this);
+          j_openWindow.apply(this,[$('#p_file_browser')]);
+        });
+
+        $('.j_cracker').on("click", function() {
+          console.log(this);
+          j_openWindow.apply(this,[$('#p_cracker')]);
+        });
+
+        function j_openWindow($window) {
+          if ($window.hasClass('j_visible')) {
+            $window.fadeOut();
+            $window.removeClass('j_visible');
+            $(this).parent('li').removeClass('j_opened');
+            console.log("hidden");
+          } else {
+            $window.fadeIn();            
+            $window.addClass("j_visible");
+            $(this).parent('li').addClass('j_opened');
+            console.log("shown");
+          }
+        }
 
         function onConnect(elem, index) {
           $this = $(elem);
@@ -373,6 +436,80 @@ $(document).ready(function(){
        		return baseLi;
        } 
         
+
+
+
+         var lockIcon = document.createElement('img');
+        lockIcon.src = 'img/lock.png'
+
+
+        function lockDragStart(e) {
+          this.style.opacity = '0';
+          e.dataTransfer.setDragImage(lockIcon, 10, 10);
+        }
+        function lockDragOver(e) {
+          if (e.preventDefault) {
+            e.preventDefault(); 
+          } 
+          console.log('dragging over');
+          return false;
+        }
+        function lockDragEnter(e) {
+          console.log('dragEntered');
+        }
+        function lockDragLeave(e) {
+
+        }
+
+        function lockDrop(e) {
+          this.style.opacity = '1';
+
+          console.log('dropped');
+          this.innerHTML = '<p>Cracked</p>';
+          if (e.stopPropagation) {
+            e.stopPropagation(); 
+          }
+          return false;
+        }
+
+        function lockDragEnd(e) {
+          this.style.opacity = '1';
+          var parent = $(this).parents('.contentinner');
+          console.log();
+          //$(this).parents('.contentinner').children('p').text('Hacking!!!');
+          $(this).siblings('p').remove().end().remove();
+          parent.append($('<p>Hacking!!</p>'));
+        }
+
+        var file_list = $('#p_file_list');
+        var file_list2 = $('#p_file_list2');
+        file_list.children('li:odd').css('background-color','#2a362e');
+        file_list.children('li:even').css('background-color','#232d26');
+        file_list2.children('li:odd').css('background-color','#2a362e');
+        file_list2.children('li:even').css('background-color','#232d26');
+        $('#p_file_list, #p_file_list2').sortable({
+          update:function(event,ui){
+            file_list.children('li:odd').css('background-color','#2a362e');
+            file_list.children('li:even').css('background-color','#232d26');
+            file_list2.children('li:odd').css('background-color','#2a362e');
+            file_list2.children('li:even').css('background-color','#232d26');
+          },
+          helper: 'clone',
+          appendTo:'body',
+          zIndex: 10000,
+          connectWith: ".connectedSortable"
+        }).disableSelection();
+
+
+
+        var lock = document.querySelector('#p_lock');
+        var dropBox = document.querySelector('#p_dropBox');
+        lock.addEventListener('dragstart', lockDragStart, false);
+        lock.addEventListener('dragend', lockDragEnd, false);
+        dropBox.addEventListener('dragover', lockDragOver, false);
+        dropBox.addEventListener('dragenter', lockDragEnter,false);
+        dropBox.addEventListener('drop', lockDrop, false);
+
         
 }); //end of the document.ready
 
