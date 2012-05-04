@@ -263,7 +263,7 @@ $(document).ready(function(){
         });
 
         $('button.login').on("click", function() {
-          setBrowserPos("logs", true);
+          setBrowserPos("files", true);
         });
 
         /* DOCK functionality */
