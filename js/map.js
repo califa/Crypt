@@ -115,6 +115,8 @@ $(function(){
   south_america
     .mouseover(function(){south_america.stop().animate({fill:"#23342d"} , 300 , '>');})
     .mouseout(function(){south_america.stop().animate({fill:'#212C26'}     , 300 , '>');});
+
+  continents.mouseover(function() {makeServersSmaller();});
  
   mapCanvas.fillStyle = '#fff';
    
@@ -170,6 +172,10 @@ $(function(){
     $this = this;
     if (this.data("server")) { $this = this.data("server"); }
     $this.animate({"r": "4"}, 1000, "elastic");
+  }
+
+  function makeServersSmaller() {
+    servers.animate({"r": "4"}, 1000, "elastic");
   }
 
   //continents.mouseover() {  }

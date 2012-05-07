@@ -378,12 +378,12 @@
         height: 100%;
         float: left;
         margin-right: 5px;
+        position: relative;
       }
-
 
       .screen div.login {
         text-align: center;
-        margin-top: 60px;
+        margin-top: 35px;
       }
       
       .screen h3.servertitle {
@@ -398,14 +398,15 @@
         height: 30px;
         margin-bottom: 10px;
         box-shadow: inset 0 2px 0 -1px rgba(0,0,0,0.3);
-        font-size: 15px
+        font-size: 15px;
+        padding: 0 5px;
       }
 
       .screen input.password {
-        background: #c7f3f5;
+        background: #f8eed0;
       }
 
-      .screen button.login {
+      .screen button.login, button.logs, .screen button.logsback {
         font-weight: 400;
         font-size: 15px;
         border-radius: 5px;
@@ -420,6 +421,29 @@
         .screen button.login:active {
           box-shadow: 0 1px 0 #ADABAB, 0 2px 0 rgba(0,0,0,0.2);
           margin-top: 6px;
+        }
+
+
+      .screen button.logs, .screen button.logsback {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        width: 60px;
+        height: 25px;
+        padding: 0;
+        box-shadow: 0 3px 0 #ADABAB, 0 6px 0 rgba(0,0,0,0.2);
+        text-align: center;
+        z-index: 20000;
+      }
+
+      .screen button.logs:active {
+          box-shadow: 0 1px 0 #ADABAB, 0 2px 0 rgba(0,0,0,0.2);
+          margin-top: 2px;
+        }
+
+        .screen button.logsback {
+          position: relative;
+          left: 15px;
         }
         
      /* Messages -Robert */
@@ -731,15 +755,5 @@
         cursor:pointer;
       }
 
-           #p_dropBox {
-        position:absolute;
-        top: 400px;
-        left:1000px;
-        width: 100px;
-        height: 100px;
-        background-color: black;
-        color: white;
-        text-align: center;
-        padding: 30px 0;
-      }
+ 
 

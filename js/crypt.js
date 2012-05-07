@@ -87,12 +87,14 @@ $(document).ready(function(){
 
               $browser = $('div.browser');
               $('.screen').css("width", contentWidth);
+              $('.browser').css("width", contentWidth * 3 + 20);
               
               if ($browser.hasClass("logs")) {
                 setBrowserPos("logs", false);
+              } else if ($browser.hasClass("files")) {
+                setBrowserPos("files", false);
               } else {
                 setBrowserPos("login", false);
-                console.log("k");
               }
 
               connectorContent = $('#connector .contentinner');
@@ -131,6 +133,7 @@ $(document).ready(function(){
               } else if (pos == "files") {
                 $browser.css("marginLeft", -(contentWidth * 2 + 10));
                 $browser.removeClass("login").removeClass("logs").addClass("files");
+                console.log("happening");
               }
             }
          }
@@ -263,7 +266,15 @@ $(document).ready(function(){
         });
 
         $('button.login').on("click", function() {
-          setBrowserPos("files", true);
+          console.log($('#p_dropBox').val());
+          if ($('#p_dropBox').val() == "rosebud") {
+            setBrowserPos("files", true);
+          }
+
+        });
+
+        $('button.logs').on("click", function() {
+          setBrowserPos("logs", true);
         });
 
         /* DOCK functionality */
@@ -439,7 +450,7 @@ $(document).ready(function(){
 
 
 
-         var lockIcon = document.createElement('img');
+        var lockIcon = document.createElement('img');
         lockIcon.src = 'img/lock.png'
 
 
@@ -451,21 +462,23 @@ $(document).ready(function(){
           if (e.preventDefault) {
             e.preventDefault(); 
           } 
+          $(this).css("background", "#f0cd63");
           console.log('dragging over');
           return false;
         }
         function lockDragEnter(e) {
           console.log('dragEntered');
+          $(this).css("background", "#f0cd63");
         }
         function lockDragLeave(e) {
-
+          $(this).css("background", "#F8EED0");
         }
 
         function lockDrop(e) {
           this.style.opacity = '1';
-
+          $(this).css("background", "#d9f7cf");
           console.log('dropped');
-          this.innerHTML = '<p>Cracked</p>';
+          $(this).attr("value", "rosebud");
           if (e.stopPropagation) {
             e.stopPropagation(); 
           }
@@ -508,6 +521,7 @@ $(document).ready(function(){
         lock.addEventListener('dragend', lockDragEnd, false);
         dropBox.addEventListener('dragover', lockDragOver, false);
         dropBox.addEventListener('dragenter', lockDragEnter,false);
+        dropBox.addEventListener('dragleave', lockDragLeave,false);
         dropBox.addEventListener('drop', lockDrop, false);
 
         
