@@ -621,6 +621,9 @@
 		border: 1px dashed #666;
 		margin: 10px 0px;
 	}
+  .dropped_state {
+    /* Add styling of display text after file is dropped. */
+  }
 	
 	/*  Logs! */
 	

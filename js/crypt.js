@@ -405,7 +405,7 @@ $(document).ready(function(){
        }
        
        var addNewOngoingMission = function(missionTitle) {
- 			r_totalMessages++;
+ 			    r_totalMessages++;
        		r_unreadMessages++;
 
       		var mainWindow = generateMission(r_totalMessages),
@@ -413,6 +413,9 @@ $(document).ready(function(){
 
        		$('.r_ongoing-sidebar ul').prepend(sidebar);
        		$('.r_ongoing-tab').append(mainWindow);	
+          
+          addDroppable();
+
        }
        
        var generateMission = function(id) {
@@ -509,6 +512,7 @@ $(document).ready(function(){
 
         var file_list = $('#p_file_list');
         var file_list2 = $('#p_file_list2');
+        var file_name;
         file_list.children('li:odd').css('background-color','#2a362e');
         file_list.children('li:even').css('background-color','#232d26');
         file_list2.children('li:odd').css('background-color','#2a362e');
@@ -523,8 +527,22 @@ $(document).ready(function(){
           helper: 'clone',
           appendTo:'body',
           zIndex: 10000,
-          connectWith: ".connectedSortable"
+          connectWith: ".connectedSortable",
+          change: function(event, ui){
+            file_name = $('.ui-sortable-helper').text();
+          }
         }).disableSelection();
+        // making this a function because I want this setup to re-ran after
+        // accepting missions.
+
+        function addDroppable() {
+          $('.r_file-drop-area').droppable({
+            drop: function(event, ui){
+              $(this).addClass("dropped_state").text(file_name);
+            }
+          });
+        };
+        addDroppable();
         
         
         /* this is called in lockDrop */
