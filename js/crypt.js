@@ -536,9 +536,7 @@ $(document).ready(function(){
         		characterTime = parseInt(crackDuration / passwordLength, 10);
         		
           lock.siblings('p').remove().end().remove();
-          
-          console.log('cT:'+characterTime);
-          
+                    
           for(var i = 0; i < passwordLength; i++) {
           	var span = $('<span id="digit'+ (i+1) +'">A</span').css({
           		'left' : 36 * i
@@ -579,7 +577,6 @@ $(document).ready(function(){
         	
 			randomChar = parseInt( Math.random() * 25 ) + 65;
         	element.text(String.fromCharCode(randomChar));
-        	console.log('changed'+element.text());
         	setTimeout(function(){
         		turnCypher(element, milliseconds - tick, target)
         	}, tick);
