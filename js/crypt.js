@@ -513,11 +513,13 @@ $(document).ready(function(){
         var file_list = $('#p_file_list');
         var file_list2 = $('#p_file_list2');
         var file_name;
+        var drop_area = $('r_file-drop-area');
+
+
         file_list.children('li:odd').css('background-color','#2a362e');
         file_list.children('li:even').css('background-color','#232d26');
-        file_list2.children('li:odd').css('background-color','#2a362e');
-        file_list2.children('li:even').css('background-color','#232d26');
-        $('#p_file_list, #p_file_list2').sortable({
+
+        /*$('#p_file_list, #p_file_list2').sortable({
           update:function(event,ui){
             file_list.children('li:odd').css('background-color','#2a362e');
             file_list.children('li:even').css('background-color','#232d26');
@@ -531,12 +533,43 @@ $(document).ready(function(){
           change: function(event, ui){
             file_name = $('.ui-sortable-helper').text();
           }
-        }).disableSelection();
-        // making this a function because I want this setup to re-ran after
-        // accepting missions.
+        }).disableSelection();*/
 
+       file_list.sortable({
+          //revert: true,
+          update: function(event, ui){
+            file_list.children('li:odd').css('background-color','#2a362e');
+            file_list.children('li:even').css('background-color','#232d26');
+          },
+          helper: 'clone',
+          appendTo:'body',
+          zIndex: 10000,
+          change: function(event, ui){
+            file_name = $('.ui-sortable-helper').text();
+          },
+          receive: function(event, ui){
+
+            //********************DOWNLOAD FUNCTION HERE********************//
+            // Joel, You can drop in your download animation here.
+            // This is triggered when you bring over a file from file_list2.
+            //**************************************************************//
+          }
+        });
+
+        file_list2.find('li').draggable({
+          connectToSortable: '#p_file_list',
+          helper: 'clone',
+          appendTo:'body',
+          zIndex: 10000,
+          revert: 'invalid'
+        });
+
+        $('ul, li').disableSelection();
+
+        // making this a function because I want this setup to re-trigger 
+        // after accepting missions.
         function addDroppable() {
-          $('.r_file-drop-area').droppable({
+          drop_area.droppable({
             drop: function(event, ui){
               $(this).addClass("dropped_state").text(file_name);
             }
