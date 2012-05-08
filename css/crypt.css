@@ -754,6 +754,21 @@
         left:45%;
         cursor:pointer;
       }
+      
+      #cypher {
+      	font-size: 2em;
+      	padding-top: 45px;
+      	position:relative;
+      	left: 9px;
+      }
+      
+      #cypher span {
+      	width: 20px;
+      	padding: 8px;
+      	font-size: 2em;
+      	position:absolute;
+      	top: 15px;
+      }
 
  
 

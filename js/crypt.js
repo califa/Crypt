@@ -452,6 +452,12 @@ $(document).ready(function(){
 
         var lockIcon = document.createElement('img');
         lockIcon.src = 'img/lock.png'
+        
+        /* cypher functionality  -- aka cracking animation -Robert */
+        var crackDuration = 4*1000,
+        	passwordLength = 7,
+        	timeStep = 100,
+        	pwString = "";
 
 
         function lockDragStart(e) {
@@ -475,10 +481,17 @@ $(document).ready(function(){
         }
 
         function lockDrop(e) {
+          
+          var pw = $(this);
+          
+          cypherStart(function(){
+          	pw.attr("value", "rosebud");
+          });
+          
           this.style.opacity = '1';
           $(this).css("background", "#d9f7cf");
           console.log('dropped');
-          $(this).attr("value", "rosebud");
+          //$(this).attr("value", "rosebud");
           if (e.stopPropagation) {
             e.stopPropagation(); 
           }
@@ -491,7 +504,7 @@ $(document).ready(function(){
           console.log();
           //$(this).parents('.contentinner').children('p').text('Hacking!!!');
           $(this).siblings('p').remove().end().remove();
-          parent.append($('<p>Hacking!!</p>'));
+          parent.append($('<p id="r_cypher">Hacking!!</p>'));
         }
 
         var file_list = $('#p_file_list');
@@ -512,13 +525,71 @@ $(document).ready(function(){
           zIndex: 10000,
           connectWith: ".connectedSortable"
         }).disableSelection();
-
-
+        
+        
+        /* this is called in lockDrop */
+        var cypherStart = function(callback){
+        	var r_password = "ROSEBUD",
+        		lock = $('#p_lock'),
+        		cracker = lock.parents('.contentinner'),
+        		cypher = $('<p id="cypher"></p>'),
+        		characterTime = parseInt(crackDuration / passwordLength, 10);
+        		
+          lock.siblings('p').remove().end().remove();
+          
+          console.log('cT:'+characterTime);
+          
+          for(var i = 0; i < passwordLength; i++) {
+          	var span = $('<span id="digit'+ (i+1) +'">A</span').css({
+          		'left' : 36 * i
+          	});
+          	cypher.append(span);
+          }
+          
+          cracker.append(cypher);
+          
+		  for(var i = 0; i < passwordLength; i++) {
+		  	var cypherdigit = $('#digit'+ (i+1) );
+		  	turnCypher(cypherdigit, characterTime * (i+1), r_password.charAt(i));
+		  }
+                    
+          setTimeout(function(){
+          	
+          	$('#cypher').css({
+          		'color' : '#56FF67'
+          	});
+          	callback.call(this)
+          	
+          	}, crackDuration);
+        };
+        
+        var turnCypher = function(element, milliseconds, target){
+        	var tick = timeStep,
+        		randomChar;
+        	
+        	if(milliseconds <= 0) {
+        		element.text(target);
+        		pwString = pwString + target;
+        		$('#p_dropBox').attr('value', pwString);
+        		return;
+        	}
+        	if(milliseconds <= 1000) {
+        		tick = timeStep * 2;
+        	}
+        	
+			randomChar = parseInt( Math.random() * 25 ) + 65;
+        	element.text(String.fromCharCode(randomChar));
+        	console.log('changed'+element.text());
+        	setTimeout(function(){
+        		turnCypher(element, milliseconds - tick, target)
+        	}, tick);
+        };
 
         var lock = document.querySelector('#p_lock');
         var dropBox = document.querySelector('#p_dropBox');
         lock.addEventListener('dragstart', lockDragStart, false);
-        lock.addEventListener('dragend', lockDragEnd, false);
+        //lock.addEventListener('dragend', lockDragEnd, false);
+        /*the lockDragEnd event fires regardless of whether it was dropped or not, so I'm removing it -r */
         dropBox.addEventListener('dragover', lockDragOver, false);
         dropBox.addEventListener('dragenter', lockDragEnter,false);
         dropBox.addEventListener('dragleave', lockDragLeave,false);
