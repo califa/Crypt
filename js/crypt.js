@@ -15,7 +15,7 @@ $(document).ready(function(){
         $('#p_file_browser').hide();
         $('#p_cracker').hide();
 
-		var r_unreadMessages = 0,
+		var r_ongoingMissions = 0,
 			r_totalMessages = 3;
 
         /*function Screen(windowName) {
@@ -368,13 +368,7 @@ $(document).ready(function(){
         
         $(".r_ongoing-sidebar").on("click", ".r_mission-message", function(){
         	var id = $(this).attr('id');
-        	
-        	if($(this).hasClass('r_unread')) {
-        		$(this).removeClass('r_unread');
-        		r_unreadMessages--;
-        		updateUnreadMessagesCount();
-        	}
-        	
+        	        	
         	$(this).removeClass('r_inactive').siblings().addClass('r_inactive');
         	$("#"+id+"-tab").removeClass('r_inactive-message').siblings('.r_ongoing-main').addClass('r_inactive-message');
         });
@@ -391,19 +385,37 @@ $(document).ready(function(){
        		});
        });
        
+       $('.r_ongoing-tab').on('click','.r_ongoing-main .r_action-button', function(){       
+       		var message = $(this).closest('.r_ongoing-main'),
+       			innerDiv = message.find('.r_ongoing-main-inside'),
+       			children = innerDiv.children();
+       		children.each(function(index){
+       			$(this).animate({
+       				'opacity' : 0
+       			}, 300 * (children.length - index));
+       		});
+       		
+       		setTimeout(function(){
+       			innerDiv.prepend('<p>This mission has been completed.</p>');
+       			children.hide();
+       			
+       		}, children.length * 300);
+       });
+       
        var updateUnreadMessagesCount = function() {
-       		var title = "Ongoing";
+       		var badge = $('#r_badge');
        		
-       		if(r_unreadMessages > 0) {
-       			title += "(" + r_unreadMessages + ")";
+       		if(r_ongoingMissions == 0) {
+       			badge.hide(0);
+       		} else {
+       			badge.show(0);
+       			badge.text(r_ongoingMissions);
        		}
-       		
-       		$('#r_ongoing').text(title);
        }
        
        var addNewOngoingMission = function(missionTitle) {
- 			    r_totalMessages++;
-       		r_unreadMessages++;
+ 			r_totalMessages++;
+       		r_ongoingMissions++;
 
       		var mainWindow = generateMission(r_totalMessages),
        			sidebar = generateMissionSidebar(missionTitle, r_totalMessages);
@@ -439,7 +451,7 @@ $(document).ready(function(){
        }
        
        var generateMissionSidebar = function(missionTitle, id){
-       		var baseLi = $('<li class="r_mission-message r_unread" id="r_message'+id+'"></li>'),
+       		var baseLi = $('<li class="r_mission-message r_unread r_inactive" id="r_message'+id+'"></li>'),
        			title = $('<p>RE:'+missionTitle+'</p>');
        		
        		baseLi.append(title);
@@ -510,7 +522,7 @@ $(document).ready(function(){
         var file_list = $('#p_file_list');
         var file_list2 = $('#p_file_list2');
         var file_name;
-        var drop_area = $('r_file-drop-area');
+        var drop_area = $('.r_file-drop-area');
 
 
         file_list.children('li:odd').css('background-color','#2a362e');

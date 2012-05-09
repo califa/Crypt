@@ -592,6 +592,25 @@
       
     /* Ongoing Tab */
     
+    #r_badge {
+    	display:block;
+    	position: absolute;
+    	top: 3px;
+    	right: 18px;
+    	box-sizing: content-box;
+    	width: 12px;
+    	height: 12px;
+    	padding: 3px;
+    	margin-left: 5px;
+    	background-color: red;
+    	border-radius: 100%;
+    	color:white;
+    	font-size: 10px;
+    	text-align:center;
+    	vertical-align: middle;
+    	display:none;
+    }
+    
     .r_ongoing-tab {
       font-size: 0.8em;
       position:relative;
@@ -640,7 +659,10 @@
       white-space: nowrap;
       text-overflow: ellipsis; /* buggy in Chrome apparently. =( */
       overflow:hidden;
-      background-color: #668;
+      background-color: #223;
+      color: #556;
+      border: 1px solid #C5FF00;
+      text-decoration:line-through;
     }
     
     .r_mission-message:hover {
@@ -648,13 +670,15 @@
     }
     
     .r_mission-message.r_inactive {
-      background-color: #556;
+      border: none;
+      padding: 11px;
     }
     
     .r_mission-message.r_unread {
-      background-color: white;
-      color: #334;
-    }
+      background-color: #779;
+      color: white;
+      text-decoration: none;
+	}
     
   .r_file-drop-area {
     background: #444;
