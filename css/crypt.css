@@ -315,6 +315,16 @@
 		
 		/*back to original stuff*/
 
+      div.cantconnect {
+        position:absolute;
+        right: 125px;
+        margin-top: 14px;
+        color: #f23a29;
+        background: transparent;
+        font-size: 12px;
+        display: none;
+      }
+
       button.connect, button.disconnect {
         border-radius: 5px;
         float: left;
@@ -389,6 +399,7 @@
       .screen div.login {
         text-align: center;
         margin-top: 35px;
+        position: relative;
       }
       
       .screen h3.servertitle {
@@ -409,6 +420,15 @@
 
       .screen input.password {
         background: #f8eed0;
+      }
+
+      .screen div.wrongpassword {
+        position: relative;
+        margin-top: 15px;     
+        color: #f23a29;
+        background: transparent;
+        display: none;
+        font-size: 12px;        
       }
 
       .screen button.login, button.logs, .screen button.logsback {
@@ -816,7 +836,10 @@
         border-radius: 0 0 4px 4px;
       }  
 
-    
+      li.serverfile.ui-draggable-dragging, li.file.ui-sortable-pl {
+        background: #4a5e4d;
+        border-radius: 5px;
+      }
 
     /* Password Cracker */
       #p_cracker {

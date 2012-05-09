@@ -22,7 +22,7 @@ $(document).ready(function(){
 			mission2File = 'data3428234_2_4.txt';
 
         /*function Screen(windowName) {
-            var windowTemplate = '<div class="window"><div class="handle"><button class="close"></button><button class="minimize"></button><span class="title">{{title}}</span></div><div class="content"><div class="contentinner clearfix">{{content}}</div></div></div>'.replace(/{{title}}/, windowName );
+            var windowTemplate = '<div class="window"><div class="handle"><button class="close"></button><span class="title">{{title}}</span></div><div class="content"><div class="contentinner clearfix">{{content}}</div></div></div>'.replace(/{{title}}/, windowName );
               $.ajax({
                 url: "windows/" + windowName + ".html",
                 success: function (data) { var newTemplate = windowTemplate.replace(/{{content}}/, data); },
@@ -48,8 +48,32 @@ $(document).ready(function(){
 
         // Close button functionality
         $( "button.close" ).on("click", function() {
-          $(this).closest(".window").hide();
-          $('.j_opened').removeClass('j_opened');
+          var $window = $(this).closest(".window");
+          $window.hide().removeClass('j_visible');
+          var id = $window.attr("id");
+          var dock = $('.dock');
+
+          if (id == "connector") {
+            dock.find('.j_connect').parent('li').removeClass('j_opened');
+          } else if (id == "r_messages") {
+            dock.find('.j_missions').parent('li').removeClass('j_opened');
+          } else if (id == "p_file_browser") {
+            dock.find('.j_filesystem').parent('li').removeClass('j_opened');
+          } else if (id == "p_cracker") {
+            dock.find('.j_cracker').parent('li').removeClass('j_opened');
+
+      function resetPasscracker() {
+         if(!$('#p_cracker').hasClass('.j_visible')){
+           var resetLock = $('<p>drag lock to password field</p> <img draggable="true" id="p_lock" src="img/lock.png"/>');
+           $('#p_cracker').find('#cypher').remove().end()
+           resetLock.appendTo($('#p_cracker .contentinner'));
+         }
+       }
+
+
+
+          }
+
         });
 
         // Dynamically refresh a window's height
@@ -144,15 +168,23 @@ $(document).ready(function(){
 
         // Connect button clicks
         $('button.connect').on("click", function() {
-          if (!j_connecting) {
-              var $this = $(this);
-              openWindow = $this.closest(".window");
+          var $this = $(this);
+          openWindow = $this.closest(".window");
+
+          var route = openWindow.find('.bounces');
+          var bounces = route.children();
+          console.log("length = " + route.children().length);
+          if (route.children().length < 3) {
+            var cantconnect = $('.cantconnect');
+            cantconnect.fadeIn(200);
+            setTimeout(function() {
+              cantconnect.fadeOut(600);
+            }, 1000)
+          } else if (!j_connecting) {
+              
 
               /***** CONNECT BUTTON ******/
               
-
-              var route = openWindow.find('.bounces');
-              var bounces = route.children();
               var bounceList = [];
               var currentBounceIndex = 0;
 
@@ -219,6 +251,9 @@ $(document).ready(function(){
 
                 setTimeout(j_flagChange, 1000);
                 setBrowserPos("login", true);
+
+                $('#p_dropBox').val("");
+                $('#p_dropBox').css("background", "#f8eed0");
               }
 
               function moveRouteUp() {
@@ -270,8 +305,15 @@ $(document).ready(function(){
 
         $('button.login').on("click", function() {
           console.log($('#p_dropBox').val());
-          if ($('#p_dropBox').val() == "ROSEBUD") {
+          if ($('#p_dropBox').val() == "ROSEBUD" || $('#p_dropBox').val() == "rosebud") {
             setBrowserPos("files", true);
+          } else {
+            var passerror = $('.wrongpassword');
+            passerror.fadeIn(200);
+            setTimeout(function() {
+              passerror.fadeOut(600);
+            }, 1000);
+            $('#p_dropBox').css("background", "#f8eed0");
           }
 
         });
@@ -303,12 +345,10 @@ $(document).ready(function(){
             $window.fadeOut();
             $window.removeClass('j_visible');
             $(this).parent('li').removeClass('j_opened');
-            console.log("hidden");
           } else {
             $window.fadeIn();            
             $window.addClass("j_visible");
             $(this).parent('li').addClass('j_opened');
-            console.log("shown");
           }
         }
 
@@ -520,14 +560,16 @@ $(document).ready(function(){
 
         function lockDrop(e) {
           
+          $('#p_dropBox').css("background", "#F5F0CD");
+
           var pw = $(this);
           
           cypherStart(function(){
           	pw.attr("value", "rosebud");
+            $('#p_dropBox').css("background", "#d9f7cf");
           });
           
           this.style.opacity = '1';
-          $(this).css("background", "#d9f7cf");
           console.log('dropped');
           //$(this).attr("value", "rosebud");
           if (e.stopPropagation) {
@@ -549,7 +591,6 @@ $(document).ready(function(){
         var file_list2 = $('#p_file_list2');
         var file_name;
 
-
         file_list.children('li:odd').css('background-color','#2a362e');
         file_list.children('li:even').css('background-color','#232d26');
 
@@ -570,10 +611,10 @@ $(document).ready(function(){
         }).disableSelection();*/
 
        file_list.sortable({
-          //revert: true,
+          revert: true,
           update: function(event, ui){
-           /* file_list.children('li:odd').css('background-color','#2a362e');
-            file_list.children('li:even').css('background-color','#232d26'); */
+            file_list.children('li:odd').css('background-color','#2a362e');
+            file_list.children('li:even').css('background-color','#232d26');
           },
           helper: 'clone',
           appendTo:'body',
@@ -584,11 +625,17 @@ $(document).ready(function(){
           receive: function(event, ui){
             ///THIS IS WHERE I PUT THE THING
             console.log(ui);
-            setTimeout(resetFileColors,5000);
+            //setTimeout(resetFileColors,5000);
+          },
+          stop: function(event, ui) {
+            if (ui.item.hasClass("serverfile")) {
+              ui.item.removeClass("serverfile");
+              downloadColors(ui.item, 1);
+            }
           }
         });
 
-        file_list2.find('li').draggable({
+        $('.serverfile').draggable({
           connectToSortable: '#p_file_list',
           helper: 'clone',
           appendTo:'body',
@@ -612,10 +659,32 @@ $(document).ready(function(){
 
         addDroppable();
         
+        function downloadColors(item, pct) {
+          if (pct == 101) {
+            item = $(item[0]);
+            item.attr("style", "");
+            item.css("background", "white");
+            item.css("background","url('img/file.png') no-repeat");
+            item.css("background-position","5px");
+
+            resetFileColors();
+          } else {
+            console.log(item);
+            $(item[0]).css("background", "-webkit-linear-gradient(left, #F28500 " + pct + "%,#ffffff " + pct + "%,#ffffff 100%)");
+            console.log("hello pct: " + pct);
+            //setTimeout(downloadColors, 50, [item, pct + 1]);
+            setTimeout(function() {
+              downloadColors(item, pct +4);
+            }, 20);
+          }
+        }
+
         function resetFileColors() {
           file_list.children('li:odd').css('background-color','#2a362e');
           file_list.children('li:even').css('background-color','#232d26');
         }
+
+
         /* this is called in lockDrop */
         var cypherStart = function(callback){
         	var r_password = "ROSEBUD",
