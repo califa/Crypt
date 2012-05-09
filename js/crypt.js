@@ -134,7 +134,7 @@ $(document).ready(function(){
                 connectorContent.css({marginTop: -mapHeight -5});
               }
 
- //             $('.j_login-overlay').css({"width": contentWidth, "height": mapHeight, "paddingTop": mapHeight / 2 - 10});
+              $('.j_login-overlay').css({"width": contentWidth, "height": mapHeight, "paddingTop": mapHeight / 2 - 10});
 
               servers.toFront();
               server1.toFront();
@@ -203,18 +203,27 @@ $(document).ready(function(){
             var cantconnect = $('.cantconnect');
             cantconnect.fadeIn(200);
             setTimeout(function() {
-              cantconnect.fadeOut(600);
+            cantconnect.fadeOut(600);
             }, 1000)
           } else if (!j_connecting) {
-              
 
+
+              //Flag
+              j_connecting = true;
+
+
+
+              if (($('.destServer').text() == "158.110.32.188") || ($('.destServer').text() == "54.87.103.22")) {
+                $('.j_login-overlay').hide();
+              }
               /***** CONNECT BUTTON ******/
               
               var bounceList = [];
               var currentBounceIndex = 0;
 
-              //Flag
-              j_connecting = true;
+              $('.servertitle').text($('.destServer').text());
+
+              
 
               /* Queue connection animations for bounce route */
 
@@ -224,7 +233,7 @@ $(document).ready(function(){
 
               function connectBounce() { 
                 var currentBounce = bounceList[currentBounceIndex];
-
+                openWindow.removeClass("disconnected");
                 onConnect(currentBounce, currentBounceIndex);
 
                 currentBounceIndex++;
@@ -273,6 +282,9 @@ $(document).ready(function(){
                 // move route up
                 contentWindow.animate({
                 marginTop: "+=" + (contentWindow.find('.map').height() + 5) }, 1000, "easeOutExpo");
+                setTimeout(function() {
+                  $('.j_login-overlay').show();
+                }, 1500);
 
                 contentWindow.find('.destServer').animate({boxShadow: "0 0 2px #fff"});
 
@@ -510,6 +522,8 @@ $(document).ready(function(){
             updateUnreadMessagesCount();
        			
             var li = message.attr('id').substring(0, 10);
+            var missionId = message.attr('id').substring(9, 10);
+            revertMapIcon(missionId);
             console.log(li);
             $('#'+li).removeClass('r_unread');
 
@@ -858,7 +872,17 @@ $(document).ready(function(){
     };
 })(jQuery);
 
+centerLogo();
 
- 
-      
+$(window).on("resize", centerLogo);
+
+function centerLogo() {
+  $window = $(window);
+  wHeight = $window.height();
+  wWidth = $window.width();
+  $('.cryptlogo').css({
+    "left": wWidth/2,
+    "top": wHeight/2-40
+  });
+}
 
