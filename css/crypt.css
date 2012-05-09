@@ -297,15 +297,20 @@
 	        width: 100px;
 	        font-weight: 600;
 	        font-size: 12px;
-			background: #23BA43;
-	        box-shadow: 0 5px 0 #1B9133, 0 7px 0 rgba(0,0,0,0.4);
+			    background: #23BA43;
+	        box-shadow: 0 3px 0 #1B9133, 0 6px 0 rgba(0,0,0,0.1);
 	    }
+
+      .r_action-button:hover {
+           background: #2ce019;
+           box-shadow: 0 3px 0 #399300, 0 6px 0 rgba(0,0,0,0.1);
+      }
 	    
 	    .r_action-button:active {
 	      background: #2ce019;
-          box-shadow: 0 1px 0 #399300, 0 2px 0 rgba(0,0,0,0.2);
+          box-shadow: 0 1px 0 #399300, 0 2px 0 rgba(0,0,0,0.1);
           position:relative;
-          top: 6px;
+          top: 2px;
 		}
 		
 		/*back to original stuff*/
@@ -448,179 +453,218 @@
         
      /* Messages -Robert */
      
+     
      .r_messages {
-     	color:white;
+      color:white;
      }
      
-	     .r_messages .r_tabs {
-	     	width: 100%;
-	     	text-decoration: none;	
-	     	list-style: none;
-	     }
+       .r_messages .r_tabs {
+        width: 100%;
+        text-decoration: none;  
+        list-style: none;
+       }
      
-		     .r_tabs li {
-		     	width: 150px;
-		     	float:left;
-		     	text-align:center;
-		     	padding: 5px 0px;
-		     	background: #888;
-		     }
-		     
-		     .r_tabs li:hover {
-		     	cursor: pointer;
-		     }
-		     
-		     .r_tabs li:last-child {
-		     	float:right;
-		     }
-		     
-		     .r_tabs li.r_inactive {
-		     	background: #555;
-		     	color: #888;
-		     }
-		     
-	.r_messages h1 {
-		font-size: 0.9em;
-		font-weight: normal;
-		color: black;
-		display:inline;
-		background-color: transparent;
-	}
-	
-	.r_messages .r_inactive-window {
-		display:none;
-	}
-	
-		/* freelance tab */
-	
-		.r_messages .r_freelance-tab {
-			background-color: #888;
-		}
-	
-		.r_messages ul {
-			list-style: none;
-		}
-		
-			.r_freelance-mission-item {
-				background: #888;
-				padding: 10px;
-				width: 100%;
-				border-bottom: 1px solid #666;
-			}
-			
-			.r_freelance-mission-item:hover {
-				background-color: #999;
-			}
-						
-			.r_freelance-mission-item .r_action-button {
-				padding: 3px inherit;				
-				visibility: hidden;
-				float:right;
-				margin-top: -2px;
-				margin-bottom: 4px;
-			}
-			
-				.r_freelance-mission-item.r_level-too-high h1{
-					color:#555;
-				}
-				
-				.r_freelance-mission-item.r_level-too-high:hover {
-					background-color: #888;
-				}
-				
-				.r_freelance-mission-item.r_level-too-high span {
-					font-weight: normal;
-					color:#555;
-				}
-				
-				.r_freelance-mission-item.r_level-too-high .r_action-button {
-					display:none;
-				}
-			
-			.r_freelance-mission-item:hover .r_action-button {
-				visibility:visible;
-			}
-			
-			.r_freelance-mission-item .r_mission-level {
-				color: #ccc;
-				font-weight: bold;
-			}
-			
-			
-		/* Ongoing Tab */
-		
-		.r_ongoing-tab {
-			font-size: 0.8em;
-			position:relative;
-		}
-		
-		.r_ongoing-sidebar {
-			float: left;
-			width: 120px;
-			padding: 2px 0px;
-		}
-			.r_ongoing-sidebar ul {
-				background-color: #666;
-			}
-		
-		.r_ongoing-main {
-			width: 100%;
-			height: 100%;
-		}
-		
-		.r_inactive-message {
-			display:none;
-		}
-		
-		.r_ongoing-main-inside {
-			margin-left: 125px;
-			padding: 10px;
-			height: 100%;
-			position:relative;
-		}
-		
-			.r_ongoing-main-inside span {
-				display:block;
-				margin: 10px 0px;
-			}
-			
-			.r_ongoing-main-inside .r_subject {
-				margin-bottom: 10px;
-			}
-			
-			.r_ongoing-main-inside .r_action-button {
-				margin-top: 10px;
-			}
-			
-		.r_mission-message {
-			padding: 10px;
-			white-space: nowrap;
-			text-overflow: ellipsis; /* buggy in Chrome apparently. =( */
-			overflow:hidden;
-			background-color: #668;
-		}
-		
-		.r_mission-message:hover {
-			cursor: pointer;
-		}
-		
-		.r_mission-message.r_inactive {
-			background-color: #556;
-		}
-		
-		.r_mission-message.r_unread {
-			background-color: white;
-			color: #334;
-		}
-		
-	.r_file-drop-area {
-		background: #444;
-		padding: 10px;
-		text-align: center;
-		border-radius: 5px;
-		border: 1px dashed #666;
-		margin: 10px 0px;
-	}
+         .r_tabs li {
+          width: 150px;
+          height: 25px;
+          border-radius: 5px 5px 0 0;
+          text-transform: uppercase;
+          font-size: 14px;
+          font-weight: 600;
+          float:left;
+          text-align:center;
+          padding: 3px 0px;
+          background: #C5FF00;
+          color: black;
+          box-shadow: 2px 0 0 rgba(0,0,0,0.1), -2px 0 0 rgba(0,0,0,0.1);
+          position: relative;
+          z-index: 500;
+          margin-right: 2px;
+         }
+
+         .r_tabs {
+          border-bottom: 2px solid #C4FF00;
+         }
+         
+         .r_tabs li:hover {
+          cursor: pointer;
+         }
+         
+         .r_tabs li:last-child {
+          float:right;
+         }
+         
+         .r_tabs li.r_inactive {
+          background: #222C25;
+          color: #888;
+          font-weight: 400;
+          z-index: 400;
+         }
+
+         #r_ongoing.r_inactive {
+          color: white;
+        }
+
+        #r_ongoing {
+          margin-right: 0;
+        }
+     
+         
+  .r_messages h1 {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: black;
+    display:inline;
+    background-color: transparent;
+  }
+  
+  .r_messages .r_inactive-window {
+    display:none;
+  }
+  
+    /* freelance tab */
+  
+    .r_messages .r_freelance-tab {
+      background-color: #888;
+    }
+  
+    .r_messages ul {
+      list-style: none;
+    }
+    
+      .r_freelance-mission-item {
+        background: #707070;
+        padding: 7px;
+        width: 100%;
+        border-bottom: 1px solid #555;
+        border-top: 1px solid #777;
+      }
+
+      .r_freelance-mission-item:last-child {
+        border-radius: 0 0 5px 5px;
+        border-bottom: none;
+      }
+
+      
+      
+      .r_freelance-mission-item:hover {
+        background-color: #999;
+      }
+            
+      .r_freelance-mission-item .r_action-button {
+        padding: 3px;       
+        visibility: hidden;
+        text-transform: capitalize;
+        float:right;
+        width: 50px;
+        margin-top: -2px;
+        margin-bottom: 4px;
+        box-shadow: ;
+      }
+      
+        .r_freelance-mission-item.r_level-too-high h1{
+          color:#555;
+        }
+        
+        .r_freelance-mission-item.r_level-too-high:hover {
+          background-color: #707070;
+        }
+        
+        .r_freelance-mission-item.r_level-too-high span {
+          font-weight: normal;
+          color:#555;
+        }
+        
+        .r_freelance-mission-item.r_level-too-high .r_action-button {
+          display:none;
+        }
+      
+      .r_freelance-mission-item:hover .r_action-button {
+        visibility:visible;
+      }
+      
+      .r_freelance-mission-item .r_mission-level {
+        color: #ccc;
+        font-weight: 200;
+        margin: 0 8px;
+      }
+      
+      
+    /* Ongoing Tab */
+    
+    .r_ongoing-tab {
+      font-size: 0.8em;
+      position:relative;
+    }
+    
+    .r_ongoing-sidebar {
+      float: left;
+      width: 120px;
+      padding: 2px 0px;
+    }
+      .r_ongoing-sidebar ul {
+        background-color: #666;
+      }
+    
+    .r_ongoing-main {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .r_inactive-message {
+      display:none;
+    }
+    
+    .r_ongoing-main-inside {
+      margin-left: 125px;
+      padding: 10px;
+      height: 100%;
+      position:relative;
+    }
+    
+      .r_ongoing-main-inside span {
+        display:block;
+        margin: 10px 0px;
+      }
+      
+      .r_ongoing-main-inside .r_subject {
+        margin-bottom: 10px;
+      }
+      
+      .r_ongoing-main-inside .r_action-button {
+        margin-top: 10px;
+      }
+      
+    .r_mission-message {
+      padding: 10px;
+      white-space: nowrap;
+      text-overflow: ellipsis; /* buggy in Chrome apparently. =( */
+      overflow:hidden;
+      background-color: #668;
+    }
+    
+    .r_mission-message:hover {
+      cursor: pointer;
+    }
+    
+    .r_mission-message.r_inactive {
+      background-color: #556;
+    }
+    
+    .r_mission-message.r_unread {
+      background-color: white;
+      color: #334;
+    }
+    
+  .r_file-drop-area {
+    background: #444;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px dashed #666;
+    margin: 10px 0px;
+  }
+  
   .dropped_state {
     /* Add styling of display text after file is dropped. */
   }
@@ -688,6 +732,8 @@
         background-color:#161616;
 
       }
+
+     
       .file{
         color: white;
         font-size: 12px;
@@ -725,16 +771,23 @@
         font-size: 12px;
         padding:2px 20px;
         cursor: pointer;
-        background-image: url('../img/file.png');
-        background-repeat: no-repeat;
+        background: url('../img/file.png') no-repeat, #2a362e;
         background-position: 5px;
       }
+
+      #p_file_list2 li:nth-child(2n) {
+        background: url('../img/file.png') no-repeat, #232d26;
+        background-position: 5px;
+      }
+
       #p_file_list2 li:first-child {
         border-radius: 4px  4px 0 0 ;
       }
       #p_file_list2 li:last-child {
         border-radius: 0 0 4px 4px;
       }  
+
+    
 
     /* Password Cracker */
       #p_cracker {

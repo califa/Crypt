@@ -267,7 +267,7 @@ $(document).ready(function(){
 
         $('button.login').on("click", function() {
           console.log($('#p_dropBox').val());
-          if ($('#p_dropBox').val() == "rosebud") {
+          if ($('#p_dropBox').val() == "ROSEBUD") {
             setBrowserPos("files", true);
           }
 
@@ -280,7 +280,6 @@ $(document).ready(function(){
         /* DOCK functionality */
 
         $('.j_connect').on("click", function() {
-          console.log(this);
           j_openWindow.apply(this,[$('#connector')]);
         });
 
@@ -289,12 +288,10 @@ $(document).ready(function(){
         });
 
         $('.j_filesystem').on("click", function() {
-          console.log(this);
           j_openWindow.apply(this,[$('#p_file_browser')]);
         });
 
         $('.j_cracker').on("click", function() {
-          console.log(this);
           j_openWindow.apply(this,[$('#p_cracker')]);
         });
 
@@ -538,8 +535,8 @@ $(document).ready(function(){
        file_list.sortable({
           //revert: true,
           update: function(event, ui){
-            file_list.children('li:odd').css('background-color','#2a362e');
-            file_list.children('li:even').css('background-color','#232d26');
+           /* file_list.children('li:odd').css('background-color','#2a362e');
+            file_list.children('li:even').css('background-color','#232d26'); */
           },
           helper: 'clone',
           appendTo:'body',
@@ -548,11 +545,9 @@ $(document).ready(function(){
             file_name = $('.ui-sortable-helper').text();
           },
           receive: function(event, ui){
-
-            //********************DOWNLOAD FUNCTION HERE********************//
-            // Joel, You can drop in your download animation here.
-            // This is triggered when you bring over a file from file_list2.
-            //**************************************************************//
+            ///THIS IS WHERE I PUT THE THING
+            console.log(ui);
+            setTimeout(resetFileColors,5000);
           }
         });
 
@@ -577,7 +572,10 @@ $(document).ready(function(){
         };
         addDroppable();
         
-        
+        function resetFileColors() {
+          file_list.children('li:odd').css('background-color','#2a362e');
+          file_list.children('li:even').css('background-color','#232d26');
+        }
         /* this is called in lockDrop */
         var cypherStart = function(callback){
         	var r_password = "ROSEBUD",
