@@ -596,6 +596,7 @@ $(document).ready(function(){
             }
           });
         };
+
         addDroppable();
         
         function downloadColors(item, pct) {
