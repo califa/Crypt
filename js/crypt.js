@@ -582,6 +582,7 @@ $(document).ready(function(){
             }
           });
         };
+
         addDroppable();
         
         function resetFileColors() {
