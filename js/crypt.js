@@ -19,7 +19,7 @@ $(document).ready(function(){
 			r_totalMessages = 3;
 
         /*function Screen(windowName) {
-            var windowTemplate = '<div class="window"><div class="handle"><button class="close"></button><button class="minimize"></button><span class="title">{{title}}</span></div><div class="content"><div class="contentinner clearfix">{{content}}</div></div></div>'.replace(/{{title}}/, windowName );
+            var windowTemplate = '<div class="window"><div class="handle"><button class="close"></button><span class="title">{{title}}</span></div><div class="content"><div class="contentinner clearfix">{{content}}</div></div></div>'.replace(/{{title}}/, windowName );
               $.ajax({
                 url: "windows/" + windowName + ".html",
                 success: function (data) { var newTemplate = windowTemplate.replace(/{{content}}/, data); },
@@ -45,8 +45,21 @@ $(document).ready(function(){
 
         // Close button functionality
         $( "button.close" ).on("click", function() {
-          $(this).closest(".window").hide();
-          $('.j_opened').removeClass('j_opened');
+          var $window = $(this).closest(".window");
+          $window.hide().removeClass('j_visible');
+          var id = $window.attr("id");
+          var dock = $('.dock');
+
+          if (id == "connector") {
+            dock.find('.j_connect').parent('li').removeClass('j_opened');
+          } else if (id == "r_messages") {
+            dock.find('.j_missions').parent('li').removeClass('j_opened');
+          } else if (id == "p_file_browser") {
+            dock.find('.j_filesystem').parent('li').removeClass('j_opened');
+          } else if (id == "p_cracker") {
+            dock.find('.j_cracker').parent('li').removeClass('j_opened');
+          }
+
         });
 
         // Dynamically refresh a window's height
@@ -318,12 +331,10 @@ $(document).ready(function(){
             $window.fadeOut();
             $window.removeClass('j_visible');
             $(this).parent('li').removeClass('j_opened');
-            console.log("hidden");
           } else {
             $window.fadeIn();            
             $window.addClass("j_visible");
             $(this).parent('li').addClass('j_opened');
-            console.log("shown");
           }
         }
 
@@ -501,7 +512,7 @@ $(document).ready(function(){
         function lockDrop(e) {
           
           $('#p_dropBox').css("background", "#F5F0CD");
-          
+
           var pw = $(this);
           
           cypherStart(function(){
