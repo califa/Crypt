@@ -18,6 +18,8 @@ var
     south_america = mapCanvas.set(),
     asia = mapCanvas.set(),
     continents = mapCanvas.set();
+    var server1flag = false;
+    var server2flag = true;
  
 var servers = mapCanvas.set();
 var server1, server2, server3, server4, server5, server6, server7, server8;
@@ -238,3 +240,18 @@ $(function(){
     server1.toFront();  
   })
 });
+
+function changeMapIcon(id) {
+  console.log("changing map icon for " + id);
+  if (id == 1) {
+    server1flag = true;
+    mapCanvas.getById(server8.id).attr({fill: '#C5F752'});
+  } else if (id == 2) {
+    server2flag = true;
+    mapCanvas.getById(server4.id).attr({fill: '#C5F752'});
+  } else {
+    if (server1flag == true) { mapCanvas.getById(server8.id).attr({fill: '#C5F752'}); }
+    if (server1flag == true) { mapCanvas.getById(server4.id).attr({fill: '#C5F752'}); }
+  }
+  
+}

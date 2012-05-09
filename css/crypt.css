@@ -400,8 +400,19 @@
         text-align: center;
         margin-top: 35px;
         position: relative;
+        background: #151515
       }
       
+      div.j_login-overlay {
+        position: absolute;
+        color: #f23a29;
+        background: #151515; 
+        text-align: center;
+        font-weight: bold;
+        z-index: 5000;
+
+      }
+
       .screen h3.servertitle {
         color: #fff;
         font-weight: 500;
@@ -756,6 +767,10 @@
       font-weight: 700;
       text-decoration: none;
 	}
+
+  .r_mission-completed {
+    display:none;
+  }
     
   .r_file-drop-area {
     background: #444;
@@ -765,6 +780,16 @@
     border: 1px dashed #666;
     margin: 10px 0px 0;
   }
+
+  div.j_wrongfile {
+        position:absolute;
+        color: #f23a29;
+        background: transparent;
+        font-size: 12px;
+        right: 120px;
+        margin-top: 15px;
+        display: none;
+      }
   
   .dropped_state {
     /* Add styling of display text after file is dropped. */

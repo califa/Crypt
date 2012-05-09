@@ -20,7 +20,7 @@ $(document).ready(function(){
 			r_totalMessages = 0;
 			
 		var mission1File = 'AFS::75SF23GF8',
-			mission2File = 'AFS::75SF23GF8';
+			mission2File = 'AFS::231ASD8SD';
 
         /*function Screen(windowName) {
             var windowTemplate = '<div class="window"><div class="handle"><button class="close"></button><span class="title">{{title}}</span></div><div class="content"><div class="contentinner clearfix">{{content}}</div></div></div>'.replace(/{{title}}/, windowName );
@@ -117,6 +117,7 @@ $(document).ready(function(){
 
               $browser = $('div.browser');
               $('.screen').css("width", contentWidth);
+
               $('.browser').css("width", contentWidth * 3 + 20);
               
               if ($browser.hasClass("logs")) {
@@ -132,6 +133,8 @@ $(document).ready(function(){
               if (!$this.hasClass("disconnected")) { 
                 connectorContent.css({marginTop: -mapHeight -5});
               }
+
+ //             $('.j_login-overlay').css({"width": contentWidth, "height": mapHeight, "paddingTop": mapHeight / 2 - 10});
 
               servers.toFront();
               server1.toFront();
@@ -233,6 +236,7 @@ $(document).ready(function(){
               };
 
               function disconnectBounce(start) {
+
                 if (start) {
                   currentBounceIndex = bounceList.length-1;
                 }
@@ -255,6 +259,7 @@ $(document).ready(function(){
                   server1.attr("fill", "#fff");
                   servers.attr("fill", "#7C7C7C");
                   $(".you").css("background", "#fff");
+                  changeMapIcon();
                   setTimeout(moveRouteDown, 100);
                 }
               }
@@ -471,30 +476,44 @@ $(document).ready(function(){
        			
        		if(message.attr('id') == 'r_message1-tab') {
        			correctFile = mission1File;
-       		}else if(message.attr('id') == 'r_message2-tab') {
+       		} else if(message.attr('id') == 'r_message2-tab') {
        			correctFile = mission2File;
        		}
        		
-       		if(innerDiv.find('.r_file-drop-area').text() != correctFile) {
-       			//show error message
-       			return;
+          var j_droparea = innerDiv.find('.r_file-drop-area');
+
+       		if(j_droparea.text() != correctFile) {
+       		
+            //ERROR!
+          	var wrongfile = j_droparea.siblings('.j_wrongfile');
+            wrongfile.fadeIn(200);
+            setTimeout(function() {
+              wrongfile.fadeOut(600);
+            }, 1000);
+            return;
        		}
        			
        		children.each(function(index){
        			$(this).animate({
        				'opacity' : 0
-       			}, 300 * (children.length - index));
+       			}, 100 * (children.length - index));
        		});
        		
        		setTimeout(function(){
-       			innerDiv.prepend('<p>This mission has been completed.</p>');
+            var j_completion = '<p class="r_mission-completed">Good job! This mission has been completed!</p>';       			
+            innerDiv.html(j_completion);
        			children.hide();
+
+            innerDiv.find('.r_mission-completed').hide().fadeIn(300);
+
+            r_ongoingMissions--;
+            updateUnreadMessagesCount();
        			
             var li = message.attr('id').substring(0, 10);
             console.log(li);
             $('#'+li).removeClass('r_unread');
 
-       		}, children.length * 300);
+       		}, children.length * 100);
        });
        
        
@@ -531,15 +550,33 @@ $(document).ready(function(){
        }
        
        var generateMission = function(id) {
+
+          var j_thisip;
+          var j_thisfile;
+          var j_thismoney;
+
+          if (id == 1) {
+            j_thisip = "158.110.32.188";
+            j_thisfile = "AFS::75SF23GF8";
+            j_thismoney = "12,000";
+          } else {
+            j_thisip = "54.87.103.22";
+            j_thisfile = "AFS::231ASD8SD";
+            j_thismoney = "9,000";
+          }
+
+          changeMapIcon(id);
+
        		var baseDiv = $('<div class="r_ongoing-main clearfix r_inactive-message" id="r_message'+id+'-tab"></div>'),
        			innerDiv = $('<div class="r_ongoing-main-inside"></div>'),
-       			to = $('<p class="r_to">Target: <span class="r_spanip">158.110.32.188</span></p>'),
+       			to = $('<p class="r_to">Target: <span class="r_spanip">' + j_thisip + '</span></p>'),
        			subject = $('<p class="r_subject">Subject: Steal Key Files</p>'),
        			messageIntro = $('<p class="message">Hack into the user base and retrieve the following records:</p>'),
-       			messageClose = $('<p class="message"> Reply to this message upon completion, and a payment of $12,000 US will be transferred to you.</p>'),
-       			fileNames = $('<span class="r_important-info">AFS::75SF23GF8</span>'),
+       			messageClose = $('<p class="message"> Reply to this message upon completion, and a payment of $' + j_thismoney + ' US will be transferred to you.</p>'),
+       			fileNames = $('<span class="r_important-info">' + j_thisfile + '</span>'),
           		submitArea = $('<div class="r_file-drop-area">Drag file here</div>'),
           		submitButton = $('<button class="r_action-button">Submit File</button>'),
+              wrongFile = $('<div class="j_wrongfile">Incorrect File!</div>'),
           		clearButton = $('<button class="r_action-button r_clear">Clear File</button>');
           		
        		innerDiv.append(subject)
@@ -549,6 +586,7 @@ $(document).ready(function(){
        				.append(messageClose)
        				.append(submitArea)
        				.append(submitButton)
+              .append(wrongFile)
        				.append(clearButton)
        				.appendTo(baseDiv);
 
@@ -565,6 +603,8 @@ $(document).ready(function(){
             var baseLi = $('<li class="r_mission-message r_unread" id="r_message'+id+'"></li>');
             firstMissionAdded = true;
           }
+
+          missionTitle = missionTitle.replace('Level 1 ','');
           var title = $('<p>'+missionTitle+'</p>');
        		
        		baseLi.append(title);
@@ -658,7 +698,7 @@ $(document).ready(function(){
         }).disableSelection();*/
 
        file_list.sortable({
-          revert: true,
+          //revert: true,
           update: function(event, ui){
             file_list.children('li:odd').css('background-color','#2a362e');
             file_list.children('li:even').css('background-color','#232d26');
