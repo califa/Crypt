@@ -19,7 +19,7 @@ $(document).ready(function(){
 			r_totalMessages = 3;
 
         /*function Screen(windowName) {
-            var windowTemplate = '<div class="window"><div class="handle"><button class="close"></button><button class="minimize"></button><span class="title">{{title}}</span></div><div class="content"><div class="contentinner clearfix">{{content}}</div></div></div>'.replace(/{{title}}/, windowName );
+            var windowTemplate = '<div class="window"><div class="handle"><button class="close"></button><span class="title">{{title}}</span></div><div class="content"><div class="contentinner clearfix">{{content}}</div></div></div>'.replace(/{{title}}/, windowName );
               $.ajax({
                 url: "windows/" + windowName + ".html",
                 success: function (data) { var newTemplate = windowTemplate.replace(/{{content}}/, data); },
@@ -45,9 +45,32 @@ $(document).ready(function(){
 
         // Close button functionality
         $( "button.close" ).on("click", function() {
-          $(this).closest(".window").hide();
-          $('.j_opened').removeClass('j_opened');
-          resetPasscracker();
+          var $window = $(this).closest(".window");
+          $window.hide().removeClass('j_visible');
+          var id = $window.attr("id");
+          var dock = $('.dock');
+
+          if (id == "connector") {
+            dock.find('.j_connect').parent('li').removeClass('j_opened');
+          } else if (id == "r_messages") {
+            dock.find('.j_missions').parent('li').removeClass('j_opened');
+          } else if (id == "p_file_browser") {
+            dock.find('.j_filesystem').parent('li').removeClass('j_opened');
+          } else if (id == "p_cracker") {
+            dock.find('.j_cracker').parent('li').removeClass('j_opened');
+
+      function resetPasscracker() {
+         if(!$('#p_cracker').hasClass('.j_visible')){
+           var resetLock = $('<p>drag lock to password field</p> <img draggable="true" id="p_lock" src="img/lock.png"/>');
+           $('#p_cracker').find('#cypher').remove().end()
+           resetLock.appendTo($('#p_cracker .contentinner'));
+         }
+       }
+
+
+
+          }
+
         });
 
         // Dynamically refresh a window's height
@@ -319,12 +342,10 @@ $(document).ready(function(){
             $window.fadeOut();
             $window.removeClass('j_visible');
             $(this).parent('li').removeClass('j_opened');
-            console.log("hidden");
           } else {
             $window.fadeIn();            
             $window.addClass("j_visible");
             $(this).parent('li').addClass('j_opened');
-            console.log("shown");
           }
         }
 
@@ -468,6 +489,7 @@ $(document).ready(function(){
         
 
 
+
         var lockIcon = document.createElement('img');
         lockIcon.src = 'img/lock.png'
         
@@ -501,7 +523,7 @@ $(document).ready(function(){
         function lockDrop(e) {
           
           $('#p_dropBox').css("background", "#F5F0CD");
-          
+
           var pw = $(this);
           
           cypherStart(function(){
@@ -510,7 +532,7 @@ $(document).ready(function(){
           });
           
           this.style.opacity = '1';
-          //console.log('dropped');
+          console.log('dropped');
           //$(this).attr("value", "rosebud");
           if (e.stopPropagation) {
             e.stopPropagation(); 
@@ -530,7 +552,7 @@ $(document).ready(function(){
         var file_list = $('#p_file_list');
         var file_list2 = $('#p_file_list2');
         var file_name;
-        
+        var drop_area = $('.r_file-drop-area');
 
 
         file_list.children('li:odd').css('background-color','#2a362e');
@@ -553,9 +575,10 @@ $(document).ready(function(){
         }).disableSelection();*/
 
        file_list.sortable({
-          //revert: true,
+          revert: true,
           update: function(event, ui){
-            resetFileColors();
+            file_list.children('li:odd').css('background-color','#2a362e');
+            file_list.children('li:even').css('background-color','#232d26');
           },
           helper: 'clone',
           appendTo:'body',
@@ -589,7 +612,6 @@ $(document).ready(function(){
         // making this a function because I want this setup to re-trigger 
         // after accepting missions.
         function addDroppable() {
-          var drop_area = $('.r_file-drop-area');
           drop_area.droppable({
             drop: function(event, ui){
               $(this).addClass("dropped_state").text(file_name);
@@ -597,16 +619,8 @@ $(document).ready(function(){
           });
         };
 
-        function resetPasscracker() {
-          if(!$('#p_cracker').hasClass('.j_visible')){
-            var resetLock = $('<p>drag lock to password field</p> <img draggable="true" id="p_lock" src="img/lock.png"/>');
-            $('#p_cracker').find('#cypher').remove().end()
-            resetLock.appendTo($('#p_cracker .contentinner'));
-          }
-        }
-
         addDroppable();
-
+        
         function downloadColors(item, pct) {
           if (pct == 101) {
             item = $(item[0]);
@@ -670,6 +684,7 @@ $(document).ready(function(){
         var turnCypher = function(element, milliseconds, target){
         	var tick = timeStep,
         		randomChar;
+        	
         	if(milliseconds <= 0) {
         		element.text(target);
         		pwString = pwString + target;
