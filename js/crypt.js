@@ -509,11 +509,11 @@ $(document).ready(function(){
             e.preventDefault(); 
           } 
           $(this).css("background", "#f0cd63");
-          console.log('dragging over');
+          //console.log('dragging over');
           return false;
         }
         function lockDragEnter(e) {
-          console.log('dragEntered');
+          //console.log('dragEntered');
           $(this).css("background", "#f0cd63");
         }
         function lockDragLeave(e) {
@@ -532,7 +532,7 @@ $(document).ready(function(){
           });
           
           this.style.opacity = '1';
-          console.log('dropped');
+          //console.log('dropped');
           //$(this).attr("value", "rosebud");
           if (e.stopPropagation) {
             e.stopPropagation(); 
@@ -552,7 +552,6 @@ $(document).ready(function(){
         var file_list = $('#p_file_list');
         var file_list2 = $('#p_file_list2');
         var file_name;
-        var drop_area = $('.r_file-drop-area');
 
 
         file_list.children('li:odd').css('background-color','#2a362e');
@@ -575,10 +574,9 @@ $(document).ready(function(){
         }).disableSelection();*/
 
        file_list.sortable({
-          revert: true,
+          //revert: true,
           update: function(event, ui){
-            file_list.children('li:odd').css('background-color','#2a362e');
-            file_list.children('li:even').css('background-color','#232d26');
+            resetFileColors();
           },
           helper: 'clone',
           appendTo:'body',
@@ -612,6 +610,7 @@ $(document).ready(function(){
         // making this a function because I want this setup to re-trigger 
         // after accepting missions.
         function addDroppable() {
+          var drop_area = $('.r_file-drop-area');
           drop_area.droppable({
             drop: function(event, ui){
               $(this).addClass("dropped_state").text(file_name);
