@@ -61,20 +61,21 @@ $(document).ready(function(){
             dock.find('.j_filesystem').parent('li').removeClass('j_opened');
           } else if (id == "p_cracker") {
             dock.find('.j_cracker').parent('li').removeClass('j_opened');
-
-      function resetPasscracker() {
-         if(!$('#p_cracker').hasClass('.j_visible')){
-           var resetLock = $('<p>drag lock to password field</p> <img draggable="true" id="p_lock" src="img/lock.png"/>');
-           $('#p_cracker').find('#cypher').remove().end()
-           resetLock.appendTo($('#p_cracker .contentinner'));
-         }
-       }
-
+            resetPasscracker();
 
 
           }
 
         });
+        
+        function resetPasscracker() {
+         if(!$('#p_cracker').hasClass('.j_visible')){
+           var resetLock = $('<p>drag lock to password field</p> <img draggable="true" id="p_lock" src="img/lock.png"/>');
+           $('#p_cracker').find('#cypher').remove().end()
+           resetLock.appendTo($('#p_cracker .contentinner'));
+           pwString = "";
+         }
+       }
 
         // Dynamically refresh a window's height
         function setWindowHeight(elem) {
