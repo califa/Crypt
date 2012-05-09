@@ -47,6 +47,7 @@ $(document).ready(function(){
         $( "button.close" ).on("click", function() {
           $(this).closest(".window").hide();
           $('.j_opened').removeClass('j_opened');
+          resetPasscracker();
         });
 
         // Dynamically refresh a window's height
@@ -467,7 +468,6 @@ $(document).ready(function(){
         
 
 
-
         var lockIcon = document.createElement('img');
         lockIcon.src = 'img/lock.png'
         
@@ -510,7 +510,7 @@ $(document).ready(function(){
           });
           
           this.style.opacity = '1';
-          console.log('dropped');
+          //console.log('dropped');
           //$(this).attr("value", "rosebud");
           if (e.stopPropagation) {
             e.stopPropagation(); 
@@ -530,7 +530,7 @@ $(document).ready(function(){
         var file_list = $('#p_file_list');
         var file_list2 = $('#p_file_list2');
         var file_name;
-        var drop_area = $('.r_file-drop-area');
+        
 
 
         file_list.children('li:odd').css('background-color','#2a362e');
@@ -553,10 +553,9 @@ $(document).ready(function(){
         }).disableSelection();*/
 
        file_list.sortable({
-          revert: true,
+          //revert: true,
           update: function(event, ui){
-            file_list.children('li:odd').css('background-color','#2a362e');
-            file_list.children('li:even').css('background-color','#232d26');
+            resetFileColors();
           },
           helper: 'clone',
           appendTo:'body',
@@ -590,6 +589,7 @@ $(document).ready(function(){
         // making this a function because I want this setup to re-trigger 
         // after accepting missions.
         function addDroppable() {
+          var drop_area = $('.r_file-drop-area');
           drop_area.droppable({
             drop: function(event, ui){
               $(this).addClass("dropped_state").text(file_name);
@@ -597,8 +597,16 @@ $(document).ready(function(){
           });
         };
 
+        function resetPasscracker() {
+          if(!$('#p_cracker').hasClass('.j_visible')){
+            var resetLock = $('<p>drag lock to password field</p> <img draggable="true" id="p_lock" src="img/lock.png"/>');
+            $('#p_cracker').find('#cypher').remove().end()
+            resetLock.appendTo($('#p_cracker .contentinner'));
+          }
+        }
+
         addDroppable();
-        
+
         function downloadColors(item, pct) {
           if (pct == 101) {
             item = $(item[0]);
@@ -662,7 +670,6 @@ $(document).ready(function(){
         var turnCypher = function(element, milliseconds, target){
         	var tick = timeStep,
         		randomChar;
-        	
         	if(milliseconds <= 0) {
         		element.text(target);
         		pwString = pwString + target;
