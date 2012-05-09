@@ -1,4 +1,4 @@
-		
+
 		
 		*::selection {
 			background-color: transparent;
@@ -473,7 +473,7 @@
         
      /* Messages -Robert */
      
-     
+
      .r_messages {
       color:white;
      }
@@ -545,7 +545,7 @@
     /* freelance tab */
   
     .r_messages .r_freelance-tab {
-      background-color: #888;
+      background-color: #161616;
     }
   
     .r_messages ul {
@@ -553,15 +553,14 @@
     }
     
       .r_freelance-mission-item {
-        background: #707070;
+        background: #808080;
         padding: 7px;
         width: 100%;
-        border-bottom: 1px solid #555;
-        border-top: 1px solid #777;
+        border-bottom: 1px solid #666;
+        border-top: 1px solid #888;
       }
 
       .r_freelance-mission-item:last-child {
-        border-radius: 0 0 5px 5px;
         border-bottom: none;
       }
 
@@ -570,7 +569,11 @@
       .r_freelance-mission-item:hover {
         background-color: #999;
       }
-            
+       
+       .r_freelance-mission-item:hover .r_mission-level {
+        color: #eee;
+      }
+
       .r_freelance-mission-item .r_action-button {
         padding: 3px;       
         visibility: hidden;
@@ -581,7 +584,15 @@
         margin-bottom: 4px;
         box-shadow: ;
       }
-      
+        
+        .r_freelance-mission-item.r_level-too-high:hover .r_mission-level {
+        color: #555;
+      }
+        .r_freelance-mission-item.r_level-too-high {
+          background: #707070;
+          border-bottom: 1px solid #555;
+          border-top: 1px solid #777;
+        }
         .r_freelance-mission-item.r_level-too-high h1{
           color:#555;
         }
@@ -612,38 +623,67 @@
       
     /* Ongoing Tab */
     
-    #r_badge {
+    .r_inactive #r_badge {
     	display:block;
     	position: absolute;
     	top: 3px;
     	right: 18px;
     	box-sizing: content-box;
-    	width: 12px;
-    	height: 12px;
-    	padding: 3px;
+    	width: 10px;
+    	height: 10px;
+    	padding: 2px;
     	margin-left: 5px;
-    	background-color: red;
+      margin-top:2px;
+    	background-color: #C4FF00;
     	border-radius: 100%;
-    	color:white;
-    	font-size: 10px;
+    	color:#000;
+    	font-size: 8px;
+      font-weight: 800;
     	text-align:center;
     	vertical-align: middle;
     	display:none;
     }
+
+    #r_badge {
+      display:block;
+      position: absolute;
+      top: 3px;
+      right: 18px;
+      box-sizing: content-box;
+      width: 10px;
+      height: 10px;
+      padding: 2px;
+      margin-left: 5px;
+      margin-top:2px;
+      background-color: #000;
+      border-radius: 100%;
+      color:#C4FF00;
+      font-size: 8px;
+      font-weight: bold;
+      text-align:center;
+      vertical-align: middle;
+      display:none;
+    }
+
+
     
     .r_ongoing-tab {
       font-size: 0.8em;
       position:relative;
+      padding-top: 5px;
+      background:transparent !important;
     }
     
     .r_ongoing-sidebar {
       float: left;
       width: 120px;
-      padding: 2px 0px;
+      
+      background: #161616;
+      border-radius: 5px 0 0 5px;
+
+      /*border-right: 2px solid #46FD75;*/
     }
-      .r_ongoing-sidebar ul {
-        background-color: #666;
-      }
+
     
     .r_ongoing-main {
       width: 100%;
@@ -659,15 +699,21 @@
       padding: 10px;
       height: 100%;
       position:relative;
+      background: #161616;
+      border-radius: 0 5px 5px 0;
     }
     
-      .r_ongoing-main-inside span {
+      .r_ongoing-main-inside span.r_important-info {
         display:block;
         margin: 10px 0px;
       }
       
-      .r_ongoing-main-inside .r_subject {
+      .r_ongoing-main-inside .r_to {
         margin-bottom: 10px;
+      }
+
+      .r_ongoing-main-inside .r_spanip {
+        color: #C3FF00;
       }
       
       .r_ongoing-main-inside .r_action-button {
@@ -684,10 +730,13 @@
       white-space: nowrap;
       text-overflow: ellipsis; /* buggy in Chrome apparently. =( */
       overflow:hidden;
-      background-color: #223;
+      background-color: #141614;
       color: #556;
-      border: 1px solid #C5FF00;
       text-decoration:line-through;
+    }
+
+    .r_ongoing-sidebar .r_mission-message:first-child {
+      border-radius: 5px 0 0 0;
     }
     
     .r_mission-message:hover {
@@ -695,13 +744,16 @@
     }
     
     .r_mission-message.r_inactive {
-      border: none;
-      padding: 11px;
+      background: #232C24 !important;
+      border-bottom: 1px solid #131C13;
+      color: #939C93 !important;
+      font-weight: 300 !important;
     }
     
     .r_mission-message.r_unread {
-      background-color: #779;
-      color: white;
+      background-color: #C4FF00;
+      color: black;
+      font-weight: 700;
       text-decoration: none;
 	}
     
@@ -711,7 +763,7 @@
     text-align: center;
     border-radius: 5px;
     border: 1px dashed #666;
-    margin: 10px 0px;
+    margin: 10px 0px 0;
   }
   
   .dropped_state {

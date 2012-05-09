@@ -11,15 +11,16 @@ $(document).ready(function(){
           $(this).trigger("drag", event);
         });
 
+
         $('#r_messages').hide();
         $('#p_file_browser').hide();
         $('#p_cracker').hide();
 
 		var r_ongoingMissions = 0,
-			r_totalMessages = 3;
+			r_totalMessages = 0;
 			
-		var mission1File = 'data3428234_2_3.txt',
-			mission2File = 'data3428234_2_4.txt';
+		var mission1File = 'AFS::75SF23GF8',
+			mission2File = 'AFS::75SF23GF8';
 
         /*function Screen(windowName) {
             var windowTemplate = '<div class="window"><div class="handle"><button class="close"></button><span class="title">{{title}}</span></div><div class="content"><div class="contentinner clearfix">{{content}}</div></div></div>'.replace(/{{title}}/, windowName );
@@ -35,6 +36,9 @@ $(document).ready(function(){
         */
         // Automatically sets proper height for the window.
         setWindowHeight($('.window'));
+        setWindowHeight($('#r_messages'));
+
+        $('#connector').hide();
 
         $( ".window" ).draggable({ stack: ".window",
                           handle: ".handle", containment: 'body' })
@@ -62,8 +66,6 @@ $(document).ready(function(){
           } else if (id == "p_cracker") {
             dock.find('.j_cracker').parent('li').removeClass('j_opened');
             resetPasscracker();
-
-
           }
 
         });
@@ -133,6 +135,25 @@ $(document).ready(function(){
 
               servers.toFront();
               server1.toFront();
+            } else if ($this.attr("id") == "r_messages") {
+              var content = $this.find('.contentinner'); // Content wrapper
+              var windowHeight = $this.height();
+              var windowWidth = $this.width();
+              var contentWidth = windowWidth - 10;
+              var contentHeight = windowHeight - 20; // Height - handle bar
+              var tablessHeight = contentHeight - 36;
+
+              content.css("height", contentHeight + "px");
+
+
+
+              $('.r_ongoing-tab').css("height", tablessHeight + "px");
+              $('.r_ongoing-sidebar').css("height", tablessHeight - 6 + "px");
+              $('.r_ongoing-main-inside').css("height", tablessHeight - 6 + "px");
+              $('.r_freelance-tab').css("height", tablessHeight + "px");
+              $('.r_bounties-tab').css("height", tablessHeight + "px");
+              
+
             }
          }
 
@@ -349,8 +370,19 @@ $(document).ready(function(){
           } else {
             $window.fadeIn();            
             $window.addClass("j_visible");
+            $window.css("zIndex", getWindowZ());
             $(this).parent('li').addClass('j_opened');
           }
+        }
+
+        function getWindowZ() {
+          var largestZ = 1;
+          $(".window").each(function(i) {
+            var currentZ = parseFloat($(this).css("zIndex"));
+            largestZ = currentZ > largestZ ? currentZ : largestZ;
+          });
+          largestZ++;
+          return largestZ;
         }
 
         function onConnect(elem, index) {
@@ -458,13 +490,17 @@ $(document).ready(function(){
        			innerDiv.prepend('<p>This mission has been completed.</p>');
        			children.hide();
        			
+            var li = message.attr('id').substring(0, 10);
+            console.log(li);
+            $('#'+li).removeClass('r_unread');
+
        		}, children.length * 300);
        });
        
        
        // Clear button click event
        $('.r_ongoing-tab').on('click','.r_clear',function(){
-       		$(this).siblings('.r_file-drop-area').html('Drag File Here');
+       		$(this).siblings('.r_file-drop-area').html('Drag File Here').css("background", "#444444");
        });
        
        var updateUnreadMessagesCount = function() {
@@ -488,6 +524,8 @@ $(document).ready(function(){
        		$('.r_ongoing-sidebar ul').prepend(sidebar);
        		$('.r_ongoing-tab').append(mainWindow);	
           
+          $('.r_unread:first-child').trigger("click");
+
           addDroppable();
 
        }
@@ -495,17 +533,17 @@ $(document).ready(function(){
        var generateMission = function(id) {
        		var baseDiv = $('<div class="r_ongoing-main clearfix r_inactive-message" id="r_message'+id+'-tab"></div>'),
        			innerDiv = $('<div class="r_ongoing-main-inside"></div>'),
-       			to = $('<p class="r_to">To: User 221-34</p>'),
+       			to = $('<p class="r_to">Target: <span class="r_spanip">158.110.32.188</span></p>'),
        			subject = $('<p class="r_subject">Subject: Steal Key Files</p>'),
-       			messageIntro = $('<p class="message">Hack into the EA user base and retrieve the following records:</p>'),
-       			messageClose = $('<p class="message"> Reply to this message upon completion. In return a compensation of $12,000 US will be transferred to your account.</p>'),
-       			fileNames = $('<span class="r_important-info">AFS::239rBA238</span>'),
+       			messageIntro = $('<p class="message">Hack into the user base and retrieve the following records:</p>'),
+       			messageClose = $('<p class="message"> Reply to this message upon completion, and a payment of $12,000 US will be transferred to you.</p>'),
+       			fileNames = $('<span class="r_important-info">AFS::75SF23GF8</span>'),
           		submitArea = $('<div class="r_file-drop-area">Drag file here</div>'),
           		submitButton = $('<button class="r_action-button">Submit File</button>'),
           		clearButton = $('<button class="r_action-button r_clear">Clear File</button>');
           		
-       		innerDiv.append(to)
-       				.append(subject)
+       		innerDiv.append(subject)
+       				.append(to)
        				.append(messageIntro)
        				.append(fileNames)
        				.append(messageClose)
@@ -517,9 +555,17 @@ $(document).ready(function(){
        		return baseDiv;
        }
        
+       var firstMissionAdded = false;
+
        var generateMissionSidebar = function(missionTitle, id){
-       		var baseLi = $('<li class="r_mission-message r_unread r_inactive" id="r_message'+id+'"></li>'),
-       			title = $('<p>RE:'+missionTitle+'</p>');
+       		
+          if (firstMissionAdded) {
+            var baseLi = $('<li class="r_mission-message r_unread r_inactive" id="r_message'+id+'"></li>');
+       		} else {
+            var baseLi = $('<li class="r_mission-message r_unread" id="r_message'+id+'"></li>');
+            firstMissionAdded = true;
+          }
+          var title = $('<p>'+missionTitle+'</p>');
        		
        		baseLi.append(title);
        		
@@ -655,6 +701,7 @@ $(document).ready(function(){
             drop: function(event, ui){
               console.log(file_name);
               $(this).addClass("dropped_state").html(file_name);
+              $(this).css("background", "#2B372D");
             }
           });
         };
