@@ -652,6 +652,11 @@
       
       .r_ongoing-main-inside .r_action-button {
         margin-top: 10px;
+        float:right;
+      }
+      
+      .r_ongoing-main-inside .r_clear {
+      	float:left;
       }
       
     .r_mission-message {

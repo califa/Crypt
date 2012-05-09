@@ -17,6 +17,9 @@ $(document).ready(function(){
 
 		var r_ongoingMissions = 0,
 			r_totalMessages = 3;
+			
+		var mission1File = 'data3428234_2_3.txt',
+			mission2File = 'data3428234_2_4.txt';
 
         /*function Screen(windowName) {
             var windowTemplate = '<div class="window"><div class="handle"><button class="close"></button><button class="minimize"></button><span class="title">{{title}}</span></div><div class="content"><div class="contentinner clearfix">{{content}}</div></div></div>'.replace(/{{title}}/, windowName );
@@ -385,10 +388,25 @@ $(document).ready(function(){
        		});
        });
        
-       $('.r_ongoing-tab').on('click','.r_ongoing-main .r_action-button', function(){       
+       
+       // Submit button click event
+       $('.r_ongoing-tab').on('click','.r_ongoing-main .r_action-button:not(.r_clear)', function(){       
        		var message = $(this).closest('.r_ongoing-main'),
        			innerDiv = message.find('.r_ongoing-main-inside'),
-       			children = innerDiv.children();
+       			children = innerDiv.children(),
+       			correctFile;
+       			
+       		if(message.attr('id') == 'r_message1-tab') {
+       			correctFile = mission1File;
+       		}else if(message.attr('id') == 'r_message2-tab') {
+       			correctFile = mission2File;
+       		}
+       		
+       		if(innerDiv.find('.r_file-drop-area').text() != correctFile) {
+       			//show error message
+       			return;
+       		}
+       			
        		children.each(function(index){
        			$(this).animate({
        				'opacity' : 0
@@ -400,6 +418,12 @@ $(document).ready(function(){
        			children.hide();
        			
        		}, children.length * 300);
+       });
+       
+       
+       // Clear button click event
+       $('.r_ongoing-tab').on('click','.r_clear',function(){
+       		$(this).siblings('.r_file-drop-area').html('Drag File Here');
        });
        
        var updateUnreadMessagesCount = function() {
@@ -436,7 +460,8 @@ $(document).ready(function(){
        			messageClose = $('<p class="message"> Reply to this message upon completion. In return a compensation of $12,000 US will be transferred to your account.</p>'),
        			fileNames = $('<span class="r_important-info">AFS::239rBA238</span>'),
           		submitArea = $('<div class="r_file-drop-area">Drag file here</div>'),
-          		submitButton = $('<button class="r_action-button">Complete</button>');
+          		submitButton = $('<button class="r_action-button">Submit File</button>'),
+          		clearButton = $('<button class="r_action-button r_clear">Clear File</button>');
           		
        		innerDiv.append(to)
        				.append(subject)
@@ -445,6 +470,7 @@ $(document).ready(function(){
        				.append(messageClose)
        				.append(submitArea)
        				.append(submitButton)
+       				.append(clearButton)
        				.appendTo(baseDiv);
 
        		return baseDiv;
@@ -522,7 +548,6 @@ $(document).ready(function(){
         var file_list = $('#p_file_list');
         var file_list2 = $('#p_file_list2');
         var file_name;
-        var drop_area = $('.r_file-drop-area');
 
 
         file_list.children('li:odd').css('background-color','#2a362e');
@@ -576,9 +601,11 @@ $(document).ready(function(){
         // making this a function because I want this setup to re-trigger 
         // after accepting missions.
         function addDroppable() {
+        var drop_area = $('.r_file-drop-area');
           drop_area.droppable({
             drop: function(event, ui){
-              $(this).addClass("dropped_state").text(file_name);
+              console.log(file_name);
+              $(this).addClass("dropped_state").html(file_name);
             }
           });
         };
