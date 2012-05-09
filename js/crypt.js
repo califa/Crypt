@@ -620,8 +620,9 @@ $(document).ready(function(){
           helper: 'clone',
           appendTo:'body',
           zIndex: 10000,
-          change: function(event, ui){
-            file_name = $('.ui-sortable-helper').text();
+          start: function(event, ui){
+            file_name = ui.item.text();
+            console.log(file_name);
           },
           receive: function(event, ui){
             ///THIS IS WHERE I PUT THE THING
