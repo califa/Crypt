@@ -513,7 +513,7 @@ $(document).ready(function(){
         var file_list = $('#p_file_list');
         var file_list2 = $('#p_file_list2');
         var file_name;
-        var drop_area = $('r_file-drop-area');
+        var drop_area = $('.r_file-drop-area');
 
 
         file_list.children('li:odd').css('background-color','#2a362e');
@@ -575,6 +575,7 @@ $(document).ready(function(){
             }
           });
         };
+
         addDroppable();
         
         
