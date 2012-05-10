@@ -4,6 +4,9 @@
 			background-color: transparent;
 		}
 
+      button {
+        cursor: pointer;
+      }
 
       div.cryptlogo {
         position: absolute;
@@ -68,6 +71,7 @@
 
           .window:hover .handle {
             background: #5D5D5D;
+            cursor: pointer;
           }
 
           .handle .title {
@@ -578,6 +582,10 @@
          .r_tabs li:hover {
           cursor: pointer;
          }
+
+         .r_tabs li.r_inactive:hover {
+          background-color: #24392a;
+         }
          
          .r_tabs li:last-child {
           float:right;
@@ -995,7 +1003,6 @@
         min-height:110px;
         top:240px;
         left:1000px;
-
       }
       #p_cracker p{
         color: white;
@@ -1010,18 +1017,18 @@
       }
       
       #cypher {
-      	font-size: 2em;
+      	font-size: 20px;
       	padding-top: 45px;
       	position:relative;
       	left: 9px;
       }
       
       #cypher span {
-      	width: 20px;
+      	width: 34px;
       	padding: 8px;
-      	font-size: 2em;
+      	font-size: 20px;
       	position:absolute;
-      	top: 15px;
+      	top: 20px;
       }
 
  

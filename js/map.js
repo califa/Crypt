@@ -122,7 +122,7 @@ $(function(){
  
   mapCanvas.fillStyle = '#fff';
    
-  var backpart = mapCanvas.rect('5','5','99%','99%').attr({fill: '#151515', "stroke-opacity": '0'}).toBack();
+  var backpart = mapCanvas.rect('5','5','99%','99%').attr({fill: '#151515', "fill-opacity": "0", "stroke-opacity": '0'}).toBack();
 
   server1 = mapCanvas.circle('30%','30%',4).attr({fill: "#fff", stroke: "#000", "stroke-width": "2", "stroke-opacity": "0.4"}).data("ip","129.168.1.1"),
   bounceArray.push(server1);
@@ -269,7 +269,7 @@ function changeMapIcon(id) {
     $('.nodetip' + server4.id).addClass('missiontip');
   } else {
     if (server1flag == true) { mapCanvas.getById(server8.id).attr({fill: '#C5F752'}); }
-    if (server1flag == true) { mapCanvas.getById(server4.id).attr({fill: '#C5F752'}); }
+    if (server2flag == true) { mapCanvas.getById(server4.id).attr({fill: '#C5F752'}); }
   }
 }
 
@@ -285,3 +285,15 @@ function revertMapIcon(id) {
     $('.nodetip' + server4.id).removeClass('missiontip');
   } 
 }
+
+
+
+  function updateTooltips(x,y) {
+    servers.forEach(function(node){
+      console.log("working");
+      var tooltip = $('.nodetip' + node.id);
+      var cy = Math.floor(parseFloat(node.attr('cy')) * y);
+      var cx = Math.floor(parseFloat(node.attr('cx')) * x);
+      tooltip.css({"top": cy, "left": cx});
+    });
+  }

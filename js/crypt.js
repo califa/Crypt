@@ -106,6 +106,7 @@ $(document).ready(function(){
               
               var canvasX = $('#worldmap svg').width() / 100;
               var canvasY = $('#worldmap svg').height() / 100;
+              updateTooltips(canvasX, canvasY);
 
               $.each(lineArray, function(index, line) {
                 var from = line.data("from");
@@ -659,6 +660,42 @@ $(document).ready(function(){
           $(this).css("background", "#F8EED0");
         }
 
+        function moveCypher() {
+            var cypher = $('#cypher');
+            var cypherOffset = $('#cypher').offset();
+            var inputOffset = $('#p_dropBox').offset();
+
+            cypher.appendTo('body');
+            cypher.css({
+              "position": "absolute",
+              "top": cypherOffset.top,
+              "left": cypherOffset.left,
+              "zIndex": 10000,
+              "paddingTop": 0,
+            });
+
+            cypher.animate({
+              "top": inputOffset.top-15,
+              "left": inputOffset.left,
+              "-webkit-transform": "scale(2)"
+            }, 500);
+
+            setTimeout(function() {
+              cypher.animate({
+              "opacity": 0
+              }, {
+              duration: 300,
+              queue: false
+              });
+            }, 300);
+
+            setTimeout(function(){
+               $('#p_dropBox').css("background", "#d9f7cf");
+               $('#p_dropBox').attr("value", "rosebud");
+            }, 450);
+           
+        }
+
         function lockDrop(e) {
           
           $('#p_dropBox').css("background", "#F5F0CD");
@@ -666,8 +703,11 @@ $(document).ready(function(){
           var pw = $(this);
           
           cypherStart(function(){
-          	pw.attr("value", "rosebud");
-            $('#p_dropBox').css("background", "#d9f7cf");
+          	//pw.attr("value", "rosebud");
+
+            ///What happens on end
+            setTimeout(moveCypher, 200);
+
           });
           
           this.style.opacity = '1';
@@ -829,7 +869,7 @@ $(document).ready(function(){
         	if(milliseconds <= 0) {
         		element.text(target);
         		pwString = pwString + target;
-        		$('#p_dropBox').attr('value', pwString);
+        		//$('#p_dropBox').attr('value', pwString);
         		return;
         	}
         	if(milliseconds <= 1000) {
