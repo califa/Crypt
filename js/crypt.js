@@ -11,12 +11,16 @@ $(document).ready(function(){
           $(this).trigger("drag", event);
         });
 
+
         $('#r_messages').hide();
         $('#p_file_browser').hide();
         $('#p_cracker').hide();
 
-		var r_unreadMessages = 0,
-			r_totalMessages = 3;
+		var r_ongoingMissions = 0,
+			r_totalMessages = 0;
+			
+		var mission1File = 'AFS::75SF23GF8',
+			mission2File = 'AFS::231ASD8SD';
 
         /*function Screen(windowName) {
             var windowTemplate = '<div class="window"><div class="handle"><button class="close"></button><span class="title">{{title}}</span></div><div class="content"><div class="contentinner clearfix">{{content}}</div></div></div>'.replace(/{{title}}/, windowName );
@@ -32,6 +36,9 @@ $(document).ready(function(){
         */
         // Automatically sets proper height for the window.
         setWindowHeight($('.window'));
+        setWindowHeight($('#r_messages'));
+
+        $('#connector').hide();
 
         $( ".window" ).draggable({ stack: ".window",
                           handle: ".handle", containment: 'body' })
@@ -58,20 +65,19 @@ $(document).ready(function(){
             dock.find('.j_filesystem').parent('li').removeClass('j_opened');
           } else if (id == "p_cracker") {
             dock.find('.j_cracker').parent('li').removeClass('j_opened');
+            resetPasscracker();
+          }
 
-      function resetPasscracker() {
+        });
+        
+        function resetPasscracker() {
          if(!$('#p_cracker').hasClass('.j_visible')){
            var resetLock = $('<p>drag lock to password field</p> <img draggable="true" id="p_lock" src="img/lock.png"/>');
            $('#p_cracker').find('#cypher').remove().end()
            resetLock.appendTo($('#p_cracker .contentinner'));
+           pwString = "";
          }
        }
-
-
-
-          }
-
-        });
 
         // Dynamically refresh a window's height
         function setWindowHeight(elem) {
@@ -100,6 +106,7 @@ $(document).ready(function(){
               
               var canvasX = $('#worldmap svg').width() / 100;
               var canvasY = $('#worldmap svg').height() / 100;
+              updateTooltips(canvasX, canvasY);
 
               $.each(lineArray, function(index, line) {
                 var from = line.data("from");
@@ -111,6 +118,7 @@ $(document).ready(function(){
 
               $browser = $('div.browser');
               $('.screen').css("width", contentWidth);
+
               $('.browser').css("width", contentWidth * 3 + 20);
               
               if ($browser.hasClass("logs")) {
@@ -127,8 +135,29 @@ $(document).ready(function(){
                 connectorContent.css({marginTop: -mapHeight -5});
               }
 
+              $('.j_login-overlay').css({"width": contentWidth, "height": mapHeight, "paddingTop": mapHeight / 2 - 10});
+
               servers.toFront();
               server1.toFront();
+            } else if ($this.attr("id") == "r_messages") {
+              var content = $this.find('.contentinner'); // Content wrapper
+              var windowHeight = $this.height();
+              var windowWidth = $this.width();
+              var contentWidth = windowWidth - 10;
+              var contentHeight = windowHeight - 20; // Height - handle bar
+              var tablessHeight = contentHeight - 36;
+
+              content.css("height", contentHeight + "px");
+
+
+
+              $('.r_ongoing-tab').css("height", tablessHeight + "px");
+              $('.r_ongoing-sidebar').css("height", tablessHeight - 6 + "px");
+              $('.r_ongoing-main-inside').css("height", tablessHeight - 6 + "px");
+              $('.r_freelance-tab').css("height", tablessHeight + "px");
+              $('.r_bounties-tab').css("height", tablessHeight + "px");
+              
+
             }
          }
 
@@ -175,18 +204,27 @@ $(document).ready(function(){
             var cantconnect = $('.cantconnect');
             cantconnect.fadeIn(200);
             setTimeout(function() {
-              cantconnect.fadeOut(600);
+            cantconnect.fadeOut(600);
             }, 1000)
           } else if (!j_connecting) {
-              
 
+
+              //Flag
+              j_connecting = true;
+
+
+
+              if (($('.destServer').text() == "158.110.32.188") || ($('.destServer').text() == "54.87.103.22")) {
+                $('.j_login-overlay').hide();
+              }
               /***** CONNECT BUTTON ******/
               
               var bounceList = [];
               var currentBounceIndex = 0;
 
-              //Flag
-              j_connecting = true;
+              $('.servertitle').text($('.destServer').text());
+
+              
 
               /* Queue connection animations for bounce route */
 
@@ -196,7 +234,7 @@ $(document).ready(function(){
 
               function connectBounce() { 
                 var currentBounce = bounceList[currentBounceIndex];
-
+                openWindow.removeClass("disconnected");
                 onConnect(currentBounce, currentBounceIndex);
 
                 currentBounceIndex++;
@@ -208,6 +246,7 @@ $(document).ready(function(){
               };
 
               function disconnectBounce(start) {
+
                 if (start) {
                   currentBounceIndex = bounceList.length-1;
                 }
@@ -230,6 +269,7 @@ $(document).ready(function(){
                   server1.attr("fill", "#fff");
                   servers.attr("fill", "#7C7C7C");
                   $(".you").css("background", "#fff");
+                  changeMapIcon();
                   setTimeout(moveRouteDown, 100);
                 }
               }
@@ -243,6 +283,9 @@ $(document).ready(function(){
                 // move route up
                 contentWindow.animate({
                 marginTop: "+=" + (contentWindow.find('.map').height() + 5) }, 1000, "easeOutExpo");
+                setTimeout(function() {
+                  $('.j_login-overlay').show();
+                }, 1500);
 
                 contentWindow.find('.destServer').animate({boxShadow: "0 0 2px #fff"});
 
@@ -345,8 +388,19 @@ $(document).ready(function(){
           } else {
             $window.fadeIn();            
             $window.addClass("j_visible");
+            $window.css("zIndex", getWindowZ());
             $(this).parent('li').addClass('j_opened');
           }
+        }
+
+        function getWindowZ() {
+          var largestZ = 1;
+          $(".window").each(function(i) {
+            var currentZ = parseFloat($(this).css("zIndex"));
+            largestZ = currentZ > largestZ ? currentZ : largestZ;
+          });
+          largestZ++;
+          return largestZ;
         }
 
         function onConnect(elem, index) {
@@ -408,13 +462,7 @@ $(document).ready(function(){
         
         $(".r_ongoing-sidebar").on("click", ".r_mission-message", function(){
         	var id = $(this).attr('id');
-        	
-        	if($(this).hasClass('r_unread')) {
-        		$(this).removeClass('r_unread');
-        		r_unreadMessages--;
-        		updateUnreadMessagesCount();
-        	}
-        	
+        	        	
         	$(this).removeClass('r_inactive').siblings().addClass('r_inactive');
         	$("#"+id+"-tab").removeClass('r_inactive-message').siblings('.r_ongoing-main').addClass('r_inactive-message');
         });
@@ -431,19 +479,78 @@ $(document).ready(function(){
        		});
        });
        
-       var updateUnreadMessagesCount = function() {
-       		var title = "Ongoing";
-       		
-       		if(r_unreadMessages > 0) {
-       			title += "(" + r_unreadMessages + ")";
+       
+       // Submit button click event
+       $('.r_ongoing-tab').on('click','.r_ongoing-main .r_action-button:not(.r_clear)', function(){       
+       		var message = $(this).closest('.r_ongoing-main'),
+       			innerDiv = message.find('.r_ongoing-main-inside'),
+       			children = innerDiv.children(),
+       			correctFile;
+       			
+       		if(message.attr('id') == 'r_message1-tab') {
+       			correctFile = mission1File;
+       		} else if(message.attr('id') == 'r_message2-tab') {
+       			correctFile = mission2File;
        		}
        		
-       		$('#r_ongoing').text(title);
+          var j_droparea = innerDiv.find('.r_file-drop-area');
+
+       		if(j_droparea.text() != correctFile) {
+       		
+            //ERROR!
+          	var wrongfile = j_droparea.siblings('.j_wrongfile');
+            wrongfile.fadeIn(200);
+            setTimeout(function() {
+              wrongfile.fadeOut(600);
+            }, 1000);
+            return;
+       		}
+       			
+       		children.each(function(index){
+       			$(this).animate({
+       				'opacity' : 0
+       			}, 100 * (children.length - index));
+       		});
+       		
+       		setTimeout(function(){
+            var j_completion = '<p class="r_mission-completed">Good job! This mission has been completed!</p>';       			
+            innerDiv.html(j_completion);
+       			children.hide();
+
+            innerDiv.find('.r_mission-completed').hide().fadeIn(300);
+
+            r_ongoingMissions--;
+            updateUnreadMessagesCount();
+       			
+            var li = message.attr('id').substring(0, 10);
+            var missionId = message.attr('id').substring(9, 10);
+            revertMapIcon(missionId);
+            console.log(li);
+            $('#'+li).removeClass('r_unread');
+
+       		}, children.length * 100);
+       });
+       
+       
+       // Clear button click event
+       $('.r_ongoing-tab').on('click','.r_clear',function(){
+       		$(this).siblings('.r_file-drop-area').html('Drag File Here').css("background", "#444444");
+       });
+       
+       var updateUnreadMessagesCount = function() {
+       		var badge = $('#r_badge');
+       		
+       		if(r_ongoingMissions == 0) {
+       			badge.hide(0);
+       		} else {
+       			badge.show(0);
+       			badge.text(r_ongoingMissions);
+       		}
        }
        
        var addNewOngoingMission = function(missionTitle) {
- 			    r_totalMessages++;
-       		r_unreadMessages++;
+ 			r_totalMessages++;
+       		r_ongoingMissions++;
 
       		var mainWindow = generateMission(r_totalMessages),
        			sidebar = generateMissionSidebar(missionTitle, r_totalMessages);
@@ -451,36 +558,69 @@ $(document).ready(function(){
        		$('.r_ongoing-sidebar ul').prepend(sidebar);
        		$('.r_ongoing-tab').append(mainWindow);	
           
+          $('.r_unread:first-child').trigger("click");
+
           addDroppable();
 
        }
        
        var generateMission = function(id) {
+
+          var j_thisip;
+          var j_thisfile;
+          var j_thismoney;
+
+          if (id == 1) {
+            j_thisip = "158.110.32.188";
+            j_thisfile = "AFS::75SF23GF8";
+            j_thismoney = "12,000";
+          } else {
+            j_thisip = "54.87.103.22";
+            j_thisfile = "AFS::231ASD8SD";
+            j_thismoney = "9,000";
+          }
+
+          changeMapIcon(id);
+
        		var baseDiv = $('<div class="r_ongoing-main clearfix r_inactive-message" id="r_message'+id+'-tab"></div>'),
        			innerDiv = $('<div class="r_ongoing-main-inside"></div>'),
-       			to = $('<p class="r_to">To: User 221-34</p>'),
+       			to = $('<p class="r_to">Target: <span class="r_spanip">' + j_thisip + '</span></p>'),
        			subject = $('<p class="r_subject">Subject: Steal Key Files</p>'),
-       			messageIntro = $('<p class="message">Hack into the EA user base and retrieve the following records:</p>'),
-       			messageClose = $('<p class="message"> Reply to this message upon completion. In return a compensation of $12,000 US will be transferred to your account.</p>'),
-       			fileNames = $('<span class="r_important-info">AFS::239rBA238</span>'),
+       			messageIntro = $('<p class="message">Hack into the user base and retrieve the following records:</p>'),
+       			messageClose = $('<p class="message"> Reply to this message upon completion, and a payment of $' + j_thismoney + ' US will be transferred to you.</p>'),
+       			fileNames = $('<span class="r_important-info">' + j_thisfile + '</span>'),
           		submitArea = $('<div class="r_file-drop-area">Drag file here</div>'),
-          		submitButton = $('<button class="r_action-button">Complete</button>');
+          		submitButton = $('<button class="r_action-button">Submit File</button>'),
+              wrongFile = $('<div class="j_wrongfile">Incorrect File!</div>'),
+          		clearButton = $('<button class="r_action-button r_clear">Clear File</button>');
           		
-       		innerDiv.append(to)
-       				.append(subject)
+       		innerDiv.append(subject)
+       				.append(to)
        				.append(messageIntro)
        				.append(fileNames)
        				.append(messageClose)
        				.append(submitArea)
        				.append(submitButton)
+              .append(wrongFile)
+       				.append(clearButton)
        				.appendTo(baseDiv);
 
        		return baseDiv;
        }
        
+       var firstMissionAdded = false;
+
        var generateMissionSidebar = function(missionTitle, id){
-       		var baseLi = $('<li class="r_mission-message r_unread" id="r_message'+id+'"></li>'),
-       			title = $('<p>RE:'+missionTitle+'</p>');
+       		
+          if (firstMissionAdded) {
+            var baseLi = $('<li class="r_mission-message r_unread r_inactive" id="r_message'+id+'"></li>');
+       		} else {
+            var baseLi = $('<li class="r_mission-message r_unread" id="r_message'+id+'"></li>');
+            firstMissionAdded = true;
+          }
+
+          missionTitle = missionTitle.replace('Level 1 ','');
+          var title = $('<p>'+missionTitle+'</p>');
        		
        		baseLi.append(title);
        		
@@ -509,15 +649,51 @@ $(document).ready(function(){
             e.preventDefault(); 
           } 
           $(this).css("background", "#f0cd63");
-          //console.log('dragging over');
+          console.log('dragging over');
           return false;
         }
         function lockDragEnter(e) {
-          //console.log('dragEntered');
+          console.log('dragEntered');
           $(this).css("background", "#f0cd63");
         }
         function lockDragLeave(e) {
           $(this).css("background", "#F8EED0");
+        }
+
+        function moveCypher() {
+            var cypher = $('#cypher');
+            var cypherOffset = $('#cypher').offset();
+            var inputOffset = $('#p_dropBox').offset();
+
+            cypher.appendTo('body');
+            cypher.css({
+              "position": "absolute",
+              "top": cypherOffset.top,
+              "left": cypherOffset.left,
+              "zIndex": 10000,
+              "paddingTop": 0,
+            });
+
+            cypher.animate({
+              "top": inputOffset.top-15,
+              "left": inputOffset.left,
+              "-webkit-transform": "scale(2)"
+            }, 500);
+
+            setTimeout(function() {
+              cypher.animate({
+              "opacity": 0
+              }, {
+              duration: 300,
+              queue: false
+              });
+            }, 300);
+
+            setTimeout(function(){
+               $('#p_dropBox').css("background", "#d9f7cf");
+               $('#p_dropBox').attr("value", "rosebud");
+            }, 450);
+           
         }
 
         function lockDrop(e) {
@@ -527,12 +703,15 @@ $(document).ready(function(){
           var pw = $(this);
           
           cypherStart(function(){
-          	pw.attr("value", "rosebud");
-            $('#p_dropBox').css("background", "#d9f7cf");
+          	//pw.attr("value", "rosebud");
+
+            ///What happens on end
+            setTimeout(moveCypher, 200);
+
           });
           
           this.style.opacity = '1';
-          //console.log('dropped');
+          console.log('dropped');
           //$(this).attr("value", "rosebud");
           if (e.stopPropagation) {
             e.stopPropagation(); 
@@ -552,7 +731,6 @@ $(document).ready(function(){
         var file_list = $('#p_file_list');
         var file_list2 = $('#p_file_list2');
         var file_name;
-
 
         file_list.children('li:odd').css('background-color','#2a362e');
         file_list.children('li:even').css('background-color','#232d26');
@@ -576,13 +754,15 @@ $(document).ready(function(){
        file_list.sortable({
           //revert: true,
           update: function(event, ui){
-            resetFileColors();
+            file_list.children('li:odd').css('background-color','#2a362e');
+            file_list.children('li:even').css('background-color','#232d26');
           },
           helper: 'clone',
           appendTo:'body',
           zIndex: 10000,
-          change: function(event, ui){
-            file_name = $('.ui-sortable-helper').text();
+          start: function(event, ui){
+            file_name = ui.item.text();
+            console.log(file_name);
           },
           receive: function(event, ui){
             ///THIS IS WHERE I PUT THE THING
@@ -610,10 +790,12 @@ $(document).ready(function(){
         // making this a function because I want this setup to re-trigger 
         // after accepting missions.
         function addDroppable() {
-          var drop_area = $('.r_file-drop-area');
+        var drop_area = $('.r_file-drop-area');
           drop_area.droppable({
             drop: function(event, ui){
-              $(this).addClass("dropped_state").text(file_name);
+              console.log(file_name);
+              $(this).addClass("dropped_state").html(file_name);
+              $(this).css("background", "#2B372D");
             }
           });
         };
@@ -687,7 +869,7 @@ $(document).ready(function(){
         	if(milliseconds <= 0) {
         		element.text(target);
         		pwString = pwString + target;
-        		$('#p_dropBox').attr('value', pwString);
+        		//$('#p_dropBox').attr('value', pwString);
         		return;
         	}
         	if(milliseconds <= 1000) {
@@ -730,7 +912,17 @@ $(document).ready(function(){
     };
 })(jQuery);
 
+centerLogo();
 
- 
-      
+$(window).on("resize", centerLogo);
+
+function centerLogo() {
+  $window = $(window);
+  wHeight = $window.height();
+  wWidth = $window.width();
+  $('.cryptlogo').css({
+    "left": wWidth/2,
+    "top": wHeight/2-40
+  });
+}
 

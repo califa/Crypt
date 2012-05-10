@@ -12,7 +12,9 @@
   </head>
   <body>
 
-<div class="window connector disconnected j_visible" id="connector">
+  <div class="cryptlogo"></div>
+
+  <div class="window connector disconnected" id="connector">
       <div class="handle">
         <button class="close"></button>
         
@@ -105,6 +107,9 @@
   	          </div> 
             </div><!--end of logs -->
             <div class="screen">
+              <div class="j_login-overlay">
+                This server's contents are inaccessible.
+              </div>
               <div class="login">
                 <h3 class="servertitle">Server Title</h3>
                 <input type="text" title="USERNAME" class="username" value="admin"><br />
@@ -112,16 +117,16 @@
                 <button class="login">Log In</button><br/>
                 <div class="wrongpassword">Incorrect Password!</div>
               </div>
-              <button class="logs">Logs</button>
+              <!--<button class="logs">Logs</button>-->
             </div>
             <div class="screen">
               <ul id="p_file_list2" class="connectedSortable">
-                <li class="file serverfile">data3428234_2_1.txt</li>
-                <li class="file serverfile">data3428234_2_2.txt</li>
-                <li class="file serverfile">data3428234_2_3.txt</li>
-                <li class="file serverfile">data3428234_2_4.txt</li>
-                <li class="file serverfile">data3428234_2_5.txt</li>
-                <li class="file serverfile">data3428234_2_6.txt</li>
+                <li class="file serverfile">AFS::239RBA238</li>
+                <li class="file serverfile">AFS::2832HJ279</li>
+                <li class="file serverfile">AFS::239RB1231</li>
+                <li class="file serverfile">AFS::75SF23GF8</li>
+                <li class="file serverfile">AFS::GFDG2342S</li>
+                <li class="file serverfile">AFS::231ASD8SD</li>
              </ul>
             </div>
 		  </div>
@@ -144,7 +149,7 @@
           <ul class="r_tabs clearfix">
           	<li class="" id="r_freelance">Freelance</li>
           	<li class="r_inactive" id="r_bounties">Bounties</li>
-          	<li class="r_inactive" id="r_ongoing">Ongoing</li>
+          	<li class="r_inactive" id="r_ongoing">Ongoing<span id="r_badge"></span></li>
           </ul>
           
           <!--freelance-->
@@ -152,16 +157,34 @@
           	<ul>
           		<li class="r_freelance-mission-item">
           			<div class="clearfix">
-          				<h1><span class="r_mission-level">Level 4</span> Infiltrate A Server and Destroy Key Files</h1>
+          				<h1><span class="r_mission-level">Level 1</span> Infiltrate A Server and Steal Key Files</h1>
           				<button class="r_action-button">Accept</button>
           			</div>
           		</li>
           		<li class="r_freelance-mission-item">
           			<div class="clearfix">
-          				<h1><span class="r_mission-level">Level 8</span> Infiltrate A Server and Destroy Key Files</h1>
+          				<h1><span class="r_mission-level">Level 1</span> Infiltrate A Server and Steal Key Files</h1>
           				<button class="r_action-button">Accept</button>
           			</div>
           		</li>
+              <li class="r_freelance-mission-item r_level-too-high">
+                <div class="clearfix">
+                  <h1><span class="r_mission-level">Level 3</span> Infiltrate A Server and Corrupt Key Files</h1>
+                  <button class="r_action-button">Accept</button>
+                </div>
+              </li>
+              <li class="r_freelance-mission-item r_level-too-high">
+                <div class="clearfix">
+                  <h1><span class="r_mission-level">Level 5</span> Infiltrate A Server and Corrupt Key Files</h1>
+                  <button class="r_action-button">Accept</button>
+                </div>
+              </li>
+              <li class="r_freelance-mission-item r_level-too-high">
+                <div class="clearfix">
+                  <h1><span class="r_mission-level">Level 5</span> Corrupt a Corporate Database</h1>
+                  <button class="r_action-button">Accept</button>
+                </div>
+              </li>
           		<li class="r_freelance-mission-item r_level-too-high">
           			<div class="clearfix">
           				<h1><span class="r_mission-level">Level 18</span> Change A User's Information In A Database</h1>
@@ -183,8 +206,6 @@
           		<ul>
           		</ul>
           	</div> <!-- end sidebar -->
-          
-          	
           </div> <!-- end ongoing tab -->
           
         </div><!-- end contentinner -->
@@ -201,16 +222,16 @@
       <div class="content">
         <div class="contentinner clearfix">
           <ul id="p_file_list" class="connectedSortable">
-            <li class="file">data3428234_1_1.txt</li>
-            <li class="file">data3428234_1_2.txt</li>
-            <li class="file">data3428234_1_3.txt</li>
-            <li class="file">data3428234_1_4.txt</li>
-            <li class="file">data3428234_1_5.txt</li>
-            <li class="file">data3428234_1_6.txt</li>
-            <li class="file">data3428234_1_7.txt</li>
-            <li class="file">data3428234_1_8.txt</li>
-            <li class="file">data3428234_1_9.txt</li>
-            <li class="file">data3428234_1_0.txt</li>
+            <li class="file">file_hijacking_101.pdf</li>
+            <li class="file">thesis_statement.doc</li>
+            <li class="file">g0tz_da_funk.nfo</li>
+            <li class="file">credit_info.txt</li>
+            <li class="file">todo_list.txt</li>
+            <li class="file">BBS::AS3F34G2S</li>
+            <li class="file">database_corruption.pdf</li>
+            <li class="file">job_description.doc</li>
+            <li class="file">how_to_hack_things.doc</li>
+            <li class="file">beatles_chords.txt</li>
           </ul>
         </div>
        </div>
@@ -240,7 +261,7 @@
         <li class="main">
           <div class="tooltip">Your Files</div>
           <img class="j_filesystem" src="img/icon0.png" /></li>
-        <li class="j_opened">
+        <li>
           <div class="tooltip">Connector</div>
           <img class="j_connect" src="img/icon1.png" /></li>
         <li>

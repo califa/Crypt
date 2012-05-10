@@ -18,6 +18,8 @@ var
     south_america = mapCanvas.set(),
     asia = mapCanvas.set(),
     continents = mapCanvas.set();
+    var server1flag = false;
+    var server2flag = true;
  
 var servers = mapCanvas.set();
 var server1, server2, server3, server4, server5, server6, server7, server8;
@@ -120,6 +122,8 @@ $(function(){
  
   mapCanvas.fillStyle = '#fff';
    
+  var backpart = mapCanvas.rect('5','5','99%','99%').attr({fill: '#151515', "fill-opacity": "0", "stroke-opacity": '0'}).toBack();
+
   server1 = mapCanvas.circle('30%','30%',4).attr({fill: "#fff", stroke: "#000", "stroke-width": "2", "stroke-opacity": "0.4"}).data("ip","129.168.1.1"),
   bounceArray.push(server1);
   servers.push(
@@ -158,24 +162,38 @@ $(function(){
   ).attr({fill: "#aaa", "fill-opacity": "0", "stroke-opacity": "0"});
   servers.toFront();
 
+  var tooltips = [];
+  var tooltipCounter = 2;
+  var worldmap = $('#worldmap');
+  
+  servers.forEach(function(node){
+    var tooltip = $('<div class="nodetooltip nodetip' + node.id + '">' + node.data('ip') + '</div>');
+    worldmap.append(tooltip);
+    tooltip.css({"top": node.attr('cy'), "left": node.attr('cx')});
+    tooltipCounter++;
+  });
 
   hoverAreas.hover(serverBigger, serverSmaller); 
   servers.mouseover(serverBigger);
+  backpart.mouseover(makeServersSmaller);
 
   function serverBigger() {
     $this = this;
     if (this.data("server")) { $this = this.data("server"); }
     $this.animate({"r": "8"}, 1000, "elastic");
+    $('.nodetip' + $this.id).show();
   }
 
   function serverSmaller() {
     $this = this;
     if (this.data("server")) { $this = this.data("server"); }
     $this.animate({"r": "4"}, 1000, "elastic");
+    $('.nodetip' + $this.id).hide();
   }
 
   function makeServersSmaller() {
     servers.animate({"r": "4"}, 1000, "elastic");
+    $('.nodetooltip').hide();
   }
 
   //continents.mouseover() {  }
@@ -238,3 +256,44 @@ $(function(){
     server1.toFront();  
   })
 });
+
+function changeMapIcon(id) {
+  console.log("changing map icon for " + id);
+  if (id == 1) {
+    server1flag = true;
+    mapCanvas.getById(server8.id).attr({fill: '#C5F752'});
+     $('.nodetip' + server8.id).addClass('missiontip');
+  } else if (id == 2) {
+    server2flag = true;
+    mapCanvas.getById(server4.id).attr({fill: '#C5F752'});
+    $('.nodetip' + server4.id).addClass('missiontip');
+  } else {
+    if (server1flag == true) { mapCanvas.getById(server8.id).attr({fill: '#C5F752'}); }
+    if (server2flag == true) { mapCanvas.getById(server4.id).attr({fill: '#C5F752'}); }
+  }
+}
+
+function revertMapIcon(id) {
+  console.log("changing map icon for " + id);
+  if (id == 1) {
+    server1flag = false;
+    mapCanvas.getById(server8.id).attr({fill: '#7C7C7C'});
+     $('.nodetip' + server8.id).removeClass('missiontip');
+  } else if (id == 2) {
+    server2flag = false;
+    mapCanvas.getById(server4.id).attr({fill: '#7C7C7C'});
+    $('.nodetip' + server4.id).removeClass('missiontip');
+  } 
+}
+
+
+
+  function updateTooltips(x,y) {
+    servers.forEach(function(node){
+      console.log("working");
+      var tooltip = $('.nodetip' + node.id);
+      var cy = Math.floor(parseFloat(node.attr('cy')) * y);
+      var cx = Math.floor(parseFloat(node.attr('cx')) * x);
+      tooltip.css({"top": cy, "left": cx});
+    });
+  }
