@@ -548,7 +548,7 @@ $(document).ready(function(){
        
        // Clear button click event
        $('.r_ongoing-tab').on('click','.r_clear',function(){
-       		$(this).siblings('.r_file-drop-area').html('Drag File Here').css("background", "#444444");
+       		$(this).siblings('.r_file-drop-area').html('Drag File Here').css("background", "#444444").removeClass('dropped_state');
        });
        
        var updateUnreadMessagesCount = function() {
@@ -752,7 +752,6 @@ $(document).ready(function(){
         file_list.children('li:even').css('background-color','#232d26');
 
        file_list.sortable({
-          revert: true,
           update: function(event, ui){
             file_list.children('li:odd').css('background-color','#2a362e');
             file_list.children('li:even').css('background-color','#232d26');
@@ -811,20 +810,38 @@ $(document).ready(function(){
             drop: function(event, ui){
               console.log(file_name);
               $(this).addClass("dropped_state").html(file_name);
-              $(this).css("background", "#2B372D");
             },
             over: function(event, ui){
-              drop_area.css("background", "#4a6c54");
+              if($(this).hasClass('dropped_state')){
+               drop_area.css("background", "#4a6c54");               
+              }
             },
+            /*
             out: function(event, ui){
               drop_area.css("background", "#434343");
-            }
+            },*/
+            activate: function(event, ui){
+             if(!$(this).hasClass('dropped_state')){
+               drop_area.css("background", "#4a6c54");          
+             }
+            },
+            
+            deactivate: function(event, ui){
+              if($(this).hasClass('dropped_state')){
+                $(this).css("background", "#2B372D");
+              }else {
+
+                drop_area.css("background", "#434343");
+              }
+            },
+
+            accept: "#p_file_list li"
 
           });
         };
 
         addDroppable();
-        
+
         function downloadColors(item, pct) {
           if (pct == 101) {
             item = $(item[0]);
