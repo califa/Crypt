@@ -465,13 +465,15 @@
         background: #151515
       }
       
-      div.j_login-overlay {
+      div.j_login-overlay, div.j_ongoing-overlay, div.j_ongoing-overlay2  {
         position: absolute;
         color: #f23a29;
         background: #151515; 
         text-align: center;
+        font-size: 16px;
         font-weight: bold;
         z-index: 5000;
+        border-radius: 5px;
 
       }
 
@@ -789,7 +791,7 @@
         margin-bottom: 10px;
       }
 
-      .r_ongoing-main-inside .r_spanip {
+      .r_ongoing-main-inside .r_spanip, .r_ongoing-main-inside .r_important-info  {
         color: #C3FF00;
       }
       
@@ -925,8 +927,8 @@
       #p_file_browser {
         width: 280px;
         min-width: 280px;
-        top: 120px;
-        left: 650px;
+        top: 50px;
+        left: 700px;
       } 
       #p_file_list {
         margin: 3px;
@@ -1001,8 +1003,8 @@
         min-width:280px;
         height: 110px;
         min-height:110px;
-        top:240px;
-        left:1000px;
+        top:400px;
+        left:200px;
       }
       #p_cracker p{
         color: white;
@@ -1010,7 +1012,7 @@
         text-align: center;
         padding:12px 0;
       }
-      #p_cracker #p_lock {
+      #p_lock {
         position: relative;
         left:45%;
         cursor:pointer;

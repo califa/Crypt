@@ -41,12 +41,24 @@ $(document).ready(function(){
         $('#connector').hide();
 
         $( ".window" ).draggable({ stack: ".window",
-                          handle: ".handle", containment: 'body' })
-                      .resizable({handles: "all", snap: true, minHeight: 320, 
+                          handle: ".handle", containment: 'body' });
+
+        $("#connector").resizable({handles: "all", snap: true, minHeight: 320, 
                           minWidth: 300, stack: "window", resize: function() {
                           setWindowHeight(this); } // Refreshes window height
                       });
 
+        $("#r_messages").resizable({handles: "all", snap: true, minHeight: 320, 
+                          minWidth: 300, stack: "window", resize: function() {
+                          setWindowHeight(this); } // Refreshes window height
+                      });
+                      
+        $("#p_file_browser").resizable({handles: "all", snap: true, minHeight: 320, 
+                          minWidth: 280, stack: "window", resize: function() {
+                          setWindowHeight(this); } // Refreshes window height
+                      });
+
+       
        
 
 
@@ -71,12 +83,13 @@ $(document).ready(function(){
         });
         
         function resetPasscracker() {
-         if(!$('#p_cracker').hasClass('.j_visible')){
-           var resetLock = $('<p>drag lock to password field</p> <img draggable="true" id="p_lock" src="img/lock.png"/>');
-           $('#p_cracker').find('#cypher').remove().end()
-           resetLock.appendTo($('#p_cracker .contentinner'));
+           var resetLock = $('<p>drag lock to password field</p><img draggable="true" id="p_lock" src="img/lock.png"/>');
+           $('#p_cracker').find('#cypher').remove();
+           //resetLock.appendTo($('#p_cracker .contentinner'));
+           lock = $('#p_lock');
+           lock.siblings('p').fadeIn(300);
+           lock.fadeIn(300);
            pwString = "";
-         }
        }
 
         // Dynamically refresh a window's height
@@ -150,7 +163,8 @@ $(document).ready(function(){
               content.css("height", contentHeight + "px");
 
 
-
+              $('.j_ongoing-overlay').css({"width": contentWidth, "height": tablessHeight - 6, "paddingTop": tablessHeight / 2 - 20});
+              $('.j_ongoing-overlay2').css({"width": contentWidth, "height": tablessHeight - 6, "paddingTop": tablessHeight / 2 - 20});
               $('.r_ongoing-tab').css("height", tablessHeight + "px");
               $('.r_ongoing-sidebar').css("height", tablessHeight - 6 + "px");
               $('.r_ongoing-main-inside').css("height", tablessHeight - 6 + "px");
@@ -548,8 +562,10 @@ $(document).ready(function(){
        		}
        }
        
-       var addNewOngoingMission = function(missionTitle) {
+      
+      var addNewOngoingMission = function(missionTitle) {
  			r_totalMessages++;
+          $('.j_ongoing-overlay').hide();
        		r_ongoingMissions++;
 
       		var mainWindow = generateMission(r_totalMessages),
@@ -586,7 +602,7 @@ $(document).ready(function(){
        			innerDiv = $('<div class="r_ongoing-main-inside"></div>'),
        			to = $('<p class="r_to">Target: <span class="r_spanip">' + j_thisip + '</span></p>'),
        			subject = $('<p class="r_subject">Subject: Steal Key Files</p>'),
-       			messageIntro = $('<p class="message">Hack into the user base and retrieve the following records:</p>'),
+       			messageIntro = $('<p class="message">Hack into the company server and retrieve the following file:</p>'),
        			messageClose = $('<p class="message"> Reply to this message upon completion, and a payment of $' + j_thismoney + ' US will be transferred to you.</p>'),
        			fileNames = $('<span class="r_important-info">' + j_thisfile + '</span>'),
           		submitArea = $('<div class="r_file-drop-area">Drag file here</div>'),
@@ -642,6 +658,7 @@ $(document).ready(function(){
 
         function lockDragStart(e) {
           this.style.opacity = '0';
+          //this.fadeOut(4000);
           e.dataTransfer.setDragImage(lockIcon, 10, 10);
         }
         function lockDragOver(e) {
@@ -659,6 +676,20 @@ $(document).ready(function(){
         function lockDragLeave(e) {
           $(this).css("background", "#F8EED0");
         }
+
+        function lockDrop(e) {
+          
+          $('#p_dropBox').css("background", "#F5F0CD");
+
+          var pw = $(this);
+          
+          cypherStart(function(){
+            //pw.attr("value", "rosebud");
+
+            ///What happens on end
+            setTimeout(moveCypher, 200);
+
+        });
 
         function moveCypher() {
             var cypher = $('#cypher');
@@ -693,22 +724,12 @@ $(document).ready(function(){
                $('#p_dropBox').css("background", "#d9f7cf");
                $('#p_dropBox').attr("value", "rosebud");
             }, 450);
+
+            resetPasscracker();
            
         }
 
-        function lockDrop(e) {
-          
-          $('#p_dropBox').css("background", "#F5F0CD");
-
-          var pw = $(this);
-          
-          cypherStart(function(){
-          	//pw.attr("value", "rosebud");
-
-            ///What happens on end
-            setTimeout(moveCypher, 200);
-
-          });
+     
           
           this.style.opacity = '1';
           console.log('dropped');
@@ -721,11 +742,6 @@ $(document).ready(function(){
 
         function lockDragEnd(e) {
           this.style.opacity = '1';
-          var parent = $(this).parents('.contentinner');
-          console.log();
-          //$(this).parents('.contentinner').children('p').text('Hacking!!!');
-          $(this).siblings('p').remove().end().remove();
-          parent.append($('<p id="r_cypher">Hacking!!</p>'));
         }
 
         var file_list = $('#p_file_list');
@@ -735,24 +751,8 @@ $(document).ready(function(){
         file_list.children('li:odd').css('background-color','#2a362e');
         file_list.children('li:even').css('background-color','#232d26');
 
-        /*$('#p_file_list, #p_file_list2').sortable({
-          update:function(event,ui){
-            file_list.children('li:odd').css('background-color','#2a362e');
-            file_list.children('li:even').css('background-color','#232d26');
-            file_list2.children('li:odd').css('background-color','#2a362e');
-            file_list2.children('li:even').css('background-color','#232d26');
-          },
-          helper: 'clone',
-          appendTo:'body',
-          zIndex: 10000,
-          connectWith: ".connectedSortable",
-          change: function(event, ui){
-            file_name = $('.ui-sortable-helper').text();
-          }
-        }).disableSelection();*/
-
        file_list.sortable({
-          //revert: true,
+          revert: true,
           update: function(event, ui){
             file_list.children('li:odd').css('background-color','#2a362e');
             file_list.children('li:even').css('background-color','#232d26');
@@ -777,12 +777,28 @@ $(document).ready(function(){
           }
         });
 
+
+        var file_name_set = false;
+
         $('.serverfile').draggable({
           connectToSortable: '#p_file_list',
           helper: 'clone',
           appendTo:'body',
           zIndex: 10000,
-          revert: 'invalid'
+          revert: 'invalid',
+          start: function(event, ui) {
+            //file_name = ui.item.text();
+            var fileWidth = $('#connector .contentinner').width();
+            setTimeout(function() {
+              var dragHelper = $('li.serverfile.ui-draggable-dragging');
+              //dragHelper.css("width",fileWidth);
+              console.log(dragHelper);
+              if (!file_name_set) { file_name = $('li.serverfile.ui-draggable-dragging').html(); }
+              console.log(file_name);
+              file_name_set = true;
+            },10);
+            
+          }
         });
 
         $('ul, li').disableSelection();
@@ -796,7 +812,14 @@ $(document).ready(function(){
               console.log(file_name);
               $(this).addClass("dropped_state").html(file_name);
               $(this).css("background", "#2B372D");
+            },
+            over: function(event, ui){
+              drop_area.css("background", "#4a6c54");
+            },
+            out: function(event, ui){
+              drop_area.css("background", "#434343");
             }
+
           });
         };
 
@@ -836,7 +859,8 @@ $(document).ready(function(){
         		cypher = $('<p id="cypher"></p>'),
         		characterTime = parseInt(crackDuration / passwordLength, 10);
         		
-          lock.siblings('p').remove().end().remove();
+          lock.siblings('p').hide();
+          lock.hide();
                     
           for(var i = 0; i < passwordLength; i++) {
           	var span = $('<span id="digit'+ (i+1) +'">A</span').css({
@@ -886,7 +910,7 @@ $(document).ready(function(){
         var lock = document.querySelector('#p_lock');
         var dropBox = document.querySelector('#p_dropBox');
         lock.addEventListener('dragstart', lockDragStart, false);
-        //lock.addEventListener('dragend', lockDragEnd, false);
+        lock.addEventListener('dragend', lockDragEnd, false);
         /*the lockDragEnd event fires regardless of whether it was dropped or not, so I'm removing it -r */
         dropBox.addEventListener('dragover', lockDragOver, false);
         dropBox.addEventListener('dragenter', lockDragEnter,false);
